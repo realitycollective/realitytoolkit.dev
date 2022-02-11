@@ -23,3 +23,6 @@
 [submodule "Packages/com.realitytoolkit.ultraleap"]
 	path = Packages/com.realitytoolkit.ultraleap
 	url = https://github.com/realitycollective/com.realitytoolkit.ultraleap.git
+[submodule "Packages/com.realitytoolkit.metaplatform"]
+	path = Packages/com.realitytoolkit.metaplatform
+	url = https://github.com/realitycollective/com.realitytoolkit.metaplatform.git
