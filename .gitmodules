@@ -20,9 +20,6 @@
 [submodule "Packages/com.realitycollective.gltf"]
 	path = Packages/com.realitycollective.gltf
 	url = https://github.com/realitycollective/com.realitycollective.gltf.git
-[submodule "Packages/com.realitytoolkit.meta"]
-	path = Packages/com.realitytoolkit.meta
-	url = https://github.com/realitycollective/com.realitytoolkit.meta.git
 [submodule "Packages/com.realitytoolkit.ultraleap"]
 	path = Packages/com.realitytoolkit.ultraleap
 	url = https://github.com/realitycollective/com.realitytoolkit.ultraleap.git
