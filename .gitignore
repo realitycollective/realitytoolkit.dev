@@ -8,6 +8,7 @@
 [Uu]serSettings/
 [Bb]uild/
 [Ll]ibrary/
+[Ll]ogs/
 [Aa]pp/
 [Aa]pp.meta
 UserSettings/
@@ -87,3 +88,5 @@ Assets/Plugins/Lumin/Editor/
 Assets/Plugins/Lumin/Editor.meta
 Assets/StreamingAssets/
 Assets/StreamingAssets.meta
+Assets/AzureSpatialAnchors.SDK/
+Assets/AzureSpatialAnchors.SDK.meta
