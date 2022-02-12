@@ -90,3 +90,5 @@ Assets/StreamingAssets/
 Assets/StreamingAssets.meta
 Assets/AzureSpatialAnchors.SDK/
 Assets/AzureSpatialAnchors.SDK.meta
+RealityToolkit.Generated/
+RealityToolkit.Generated.meta
