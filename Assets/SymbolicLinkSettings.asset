@@ -12,4 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff8a5d57a9af497db320551240c892c2, type: 3}
   m_Name: SymbolicLinkSettings
   m_EditorClassIdentifier: 
-  symbolicLinks: []
+  symbolicLinks:
+  - sourceRelativePath: /Packages/com.realitytoolkit.pico/Assets~/Profiles
+    targetRelativePath: /Assets/RealityToolkit.Generated/Pico/Profiles
+    isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.metaplatform/Assets~/Profiles
+    targetRelativePath: /Assets/RealityToolkit.Generated/Meta/Profiles
+    isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.sdk/Assets~/Profiles
+    targetRelativePath: /Assets/RealityToolkit.Generated/SDK/Profiles
+    isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.sdk/Assets~/Prefabs
+    targetRelativePath: /Assets/RealityToolkit.Generated/SDK/Prefabs
+    isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.ultraleap/Assets~/Profiles
+    targetRelativePath: /Assets/RealityToolkit.Generated/Ultraleap/Profiles
+    isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.windows.xr/Assets~/Profiles
+    targetRelativePath: /Assets/RealityToolkit.Generated/WindowsXR/Profiles
+    isActive: 1
