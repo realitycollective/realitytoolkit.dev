@@ -26,6 +26,15 @@ TextMesh Pro/
 UIElementsSchema/
 *packages-lock.json
 
+# =============== #
+# Toolkit generated #
+# =============== #
+
+[Rr]ealityToolkit.Generated/
+[Rr]ealityToolkit.Generated.meta
+[Xx]RTK.Generated/
+[Xx]RTK.Generated.meta
+
 # ============ #
 # Certificates #
 # ============ #
