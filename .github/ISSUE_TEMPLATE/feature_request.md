@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for the XRTK
+about: Suggest an idea for the Reality Toolkit
 title: ''
 labels: Feature Request
 assignees: ''
