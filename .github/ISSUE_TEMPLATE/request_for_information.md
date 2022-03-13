@@ -2,7 +2,7 @@
 name: Request for Information
 about: Not sure how to do something, just ask.
 title: ''
-labels: Question
+labels: question
 assignees: ''
 ---
 
