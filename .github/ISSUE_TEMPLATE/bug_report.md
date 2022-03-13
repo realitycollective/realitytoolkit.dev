@@ -31,18 +31,29 @@ assignees: ''
 ## Your Setup
 <!-- please complete any/all the following information. -->
 
-- **Operation System:**
+- **Operating System:**
+<!-- Please Specify Platform -->
     - [ ] Windows
     - [ ] MacOs
     - [ ] Linux
-    - [ ] Other <!-- Please Specify Platform -->
-    
-- **Unity Version:** <!-- Please Specify Version --> 
-2020.3.29f
+    - [ ] Other
+
+- **Target Platforms:**
+<!-- Please Specify Platform -->
+    - [ ] WindowsXR
+    - [ ] HoloLens
+    - [ ] Oculus Quest
+    - [ ] Pico
+    - [ ] Other (please specifiy)
+
+- **Unity Version:** 
+<!-- Please Specify Version --> 
+
+ - 2020.3.30f
 
 - **Packages**
-    - [ ] com.realitytoolkit.core 1.0.0.Preview1 <!-- Please Specify Version or commit sha -->
-    - [ ] com.realitytoolkit.sdk 1.0.0.Preview1 <!-- Please Specify Version or commit sha -->
+    - [ ] com.realitytoolkit.core 1.0.0.Preview.1 <!-- Please Specify Version or commit sha -->
+    - [ ] com.realitytoolkit.sdk 1.0.0.Preview.1 <!-- Please Specify Version or commit sha -->
     <!-- - [ ] com.realitytoolkit.other 1.0.0 -->
 
 ## Additional context
