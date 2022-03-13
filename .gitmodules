@@ -8,9 +8,6 @@
 [submodule "Packages/com.realitytoolkit.spatial-persistence"]
 	path = Packages/com.realitytoolkit.spatial-persistence
 	url = https://github.com/realitycollective/com.realitytoolkit.spatial-persistence.git
-[submodule "Packages/com.realitytoolkit.spatial-persistence.asa"]
-	path = Packages/com.realitytoolkit.spatial-persistence.asa
-	url = https://github.com/realitycollective/com.realitytoolkit.spatial-persistence.asa.git
 [submodule "Packages/com.realitytoolkit.pico"]
 	path = Packages/com.realitytoolkit.pico
 	url = https://github.com/realitycollective/com.realitytoolkit.pico.git

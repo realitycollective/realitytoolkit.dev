@@ -1,9 +1,5 @@
 {
   "dependencies": {
-    "com.microsoft.azure.spatial-anchors-sdk.android": "file:MixedReality/com.microsoft.azure.spatial-anchors-sdk.android-2.11.0.tgz",
-    "com.microsoft.azure.spatial-anchors-sdk.core": "file:MixedReality/com.microsoft.azure.spatial-anchors-sdk.core-2.11.0.tgz",
-    "com.microsoft.azure.spatial-anchors-sdk.ios": "file:MixedReality/com.microsoft.azure.spatial-anchors-sdk.ios-2.11.0.tgz",
-    "com.microsoft.azure.spatial-anchors-sdk.windows": "file:MixedReality/com.microsoft.azure.spatial-anchors-sdk.windows-2.11.0.tgz",    
     "com.unity.collab-proxy": "1.15.12",
     "com.unity.ide.rider": "2.0.7",
     "com.unity.ide.visualstudio": "2.0.14",
