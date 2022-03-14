@@ -8,9 +8,6 @@
 [submodule "Packages/com.realitytoolkit.spatial-persistence"]
 	path = Packages/com.realitytoolkit.spatial-persistence
 	url = https://github.com/realitycollective/com.realitytoolkit.spatial-persistence.git
-[submodule "Packages/com.realitytoolkit.pico"]
-	path = Packages/com.realitytoolkit.pico
-	url = https://github.com/realitycollective/com.realitytoolkit.pico.git
 [submodule "Packages/com.realitytoolkit.windows.xr"]
 	path = Packages/com.realitytoolkit.windows.xr
 	url = https://github.com/realitycollective/com.realitytoolkit.windows.xr.git
@@ -23,3 +20,6 @@
 [submodule "Packages/com.realitytoolkit.metaplatform"]
 	path = Packages/com.realitytoolkit.metaplatform
 	url = https://github.com/realitycollective/com.realitytoolkit.metaplatform.git
+[submodule "Packages/com.realitytoolkit.pico"]
+	path = Packages/com.realitytoolkit.pico
+	url = https://github.com/realitycollective/com.realitytoolkit.pico.git
