@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: SymbolicLinkSettings
   m_EditorClassIdentifier: 
   symbolicLinks:
+  - sourceRelativePath: /Packages/com.realitytoolkit.core/Assets~/Prefabs
+    targetRelativePath: /Assets/RealityToolkit.Generated/Core/Prefabs
+    isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.core/Assets~/Profiles
+    targetRelativePath: /Assets/RealityToolkit.Generated/Core/Profiles
+    isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.pico/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/Pico/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.metaplatform/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/Meta/Profiles
-    isActive: 1
-  - sourceRelativePath: /Packages/com.realitytoolkit.sdk/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/SDK/Profiles
-    isActive: 1
-  - sourceRelativePath: /Packages/com.realitytoolkit.sdk/Assets~/Prefabs
-    targetRelativePath: /Assets/RealityToolkit.Generated/SDK/Prefabs
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.ultraleap/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/Ultraleap/Profiles
