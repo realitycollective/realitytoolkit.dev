@@ -2,9 +2,6 @@
 	path = Packages/com.realitytoolkit.core
 	url = https://github.com/realitycollective/com.realitytoolkit.core.git
 	branch = feature/core-cleanup
-[submodule "Packages/com.realitytoolkit.sdk"]
-	path = Packages/com.realitytoolkit.sdk
-	url = https://github.com/realitycollective/com.realitytoolkit.sdk.git
 [submodule "Packages/com.realitytoolkit.spatial-persistence"]
 	path = Packages/com.realitytoolkit.spatial-persistence
 	url = https://github.com/realitycollective/com.realitytoolkit.spatial-persistence.git
