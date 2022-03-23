@@ -42,7 +42,7 @@ assignees: ''
 <!-- Please Specify Platform -->
     - [ ] WindowsXR
     - [ ] HoloLens
-    - [ ] Oculus Quest
+    - [ ] Meta Quest
     - [ ] Pico
     - [ ] Other (please specifiy)
 
@@ -52,8 +52,8 @@ assignees: ''
  - 2020.3.30f
 
 - **Packages**
-    - [ ] com.realitytoolkit.core 1.0.0.Preview.1 <!-- Please Specify Version or commit sha -->
-    - [ ] com.realitytoolkit.sdk 1.0.0.Preview.1 <!-- Please Specify Version or commit sha -->
+    - [ ] com.realitytoolkit.core 1.0.0.Preview.2 <!-- Please Specify Version or commit sha -->
+    - [ ] com.realitytoolkit.metaplatform 1.0.0.Preview.2 <!-- Please Specify Version or commit sha -->
     <!-- - [ ] com.realitytoolkit.other 1.0.0 -->
 
 ## Additional context
