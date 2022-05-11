@@ -20,3 +20,6 @@
 [submodule "Packages/com.realitytoolkit.pico"]
 	path = Packages/com.realitytoolkit.pico
 	url = https://github.com/realitycollective/com.realitytoolkit.pico.git
+[submodule "Packages/com.realitytoolkit.service-framework"]
+	path = Packages/com.realitytoolkit.service-framework
+	url = https://github.com/realitycollective/com.realitytoolkit.service-framework.git
