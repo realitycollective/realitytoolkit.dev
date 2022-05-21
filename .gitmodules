@@ -26,3 +26,6 @@
 [submodule "Packages/com.realitytoolkit.utilities"]
 	path = Packages/com.realitytoolkit.utilities
 	url = https://github.com/realitycollective/com.realitytoolkit.utilities.git
+[submodule "Packages/com.realitytoolkit.devtools"]
+	path = Packages/com.realitytoolkit.devtools
+	url = https://github.com/realitycollective/com.realitytoolkit.devtools.git
