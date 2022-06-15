@@ -32,3 +32,6 @@
 [submodule "Packages/com.realitytoolkit.buildtools"]
 	path = Packages/com.realitytoolkit.buildtools
 	url = https://github.com/realitycollective/com.realitytoolkit.buildtools.git
+[submodule "packages/service-framework-services"]
+	path = packages/service-framework-services
+	url = https://github.com/realitycollective/Service-Framework-Services.git
