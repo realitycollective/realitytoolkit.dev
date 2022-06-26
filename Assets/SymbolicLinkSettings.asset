@@ -28,9 +28,9 @@ MonoBehaviour:
   - sourceRelativePath: /Packages/com.realitytoolkit.ultraleap/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/Ultraleap/Profiles
     isActive: 1
-  - sourceRelativePath: /Packages/com.realitytoolkit.windowsxr/Assets~/Profiles
+  - sourceRelativePath: /Packages/com.realitytoolkit.windows.xr/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/WindowsXR/Profiles
     isActive: 1
-  - sourceRelativePath: /Packages/com.realitytoolkit.windowsxr/Assets~/Prefabs
+  - sourceRelativePath: /Packages/com.realitytoolkit.windows.xr/Assets~/Prefabs
     targetRelativePath: /Assets/RealityToolkit.Generated/WindowsXR/Prefabs
     isActive: 1
