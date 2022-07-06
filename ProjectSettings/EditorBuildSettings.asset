@@ -6,11 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/StartScene.unity
-    guid: 1e0d3a49800b18b4590789f775563558
+    path: Assets/Base.unity
+    guid: 8a2d0fa3833d8d4428a8b26b5364f713
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 796d9ae629cb472428c47cb63f6bfd6c, type: 2}
     Unity.XR.PXR.Settings: {fileID: 11400000, guid: 09ea78654df91fd499ff12359456ec18, type: 2}
+    Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 832eb8875a8c5c74ab3b25d7eca9c767, type: 2}
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 4d7eec9fe52ebd4488146eed23db8bf9, type: 2}
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: d0efd2abbcae39b4cb18fd0d6e9804cf, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 0c9458dbd34f43d4fbed42514fd22448, type: 2}

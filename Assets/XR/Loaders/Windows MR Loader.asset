@@ -8,10 +8,7 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 11500000, guid: 8e08befb1867d8945b4f1ddac43e65c5, type: 3}
-  m_Name: PXR_SDKSettingAsset
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a140b66429c96344083035352cb7c898, type: 3}
+  m_Name: Windows MR Loader
   m_EditorClassIdentifier: 
-  ignoreSDKSetting: 1
-  doNotShowBuildWarning: 1
-  appIDChecked: 0
