@@ -25,6 +25,9 @@ MonoBehaviour:
   - sourceRelativePath: /Packages/com.realitytoolkit.metaplatform/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/Meta/Profiles
     isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.metaplatform/Assets~/Prefabs
+    targetRelativePath: /Assets/RealityToolkit.Generated/Meta/Prefabs
+    isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.windows.xr/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/WindowsXR/Profiles
     isActive: 1
