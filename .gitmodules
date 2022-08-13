@@ -8,9 +8,6 @@
 [submodule "Packages/com.realitytoolkit.windows.xr"]
 	path = Packages/com.realitytoolkit.windows.xr
 	url = https://github.com/realitycollective/com.realitytoolkit.windows.xr.git
-[submodule "Packages/com.realitycollective.gltf"]
-	path = Packages/com.realitycollective.gltf
-	url = https://github.com/realitycollective/com.realitycollective.gltf.git
 [submodule "Packages/com.realitytoolkit.ultraleap"]
 	path = Packages/com.realitytoolkit.ultraleap
 	url = https://github.com/realitycollective/com.realitytoolkit.ultraleap.git
