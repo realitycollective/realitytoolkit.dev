@@ -1,21 +1,28 @@
-﻿/************************************************************************************
- 【PXR SDK】
- Copyright 2015-2020 Pico Technology Co., Ltd. All Rights Reserved.
+﻿/*******************************************************************************
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.  
 
-************************************************************************************/
+NOTICE：All information contained herein is, and remains the property of 
+PICO Technology Co., Ltd. The intellectual and technical concepts 
+contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+covered by patents, patents in process, and are protected by trade secret or 
+copyright law. Dissemination of this information or reproduction of this 
+material is strictly forbidden unless prior written permission is obtained from
+PICO Technology Co., Ltd. 
+*******************************************************************************/
 
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
-using UnityEngine.Rendering;
 
 namespace Unity.XR.PXR
 {
     public class PXR_Manager : MonoBehaviour
     {
+        private const string TAG = "[PXR_Manager]";
         private static PXR_Manager instance = null;
+        private static bool bindVerifyServiceSuccess = false;
         public static PXR_Manager Instance
         {
             get
@@ -25,7 +32,7 @@ namespace Unity.XR.PXR
                     instance = FindObjectOfType<PXR_Manager>();
                     if (instance == null)
                     {
-                        Debug.LogError("PXR_Manager instance is not initialized!");
+                        Debug.LogError("PXRLog instance is not initialized!");
                     }
                 }
                 return instance;
@@ -33,18 +40,16 @@ namespace Unity.XR.PXR
         }
 
         private int lastBoundaryState = 0;
-
-        private float[] fixedData = new float[7] { 0, 0, 0, 1, 0, 0, 0 };
-        private bool isConnectedL = false;
-        private bool isConnectedR = false;
-        private Camera eyeCamera;
-
-        private int eyeCameraOriginCullingMask;
-        private CameraClearFlags eyeCameraOriginClearFlag;
-        private Color eyeCameraOriginBackgroundColor;
+        private int currentBoundaryState;
+        private float refreshRate = -1.0f;
+        
+        private Camera[] eyeCamera;
+        private int[] eyeCameraOriginCullingMask = new int[3];
+        private CameraClearFlags[] eyeCameraOriginClearFlag = new CameraClearFlags[3];
+        private Color[] eyeCameraOriginBackgroundColor = new Color[3];
 
         [HideInInspector]
-        public bool showFPS;
+        public bool showFps;
         [HideInInspector]
         public bool useDefaultFps = true;
         [HideInInspector]
@@ -54,71 +59,55 @@ namespace Unity.XR.PXR
         [HideInInspector]
         public bool eyeTracking;
         [HideInInspector]
-        public bool supportEyeTracking;
-        [HideInInspector]
         public FoveationLevel foveationLevel = FoveationLevel.None;
-
         private bool isNeedResume = false;
-        [HideInInspector]
-        public int systemDebugFFRLevel = -1;
-        [HideInInspector]
-        public int systemFFRLevel = -1;
 
         //Entitlement Check Result
         [HideInInspector]
         public int appCheckResult = 100;
         public delegate void EntitlementCheckResult(int ReturnValue);
         public static event EntitlementCheckResult EntitlementCheckResultEvent;
+
         public Action<float> DisplayRefreshRateChanged;
 
         [HideInInspector]
         public bool useRecommendedAntiAliasingLevel = true;
-        // Start is called before the first frame update
+
         void Awake()
         {
-            PXR_Plugin.UPxr_InitAndroidClass();
-            PXR_Plugin.System.UPxr_SetSecure(PXR_ProjectSetting.GetProjectConfig().useContentProtect);
-            PXR_Plugin.PlatformSetting.UPxr_BindVerifyService(gameObject.name);
-            eyeCamera = Camera.main;
-            Camera.main.depthTextureMode = DepthTextureMode.Depth;
-#if !UNITY_EDITOR
-            int fps = -1;
-            int rate = (int)GlobalIntConfigs.TargetFrameRate;
-            PXR_Plugin.System.UPxr_GetIntConfig(rate, ref fps);
-            float freshRate = 0.0f;
-            int frame = (int)GlobalFloatConfigs.DisplayRefreshRate;
-            PXR_Plugin.System.UPxr_GetFloatConfig(frame, ref freshRate);
-            Application.targetFrameRate = fps > 0 ? fps : (int)freshRate;
-            if (!useDefaultFps)
-            {
-                if (customFps <= freshRate)
-                {
-                    Application.targetFrameRate = customFps;
-                }
-                else
-                {
-                    Application.targetFrameRate = (int) freshRate;
-                }
-            }
-#endif
-            UpateSystemFFRLevel();
-            if (foveationLevel != FoveationLevel.None)
-            {
-                PXR_Plugin.Render.UPxr_EnableFoveation(true);
-                PXR_Plugin.Render.UPxr_SetFoveationLevel(foveationLevel);
-            }
-            PXR_Plugin.System.UPxr_InitKeyEventManager();
-            PXR_Plugin.System.UPxr_StartReceiver();
-            #if UNITY_2019_1_OR_NEWER
-            if (GraphicsSettings.renderPipelineAsset != null)
-            {
-                PXR_Plugin.Boundary.UPxr_EnableLWRP(true);
-            }
-#endif
             //version log
-            Debug.Log("XR Platform----SDK Version:" + PXR_Plugin.System.UPxr_GetSDKVersion() + " Unity Script Version:" + PXR_Plugin.System.UPxr_GetUnitySDKVersion());
+            Debug.Log("PXRLog XR Platform----SDK Version:" + PXR_Plugin.System.UPxr_GetSDKVersion());
+
+            //log level
+            int logLevel = PXR_Plugin.System.UPxr_GetConfigInt(ConfigType.UnityLogLevel);
+            Debug.Log("PXRLog XR Platform----SDK logLevel:" + logLevel);
+            PLog.logLevel = (PLog.LogLevel)logLevel;
+            if (!bindVerifyServiceSuccess)
+            {
+                PXR_Plugin.PlatformSetting.UPxr_BindVerifyService(gameObject.name);
+            }
+            eyeCamera = new Camera[3];
+            Camera[] cam = gameObject.GetComponentsInChildren<Camera>();
+            for (int i = 0; i < cam.Length; i++) {
+                if (cam[i].stereoTargetEye == StereoTargetEyeMask.Both) {
+                    eyeCamera[0] = cam[i];
+                }else if (cam[i].stereoTargetEye == StereoTargetEyeMask.Left)
+                {
+                    eyeCamera[1] = cam[i];
+                }
+                else if(cam[i].stereoTargetEye == StereoTargetEyeMask.Right)
+                {
+                    eyeCamera[2] = cam[i];
+                }
+            }
+#if UNITY_ANDROID && !UNITY_EDITOR
+            SetFrameRate();
+#endif
+            PXR_Plugin.Render.UPxr_SetFoveationLevel(foveationLevel);
+            PXR_Plugin.System.UPxr_EnableEyeTracking(eyeTracking);
+
             int recommendedAntiAliasingLevel = 0;
-            PXR_Plugin.System.UPxr_GetIntConfig((int)GlobalIntConfigs.AntiAliasingLevelRecommended, ref recommendedAntiAliasingLevel);
+            recommendedAntiAliasingLevel = PXR_Plugin.System.UPxr_GetConfigInt(ConfigType.AntiAliasingLevelRecommended);
             if (useRecommendedAntiAliasingLevel && QualitySettings.antiAliasing != recommendedAntiAliasingLevel)
             {
                 QualitySettings.antiAliasing = recommendedAntiAliasingLevel;
@@ -136,57 +125,25 @@ namespace Unity.XR.PXR
 
                 foreach (var layer in PXR_OverLay.Instances)
                 {
-                    layer.RefreshCamera();
+                    if (eyeCamera[0] != null && eyeCamera[0].enabled) {
+                        layer.RefreshCamera(eyeCamera[0],eyeCamera[0]);
+                    }
+                    else if (eyeCamera[1] != null && eyeCamera[1].enabled)
+                    {
+                        layer.RefreshCamera(eyeCamera[1], eyeCamera[2]);
+                    }
                 }
             }
         }
 
         void OnApplicationPause(bool pause)
         {
-            if (pause)
+            if (!pause)
             {
-                PXR_Plugin.System.UPxr_StopHomeKeyReceiver();
-            }
-            else
-            {
-                PXR_Plugin.System.UPxr_StartHomeKeyReceiver(gameObject.name);
-                if (PXR_Plugin.System.UPxr_Check6DofAppResume())
+                if (isNeedResume)
                 {
-                    StopXR();
-                    isNeedResume = true;
-                }
-                else
-                {
-                    if (isNeedResume)
-                    {
-                        StartCoroutine("StartXR");
-                        isNeedResume = false;
-                    } 
-                }
-
-                UpateSystemFFRLevel();
-            }
-        }
-
-        private void UpateSystemFFRLevel()
-        {
-            if (PXR_Plugin.Render.UPxr_GetIntSysProc("pvrsist.foveation.level", ref systemDebugFFRLevel))
-            {
-                PXR_Plugin.Render.UPxr_SetFoveationLevel((FoveationLevel)(systemDebugFFRLevel));
-                Debug.Log("XR Platform OnResume Get System Debug ffr level is : " + systemDebugFFRLevel);
-            }
-            else
-            {
-                Debug.Log("XR Platform OnResume Get System Debug ffr level Error,ffr level is : " + systemDebugFFRLevel);
-            }
-
-            if (systemDebugFFRLevel == -1)
-            {
-                PXR_Plugin.System.UPxr_GetIntConfig((int)GlobalIntConfigs.EnableFFR, ref systemFFRLevel);
-                if (systemFFRLevel != -1 && systemFFRLevel > (int)foveationLevel)
-                {
-                    PXR_Plugin.Render.UPxr_SetFoveationLevel((FoveationLevel)(systemFFRLevel));
-                    Debug.Log("XR Platform OnResume Get System ffr level is : " + systemFFRLevel);
+                    StartCoroutine("StartXR");
+                    isNeedResume = false;
                 }
             }
         }
@@ -197,7 +154,7 @@ namespace Unity.XR.PXR
 
             if (XRGeneralSettings.Instance.Manager.activeLoader == null)
             {
-                Debug.LogError("Initializing XR Failed. Check log for details.");
+                Debug.LogError("PXRLog Initializing XR Failed. Check log for details.");
             }
             else
             {
@@ -213,11 +170,12 @@ namespace Unity.XR.PXR
 
         void Start()
         {
-            PXR_Plugin.System.UPxr_StartHomeKeyReceiver(gameObject.name);
-            int fps = 0;
-            int rate = (int)GlobalIntConfigs.IsShowFps;
-            PXR_Plugin.System.UPxr_GetIntConfig(rate,  ref fps);
-            if (Convert.ToBoolean(fps) || showFPS)
+            bool systemFps = false;
+#if UNITY_ANDROID && !UNITY_EDITOR
+            PXR_Plugin.System.UPxr_GetTextSize("");//load res & get permission of external storage
+            systemFps = Convert.ToBoolean(Convert.ToInt16(PXR_Plugin.System.UPxr_GetConfigInt(ConfigType.ShowFps)));
+#endif
+            if (systemFps || showFps)
             {
                 Camera.main.transform.Find("FPS").gameObject.SetActive(true);
             }
@@ -228,7 +186,7 @@ namespace Unity.XR.PXR
                 {
                     Debug.Log("PXRLog Entitlement Check Simulation DO NOT PASS");
                     string appID = PXR_PlatformSetting.Instance.appID;
-                    Debug.Log("PXRLog Entilement Check Enable");
+                    Debug.Log("PXRLog Entitlement Check Enable");
                     // 0:success -1:invalid params -2:service not exist -3:time out
                     PXR_Plugin.PlatformSetting.UPxr_AppEntitlementCheckExtra(appID);
                 }
@@ -237,107 +195,124 @@ namespace Unity.XR.PXR
                     Debug.Log("PXRLog Entitlement Check Simulation PASS");
                 }
             }
+#if UNITY_EDITOR
+            Application.targetFrameRate = 72;
+#endif
+            PXR_Plugin.Controller.UPxr_SetControllerDelay();
         }
-
-        // Update is called once per frame
+        
         void Update()
         {
-            //set controller data to boundary
-            isConnectedL = PXR_Input.IsControllerConnected(PXR_Input.Controller.LeftController);
-            if (isConnectedL)
-            {
-                fixedData = PXR_Plugin.Controller.UPxr_GetControllerFixedSensorState(0);
-                PXR_Plugin.Boundary.UPxr_SetReinPosition(fixedData[0], fixedData[1], fixedData[2], fixedData[3], fixedData[4], fixedData[5], fixedData[6], 0, true, 0);
-            }
-            else
-            {
-                PXR_Plugin.Boundary.UPxr_SetReinPosition(0, 0, 0, 1, 0, 0, 0, 0, false, 0);
-            }
-
-            isConnectedR = PXR_Input.IsControllerConnected(PXR_Input.Controller.RightController);
-            if (isConnectedR)
-            {
-                fixedData = PXR_Plugin.Controller.UPxr_GetControllerFixedSensorState(1);
-                PXR_Plugin.Boundary.UPxr_SetReinPosition(fixedData[0], fixedData[1], fixedData[2], fixedData[3], fixedData[4], fixedData[5], fixedData[6], 1, true, 0);
-            }
-            else
-            {
-                PXR_Plugin.Boundary.UPxr_SetReinPosition(0, 0, 0, 1, 0, 0, 0, 1, false, 0);
-            }
-
+            currentBoundaryState = PXR_Plugin.Boundary.UPxr_GetSeeThroughState();
             // boundary
-            if (eyeCamera != null && eyeCamera.enabled)
+            for (int i = 0; i < 3; i++)
             {
-                int currentBoundaryState = PXR_Plugin.Boundary.UPxr_GetSeeThroughState();
-
-                if (currentBoundaryState != lastBoundaryState)
+                if (eyeCamera[i] != null && eyeCamera[i].enabled)
                 {
-                    if (currentBoundaryState == 2) // close camera render(close camera render) and limit framerate(if needed)
+                    if (currentBoundaryState != lastBoundaryState)
                     {
-                        // record
-                        eyeCameraOriginCullingMask = eyeCamera.cullingMask;
-                        eyeCameraOriginClearFlag = eyeCamera.clearFlags;
-                        eyeCameraOriginBackgroundColor = eyeCamera.backgroundColor;
+                        if (currentBoundaryState == 2) // close camera render
+                        {
+                            // record
+                            eyeCameraOriginCullingMask[i] = eyeCamera[i].cullingMask;
+                            eyeCameraOriginClearFlag[i] = eyeCamera[i].clearFlags;
+                            eyeCameraOriginBackgroundColor[i] = eyeCamera[i].backgroundColor;
 
-                        // close render
-                        eyeCamera.cullingMask = 0;
-                        eyeCamera.clearFlags = CameraClearFlags.SolidColor;
-                        eyeCamera.backgroundColor = Color.black;
-                    }
-                    else if (currentBoundaryState == 1) // open camera render, but limit framerate(if needed)
-                    {
-                        if (lastBoundaryState == 2)
+                            // close render
+                            eyeCamera[i].cullingMask = 0;
+                            eyeCamera[i].clearFlags = CameraClearFlags.SolidColor;
+                            eyeCamera[i].backgroundColor = Color.black;
+                        }
+                        else if (currentBoundaryState == 1) // open camera render
                         {
-                            if (eyeCamera.cullingMask == 0)
+                            if (lastBoundaryState == 2)
                             {
-                                eyeCamera.cullingMask = eyeCameraOriginCullingMask;
+                                if (eyeCamera[i].cullingMask == 0)
+                                {
+                                    eyeCamera[i].cullingMask = eyeCameraOriginCullingMask[i];
+                                }
+                                if (eyeCamera[i].clearFlags == CameraClearFlags.SolidColor)
+                                {
+                                    eyeCamera[i].clearFlags = eyeCameraOriginClearFlag[i];
+                                }
+                                if (eyeCamera[i].backgroundColor == Color.black)
+                                {
+                                    eyeCamera[i].backgroundColor = eyeCameraOriginBackgroundColor[i];
+                                }
                             }
-                            if (eyeCamera.clearFlags == CameraClearFlags.SolidColor)
+                        }
+                        else // open camera render(recover)
+                        {
+                            if ((lastBoundaryState == 2 || lastBoundaryState == 1))
                             {
-                                eyeCamera.clearFlags = eyeCameraOriginClearFlag;
-                            }
-                            if (eyeCamera.backgroundColor == Color.black)
-                            {
-                                eyeCamera.backgroundColor = eyeCameraOriginBackgroundColor;
+                                if (eyeCamera[i].cullingMask == 0)
+                                {
+                                    eyeCamera[i].cullingMask = eyeCameraOriginCullingMask[i];
+                                }
+                                if (eyeCamera[i].clearFlags == CameraClearFlags.SolidColor)
+                                {
+                                    eyeCamera[i].clearFlags = eyeCameraOriginClearFlag[i];
+                                }
+                                if (eyeCamera[i].backgroundColor == Color.black)
+                                {
+                                    eyeCamera[i].backgroundColor = eyeCameraOriginBackgroundColor[i];
+                                }
                             }
                         }
                     }
-                    else // open camera render(recover)
-                    {
-                        if ((lastBoundaryState == 2 || lastBoundaryState == 1))
-                        {
-                            if (eyeCamera.cullingMask == 0)
-                            {
-                                eyeCamera.cullingMask = eyeCameraOriginCullingMask;
-                            }
-                            if (eyeCamera.clearFlags == CameraClearFlags.SolidColor)
-                            {
-                                eyeCamera.clearFlags = eyeCameraOriginClearFlag;
-                            }
-                            if (eyeCamera.backgroundColor == Color.black)
-                            {
-                                eyeCamera.backgroundColor = eyeCameraOriginBackgroundColor;
-                            }
-                        }
-                    }
-                    lastBoundaryState = currentBoundaryState;
                 }
             }
+            lastBoundaryState = currentBoundaryState;
+            if (Math.Abs(refreshRate - PXR_Plugin.System.UPxr_RefreshRateChanged()) > 0.1f)
+            {
+                refreshRate = PXR_Plugin.System.UPxr_RefreshRateChanged();
+                if (DisplayRefreshRateChanged != null)
+                    DisplayRefreshRateChanged(refreshRate);
+            }
+            //recenter callback
+            if (PXR_Plugin.System.UPxr_GetHomeKey())
+            {
+                if (PXR_Plugin.System.RecenterSuccess != null)
+                {
+                    PXR_Plugin.System.RecenterSuccess();
+                }
+                PXR_Plugin.System.UPxr_InitHomeKey();
+            }
         }
+
         void OnDisable()
         {
             StopAllCoroutines();
         }
 
+        private void SetFrameRate()
+        {
+            int targetFrameRate = (int)PXR_Plugin.System.UPxr_GetConfigInt(ConfigType.TargetFrameRate);
+            int displayRefreshRate = (int)PXR_Plugin.System.UPxr_GetConfigFloat(ConfigType.DisplayRefreshRate);
+            Application.targetFrameRate = targetFrameRate > 0 ? targetFrameRate : displayRefreshRate;
+            if (!useDefaultFps)
+            {
+                if (customFps <= displayRefreshRate)
+                {
+                    Application.targetFrameRate = customFps;
+                }
+                else
+                {
+                    Application.targetFrameRate = displayRefreshRate;
+                }
+            }
+            PLog.i(TAG, string.Format("Customize FPS : {0}", Application.targetFrameRate));
+        }
+        
         //bind verify service success call back
         void BindVerifyServiceCallback()
         {
-            
+            bindVerifyServiceSuccess = true;
         }
 
         private void verifyAPPCallback(string callback)
         {
-            Debug.Log("PXRLog verifyAPPCallback" + callback);
+            Debug.Log("PXRLog verifyAPPCallback callback = " + callback);
             appCheckResult = Convert.ToInt32(callback);
             if (EntitlementCheckResultEvent != null)
             {
@@ -345,25 +320,10 @@ namespace Unity.XR.PXR
             }
         }
 
-        public void IpdRefreshCallBack(string ipd)
+        public Camera[] GetEyeCamera()
         {
-            Debug.Log("PXRLog IpdRefreshCallBack" + ipd);
-            Camera.main.stereoSeparation = Convert.ToSingle(ipd);
+            return eyeCamera;
         }
-
-        public void DisplayRefreshRateCallBack(string rate)
-        {
-            Debug.Log("PXRLog DisplayRefreshRateCallBack" + rate);
-            if (DisplayRefreshRateChanged != null)
-                DisplayRefreshRateChanged(Convert.ToSingle(rate));
-        }
-
-        //home key long pressed call back
-        public void setLongHomeKey()
-        {
-            PXR_Plugin.Sensor.UPxr_OptionalResetSensor(1, 1);
-        }
-
     }
 }
 

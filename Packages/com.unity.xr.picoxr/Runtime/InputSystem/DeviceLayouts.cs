@@ -1,3 +1,15 @@
+﻿/*******************************************************************************
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.  
+
+NOTICE：All information contained herein is, and remains the property of 
+PICO Technology Co., Ltd. The intellectual and technical concepts 
+contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+covered by patents, patents in process, and are protected by trade secret or 
+copyright law. Dissemination of this information or reproduction of this 
+material is strictly forbidden unless prior written permission is obtained from
+PICO Technology Co., Ltd. 
+*******************************************************************************/
+
 #if UNITY_INPUT_SYSTEM
 using UnityEngine.Scripting;
 using UnityEngine.InputSystem;
@@ -8,10 +20,10 @@ using UnityEngine.InputSystem.Layouts;
 namespace Unity.XR.PXR.Input
 {
     /// <summary>
-    /// A Pico Headset
+    /// A PICO Headset
     /// </summary>
     [Preserve]
-    [InputControlLayout(displayName = "PicoXR HMD")]
+    [InputControlLayout(displayName = "PICO HMD")]
     public class PXR_HMD : XRHMD
     {
         [Preserve]
@@ -31,6 +43,9 @@ namespace Unity.XR.PXR.Input
         public new QuaternionControl deviceRotation { get; private set; }
         [Preserve]
         [InputControl]
+        public Vector3Control deviceVelocity { get; private set; }
+        [Preserve]
+        [InputControl]
         public Vector3Control deviceAngularVelocity { get; private set; }
         [Preserve]
         [InputControl]
@@ -44,6 +59,9 @@ namespace Unity.XR.PXR.Input
         [Preserve]
         [InputControl]
         public new QuaternionControl leftEyeRotation { get; private set; }
+        [Preserve]
+        [InputControl]
+        public Vector3Control leftEyeVelocity { get; private set; }
         [Preserve]
         [InputControl]
         public Vector3Control leftEyeAngularVelocity { get; private set; }
@@ -61,6 +79,9 @@ namespace Unity.XR.PXR.Input
         public new QuaternionControl rightEyeRotation { get; private set; }
         [Preserve]
         [InputControl]
+        public Vector3Control rightEyeVelocity { get; private set; }
+        [Preserve]
+        [InputControl]
         public Vector3Control rightEyeAngularVelocity { get; private set; }
         [Preserve]
         [InputControl]
@@ -74,6 +95,9 @@ namespace Unity.XR.PXR.Input
         [Preserve]
         [InputControl]
         public new QuaternionControl centerEyeRotation { get; private set; }
+        [Preserve]
+        [InputControl]
+        public Vector3Control centerEyeVelocity { get; private set; }
         [Preserve]
         [InputControl]
         public Vector3Control centerEyeAngularVelocity { get; private set; }
@@ -94,21 +118,25 @@ namespace Unity.XR.PXR.Input
             isTracked = GetChildControl<ButtonControl>("isTracked");
             devicePosition = GetChildControl<Vector3Control>("devicePosition");
             deviceRotation = GetChildControl<QuaternionControl>("deviceRotation");
+            deviceVelocity = GetChildControl<Vector3Control>("deviceVelocity");
             deviceAngularVelocity = GetChildControl<Vector3Control>("deviceAngularVelocity");
             deviceAcceleration = GetChildControl<Vector3Control>("deviceAcceleration");
             deviceAngularAcceleration = GetChildControl<Vector3Control>("deviceAngularAcceleration");
             leftEyePosition = GetChildControl<Vector3Control>("leftEyePosition");
             leftEyeRotation = GetChildControl<QuaternionControl>("leftEyeRotation");
+            leftEyeVelocity = GetChildControl<Vector3Control>("leftEyeVelocity");
             leftEyeAngularVelocity = GetChildControl<Vector3Control>("leftEyeAngularVelocity");
             leftEyeAcceleration = GetChildControl<Vector3Control>("leftEyeAcceleration");
             leftEyeAngularAcceleration = GetChildControl<Vector3Control>("leftEyeAngularAcceleration");
             rightEyePosition = GetChildControl<Vector3Control>("rightEyePosition");
             rightEyeRotation = GetChildControl<QuaternionControl>("rightEyeRotation");
+            rightEyeVelocity = GetChildControl<Vector3Control>("rightEyeVelocity");
             rightEyeAngularVelocity = GetChildControl<Vector3Control>("rightEyeAngularVelocity");
             rightEyeAcceleration = GetChildControl<Vector3Control>("rightEyeAcceleration");
             rightEyeAngularAcceleration = GetChildControl<Vector3Control>("rightEyeAngularAcceleration");
             centerEyePosition = GetChildControl<Vector3Control>("centerEyePosition");
             centerEyeRotation = GetChildControl<QuaternionControl>("centerEyeRotation");
+            centerEyeVelocity = GetChildControl<Vector3Control>("centerEyeVelocity");
             centerEyeAngularVelocity = GetChildControl<Vector3Control>("centerEyeAngularVelocity");
             centerEyeAcceleration = GetChildControl<Vector3Control>("centerEyeAcceleration");
             centerEyeAngularAcceleration = GetChildControl<Vector3Control>("centerEyeAngularAcceleration");
@@ -116,10 +144,10 @@ namespace Unity.XR.PXR.Input
     }
 
     /// <summary>
-    /// A Pico Controller
+    /// A PICO Controller
     /// </summary>
     [Preserve]
-    [InputControlLayout(displayName = "PicoXR Controller", commonUsages = new[] { "LeftHand", "RightHand" })]
+    [InputControlLayout(displayName = "PICO Controller", commonUsages = new[] { "LeftHand", "RightHand" })]
     public class PXR_Controller : XRControllerWithRumble
     {
         [Preserve]
@@ -153,10 +181,16 @@ namespace Unity.XR.PXR.Input
         public ButtonControl secondaryTouched { get; private set; }
         [Preserve]
         [InputControl(aliases = new[] { "TriggerTouch" })]
-        public AxisControl triggerTouched { get; private set; }
+        public ButtonControl triggerTouched { get; private set; }
         [Preserve]
         [InputControl(aliases = new[] { "TriggerPress" })]
         public ButtonControl triggerPressed { get; private set; }
+        [Preserve]
+        [InputControl(aliases = new[] { "Menu" })]
+        public ButtonControl menu { get; private set; }
+        [Preserve]
+        [InputControl(aliases = new[] { "TouchpadTouch" })]
+        public ButtonControl touchpadTouched { get; private set; }
         [Preserve]
         [InputControl(aliases = new[] { "ThumbRestTouch" })]
         public ButtonControl thumbstickTouched { get; private set; }
@@ -192,7 +226,7 @@ namespace Unity.XR.PXR.Input
 
             thumbstick = GetChildControl<Vector2Control>("thumbstick");
             trigger = GetChildControl<AxisControl>("trigger");
-            triggerTouched = GetChildControl<AxisControl>("triggerTouched");
+            triggerTouched = GetChildControl<ButtonControl>("triggerTouched");
             grip = GetChildControl<AxisControl>("grip");
 
             primaryButton = GetChildControl<ButtonControl>("primaryButton");
