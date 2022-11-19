@@ -1,8 +1,14 @@
-﻿/************************************************************************************
- 【PXR SDK】
- Copyright 2015-2020 Pico Technology Co., Ltd. All Rights Reserved.
+﻿/*******************************************************************************
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.  
 
-************************************************************************************/
+NOTICE：All information contained herein is, and remains the property of 
+PICO Technology Co., Ltd. The intellectual and technical concepts 
+contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+covered by patents, patents in process, and are protected by trade secret or 
+copyright law. Dissemination of this information or reproduction of this 
+material is strictly forbidden unless prior written permission is obtained from
+PICO Technology Co., Ltd. 
+*******************************************************************************/
 
 using System.Collections.Generic;
 using System.IO;
@@ -41,15 +47,8 @@ namespace Unity.XR.PXR.Editor
                     fpsObject = Camera.main.transform.Find("FPS").gameObject;
                 }
             }
-            // Fps and Screen Fade
-            //manager.showFPS = EditorGUILayout.Toggle("Show FPS", manager.showFPS);
 
-            //manager.useDefaultFps = EditorGUILayout.Toggle("Use Default FPS", manager.useDefaultFps);
-            //if (!manager.useDefaultFps)
-            //{
-            //    manager.customFps = EditorGUILayout.IntField("    FPS", manager.customFps);
-            //}
-
+            //Screen Fade
             manager.screenFade = EditorGUILayout.Toggle("Open Screen Fade", manager.screenFade);
             if (Camera.main != null)
             {
@@ -82,19 +81,36 @@ namespace Unity.XR.PXR.Editor
             firstLevelStyle.wordWrap = true;
             var guiContent = new GUIContent();
             guiContent.text = "Eye Tracking";
-            guiContent.tooltip = "Before calling EyeTracking API, enable this option first, only for Neo 2 Eye device.";
+            guiContent.tooltip = "Before calling EyeTracking API, enable this option first, only for Neo3 Pro Eye device.";
             manager.eyeTracking = EditorGUILayout.Toggle(guiContent, manager.eyeTracking);
             if (manager.eyeTracking)
             {
                 EditorGUILayout.BeginVertical("box");
                 EditorGUILayout.LabelField("Note:", firstLevelStyle);
-                EditorGUILayout.LabelField("EyeTracking is supported only on the Neo2 Eye");
+                EditorGUILayout.LabelField("Eye Tracking is supported only on Neo 3 Pro Eye");
                 EditorGUILayout.EndVertical();
             }
 
+            //hand tracking
+            var handContent = new GUIContent();
+            handContent.text = "Hand Tracking";
+            projectConfig.handTracking = EditorGUILayout.Toggle(handContent, projectConfig.handTracking);
+
             // content protect
             projectConfig.useContentProtect = EditorGUILayout.Toggle("Use Content Protect", projectConfig.useContentProtect);
-            manager.useRecommendedAntiAliasingLevel = EditorGUILayout.Toggle("Use Recommended MSAA", manager.useRecommendedAntiAliasingLevel);
+
+            // msaa
+            if (QualitySettings.renderPipeline != null)
+            {
+                EditorGUI.BeginDisabledGroup(true);
+                manager.useRecommendedAntiAliasingLevel = EditorGUILayout.Toggle("Use Recommended MSAA", manager.useRecommendedAntiAliasingLevel);
+                EditorGUI.EndDisabledGroup();
+                EditorGUILayout.HelpBox("A Scriptable Render Pipeline is in use,the 'Use Recommended MSAA' will not be used. ", MessageType.Info,true);
+            }
+            else
+            {
+                manager.useRecommendedAntiAliasingLevel = EditorGUILayout.Toggle("Use Recommended MSAA", manager.useRecommendedAntiAliasingLevel);
+            }
 
             if (GUI.changed)
             {

@@ -1,18 +1,22 @@
 {
-  "name": "UnityPicoVR",
-  "version": "1.0.0-preview",
-  "libraryName": "UnityPicoVR",
-
-  "displays": [
-    {
-      "id": "PicoXR Display",
-      "disablesLegacyVr" : true,
-      "supportedMirrorBlitReservedModes" : ["leftEye","rightEye", "sideBySide","occlusionMesh"]
-    }
-  ],
-  "inputs": [
-    {
-      "id": "PicoXR Input"
-    }
-  ]
+    "name": "PxrPlatform",
+    "version": "1.0.0-preview",
+    "libraryName": "PxrPlatform",
+    "displays": [
+        {
+            "id": "PICO Display",
+            "disablesLegacyVr": true,
+            "supportedMirrorBlitReservedModes": [
+                "leftEye",
+                "rightEye",
+                "sideBySide",
+                "occlusionMesh"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "PICO Input"
+        }
+    ]
 }

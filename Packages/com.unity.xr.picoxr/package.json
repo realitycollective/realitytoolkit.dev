@@ -1,9 +1,9 @@
 {
   "name": "com.unity.xr.picoxr",
-  "displayName": "PicoXR Plugin",
-  "version": "1.2.4",
+  "displayName": "PICO Integration",
+  "version": "2.1.1",
   "unity": "2019.4",
-  "description": "Provides display and input support for Pico devices.",
+  "description": "Provides display and input support for PICO devices.",
   "keywords": [
     "picoxr",
     "xr",

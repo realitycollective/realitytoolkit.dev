@@ -50,6 +50,8 @@ MonoBehaviour:
   neo2R: {fileID: 1378001143042502, guid: 9a799acc17167fa4cacc2e9a29cc4ba1, type: 3}
   neo3L: {fileID: 414784878285137478, guid: ba669b48860575744a98e41d08391cd3, type: 3}
   neo3R: {fileID: 8571202708993718213, guid: 50249800e4104084fb51ed64f7e56ffd, type: 3}
+  PICO_4L: {fileID: 3222469904833361626, guid: 853840c5196b2486a97e1785f3a68575, type: 3}
+  PICO_4R: {fileID: 1704171135803129665, guid: 3a5f20f82a5224d7d969e99da633fc69, type: 3}
   mobileMaterial: {fileID: 2100000, guid: ea5d1bb890cef78439598b7062576fa3, type: 2}
   standardMaterial: {fileID: 2100000, guid: 4c2b2924173d4814f886ea72b5c47f69, type: 2}
   controllerSimulation: 0

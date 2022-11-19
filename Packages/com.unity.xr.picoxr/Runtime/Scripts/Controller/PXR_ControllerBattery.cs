@@ -1,8 +1,14 @@
-﻿/************************************************************************************
- 【PXR SDK】
- Copyright 2015-2020 Pico Technology Co., Ltd. All Rights Reserved.
+﻿/*******************************************************************************
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.  
 
-************************************************************************************/
+NOTICE：All information contained herein is, and remains the property of 
+PICO Technology Co., Ltd. The intellectual and technical concepts 
+contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+covered by patents, patents in process, and are protected by trade secret or 
+copyright law. Dissemination of this information or reproduction of this 
+material is strictly forbidden unless prior written permission is obtained from
+PICO Technology Co., Ltd. 
+*******************************************************************************/
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +31,7 @@ namespace Unity.XR.PXR
 
         public PXR_Input.Controller hand;
         private Image powerImage;
-        private float battery;
+        private int battery;
 
         public PXR_ControllerBattery(Sprite power1Sprite, Sprite power2Sprite, Sprite power3Sprite, Sprite power4Sprite, Sprite power5Sprite)
         {
@@ -56,23 +62,23 @@ namespace Unity.XR.PXR
             }
             switch (battery)
             {
-                case 0.2f:
+                case 1:
                     powerImage.sprite = power1;
                     powerImage.color = Color.red;
                     break;
-                case 0.4f:
+                case 2:
                     powerImage.sprite = power2;
                     powerImage.color = Color.white;
                     break;
-                case 0.6f:
+                case 3:
                     powerImage.sprite = power3;
                     powerImage.color = Color.white;
                     break;
-                case 0.8f:
+                case 4:
                     powerImage.sprite = power4;
                     powerImage.color = Color.white;
                     break;
-                case 1:
+                case 5:
                     powerImage.sprite = power5;
                     powerImage.color = Color.white;
                     break;
@@ -83,7 +89,7 @@ namespace Unity.XR.PXR
             }
         }
 
-        private float RefreshControllerBattery(PXR_Input.Controller hand)
+        private int RefreshControllerBattery(PXR_Input.Controller hand)
         {
             var curBattery = 0f;
             switch (hand)
@@ -99,7 +105,7 @@ namespace Unity.XR.PXR
                 }
                     break;
             }
-            return (float)curBattery;
+            return (int)curBattery;
         }
     }
 }
