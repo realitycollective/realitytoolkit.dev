@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PXR_SDKSettingAsset
   m_EditorClassIdentifier: 
   ignoreSDKSetting: 1
-  doNotShowBuildWarning: 0
+  doNotShowBuildWarning: 1
   appIDChecked: 0
