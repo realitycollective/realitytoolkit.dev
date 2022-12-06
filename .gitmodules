@@ -26,6 +26,3 @@
 [submodule "Packages/com.realitytoolkit.buildtools"]
 	path = Packages/com.realitytoolkit.buildtools
 	url = https://github.com/realitycollective/com.realitytoolkit.buildtools.git
-[submodule "Packages/com.realitytoolkit.interaction-sdk"]
-	path = Packages/com.realitytoolkit.interaction-sdk
-	url = https://github.com/realitycollective/com.realitytoolkit.interaction-sdk.git

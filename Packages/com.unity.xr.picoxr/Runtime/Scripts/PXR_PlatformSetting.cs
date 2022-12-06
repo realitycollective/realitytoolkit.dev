@@ -1,11 +1,18 @@
-﻿/************************************************************************************
- 【PXR SDK】
- Copyright 2015-2020 Pico Technology Co., Ltd. All Rights Reserved.
+﻿/*******************************************************************************
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.  
 
-************************************************************************************/
+NOTICE：All information contained herein is, and remains the property of 
+PICO Technology Co., Ltd. The intellectual and technical concepts 
+contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+covered by patents, patents in process, and are protected by trade secret or 
+copyright law. Dissemination of this information or reproduction of this 
+material is strictly forbidden unless prior written permission is obtained from
+PICO Technology Co., Ltd. 
+*******************************************************************************/
 
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Unity.XR.PXR
@@ -19,7 +26,7 @@ namespace Unity.XR.PXR
         {
             Null,
             Invalid,
-            Valid,
+            Valid
         }
 
         [SerializeField]
@@ -39,13 +46,27 @@ namespace Unity.XR.PXR
                 if (instance == null)
                 {
 
-                    instance = Resources.Load<PXR_PlatformSetting>("PlatformSetting");
+                    instance = Resources.Load<PXR_PlatformSetting>("PXR_PlatformSetting");
 #if UNITY_EDITOR
-                    if (instance == null)
+                    string path = Application.dataPath + "/Resources";
+                    if (!Directory.Exists(path))
                     {
-                        instance = CreateInstance<PXR_PlatformSetting>();
-                        UnityEditor.AssetDatabase.CreateAsset(instance, "Packages/com.unity.xr.picoxr/Assets/Resources/PlatformSetting.asset");
+                        UnityEditor.AssetDatabase.CreateFolder("Assets", "Resources");
+                        if (instance == null)
+                        {
+                            instance = CreateInstance<PXR_PlatformSetting>();
+                            UnityEditor.AssetDatabase.CreateAsset(instance, "Assets/Resources/PXR_PlatformSetting.asset");
+                        }
+
                     }
+                    else {
+                        if (instance == null)
+                        {
+                            instance = CreateInstance<PXR_PlatformSetting>();
+                            UnityEditor.AssetDatabase.CreateAsset(instance, "Assets/Resources/PXR_PlatformSetting.asset");
+                        }
+                    }
+                        
 #endif
                 }
                 return instance;
