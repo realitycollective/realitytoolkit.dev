@@ -26,3 +26,6 @@
 [submodule "Packages/com.realitytoolkit.buildtools"]
 	path = Packages/com.realitytoolkit.buildtools
 	url = https://github.com/realitycollective/com.realitytoolkit.buildtools.git
+[submodule "Packages/com.realitytoolkit.devicesimulation"]
+	path = Packages/com.realitytoolkit.devicesimulation
+	url = https://github.com/realitycollective/com.realitytoolkit.devicesimulation.git
