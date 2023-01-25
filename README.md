@@ -19,7 +19,7 @@ Additional information about the supported platforms / packages for the [Reality
 
 The project has now been transformed to  make use of the independent Service Framework package to reduce overhead.
 
-* [com.realitytoolkit.service-framework](https://github.com/realitycollective/com.realitytoolkit.service-framework)
+* [com.realitycollective.service-framework](https://github.com/realitycollective/com.realitycollective.service-framework)
 * [com.realitycollective.utilities](https://github.com/realitycollective/com.realitycollective.utilities)
 
 ## In-Progress platforms / Services
