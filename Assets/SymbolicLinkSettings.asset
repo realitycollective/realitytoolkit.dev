@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SymbolicLinkSettings
   m_EditorClassIdentifier: 
   symbolicLinks:
-  - sourceRelativePath: /Packages/com.realitytoolkit.core/Assets~/Prefabs
-    targetRelativePath: /Assets/RealityToolkit.Generated/Core/Prefabs
+  - sourceRelativePath: /Packages/com.realitytoolkit.core/Assets~/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit.Generated/Core/StandardAssets
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.core/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/Core/Profiles
