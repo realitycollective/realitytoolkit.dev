@@ -26,3 +26,9 @@
 [submodule "Packages/com.realitytoolkit.devicesimulation"]
 	path = Packages/com.realitytoolkit.devicesimulation
 	url = https://github.com/realitycollective/com.realitytoolkit.devicesimulation.git
+[submodule "Packages/com.realitytoolkit.interaction-sdk"]
+	path = Packages/com.realitytoolkit.interaction-sdk
+	url = https://github.com/realitycollective/com.realitytoolkit.interaction-sdk.git
+[submodule "Packages/com.realitytoolkit.locomotion"]
+	path = Packages/com.realitytoolkit.locomotion
+	url = https://github.com/realitycollective/com.realitytoolkit.locomotion.git
