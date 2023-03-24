@@ -1,7 +1,6 @@
 [submodule "Packages/com.realitytoolkit.core"]
 	path = Packages/com.realitytoolkit.core
 	url = https://github.com/realitycollective/com.realitytoolkit.core.git
-	branch = feature/core-cleanup
 [submodule "Packages/com.realitytoolkit.spatial-persistence"]
 	path = Packages/com.realitytoolkit.spatial-persistence
 	url = https://github.com/realitycollective/com.realitytoolkit.spatial-persistence.git
@@ -29,11 +28,12 @@
 [submodule "Packages/com.realitytoolkit.locomotion"]
 	path = Packages/com.realitytoolkit.locomotion
 	url = https://github.com/realitycollective/com.realitytoolkit.locomotion.git
+[submodule "Packages/com.realitytoolkit.camera"]
+	path = Packages/com.realitytoolkit.camera
+	url = https://github.com/realitycollective/com.realitytoolkit.camera.git
 [submodule "Packages/com.realitycollective.service-framework"]
 	path = Packages/com.realitycollective.service-framework
 	url = https://github.com/realitycollective/com.realitycollective.service-framework.git
-	branch = development
 [submodule "Packages/com.realitycollective.utilities"]
 	path = Packages/com.realitycollective.utilities
 	url = https://github.com/realitycollective/com.realitycollective.utilities.git
-	branch = development
