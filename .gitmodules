@@ -25,9 +25,6 @@
 [submodule "Packages/com.realitytoolkit.locomotion"]
 	path = Packages/com.realitytoolkit.locomotion
 	url = https://github.com/realitycollective/com.realitytoolkit.locomotion.git
-[submodule "Packages/com.realitytoolkit.camera"]
-	path = Packages/com.realitytoolkit.camera
-	url = https://github.com/realitycollective/com.realitytoolkit.camera.git
 [submodule "Packages/com.realitycollective.service-framework"]
 	path = Packages/com.realitycollective.service-framework
 	url = https://github.com/realitycollective/com.realitycollective.service-framework.git
