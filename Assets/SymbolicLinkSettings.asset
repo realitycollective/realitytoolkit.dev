@@ -55,3 +55,9 @@ MonoBehaviour:
   - sourceRelativePath: /Packages/com.realitytoolkit.devtools/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/DeveloperTools/Profiles
     isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.spatial-persistence/Assets~/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit.Generated/SpatialPersistence/StandardAssets
+    isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.spatial-persistence/Assets~/Profiles
+    targetRelativePath: /Assets/RealityToolkit.Generated/SpatialPersistence/Profiles
+    isActive: 1
