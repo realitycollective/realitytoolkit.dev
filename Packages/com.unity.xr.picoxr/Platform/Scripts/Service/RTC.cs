@@ -1,13 +1,13 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
@@ -21,6 +21,10 @@ namespace Pico.Platform
 {
     /**
      * \ingroup Platform
+     *
+     * Real-time communications (RTC) technology enables users in the same room to communicate with each other through voice chat.
+     *
+     * RTC service uses a centralized communication structure instead of an end-to-end one. After users have joined a room and enabled voice chat, the microphone keeps capturing audio data from users and uploading the data to the RTC server. Then, the RTC server transmits the audio data to each client in the room, and the client broadcasts the audio data received.
      */
     public static class RtcService
     {
@@ -53,7 +57,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -76,13 +80,13 @@ namespace Pico.Platform
         /// Joins a user to a specified room.
         ///
         /// @note 
-        /// * If code `0` is returned, you should use `SetOnJoinRoomResult` to handle the
+        /// * If code `0` is returned, you should use \ref SetOnJoinRoomResult to handle the
         /// final join room result.
-        /// * If a non-zero code is returned, you should call `LeaveRoom` firstly to join the room in the next time.
+        /// * If a non-zero code is returned, you should call \ref LeaveRoom firstly to join the room in the next time.
         /// </summary>
         /// <param name="roomId">The ID of the room to join.</param>
         /// <param name="userId">The ID of user.</param>
-        /// <param name="token">The token required for joining the room. You can get the token by calling `GetToken`.</param>
+        /// <param name="token">The token required for joining the room. You can get the token by calling \ref GetToken.</param>
         /// <param name="roomProfileType">Room type:
         ///    * `0`: communication room
         ///    * `1`: live broadcasting room
@@ -328,7 +332,7 @@ namespace Pico.Platform
             CLIB.ppf_Rtc_SetEarMonitorVolume(volume);
         }
 
-        /// @deprecated MuteLocalAudio() can be replaced by UnPublishRoom(roomId)
+        /// @deprecated MuteLocalAudio() can be replaced by \ref UnPublishRoom(string roomId)
         /// <summary>
         /// Mutes local audio to make one's voice unable to be heard by other in-room users.
         /// </summary>
@@ -343,8 +347,13 @@ namespace Pico.Platform
         }
 
         /// <summary>
-        /// Updates the token.
-        /// @note  Once a token's ttl is about to expire, you should update the token if you still want to stay in the room.
+        /// Updates the token in a room.
+        ///
+        /// When a token's ttl is about to expire, you will receive a notification
+        /// through `SetOnTokenWillExpire`. If you still want to stay in the room,
+        /// you should call `GetToken` to get a new token and call `UpdateToken`
+        /// with the new token. If you don't update token timely,you will be kicked
+        /// out from the room. 
         /// </summary>
         /// <param name="roomId">The ID of the room you are in.</param>
         /// <param name="token">The token to update.</param>
@@ -408,9 +417,9 @@ namespace Pico.Platform
         /// <returns>A room message ID of the int64 type, which is automatically generated and incremented.</returns>
         public static long SendRoomBinaryMessage(string roomId, byte[] message)
         {
-            var ptr = MarshalUtil.ByteArrayToNative(message);
-            var ans = CLIB.ppf_Rtc_SendRoomBinaryMessage(roomId, ptr, message.Length);
-            Marshal.FreeHGlobal(ptr);
+            var ptr = new PtrManager(message);
+            var ans = CLIB.ppf_Rtc_SendRoomBinaryMessage(roomId, ptr.ptr, message.Length);
+            ptr.Free();
             return ans;
         }
 
@@ -434,9 +443,9 @@ namespace Pico.Platform
         /// <returns>A user message ID of the int64 type, which is automatically generated and incremented.</returns>
         public static long SendUserBinaryMessage(string roomId, string userId, byte[] message)
         {
-            var ptr = MarshalUtil.ByteArrayToNative(message);
-            var ans = CLIB.ppf_Rtc_SendUserBinaryMessage(roomId, userId, ptr, message.Length);
-            Marshal.FreeHGlobal(ptr);
+            var ptr = new PtrManager(message);
+            var ans = CLIB.ppf_Rtc_SendUserBinaryMessage(roomId, userId, ptr.ptr, message.Length);
+            ptr.Free();
             return ans;
         }
 
@@ -459,7 +468,7 @@ namespace Pico.Platform
         /// <param name="repeatCount">The stream sync info will be sent repeatedly for the times set in `repeatCount`.
         /// It's designed to avoid losing package and ensuring that the sync info can be sent successfully.
         /// However, if `repeatCount` is too large, it will cause the sync info to pile up in the queue.
-        /// Setting this parameter to `1` is recommended.
+        /// Setting this parameter to `0` is recommended.
         /// </param>
         /// <returns>Any code equal to or below `0` indicates success, and others codes indicate failure. 
         /// | Code | Description|
@@ -476,9 +485,9 @@ namespace Pico.Platform
             config.SetRepeatCount(repeatCount);
             config.SetStreamIndex(RtcStreamIndex.Main);
             config.SetStreamType(RtcSyncInfoStreamType.Audio);
-            var ptr = MarshalUtil.ByteArrayToNative(data);
-            var ans = CLIB.ppf_Rtc_SendStreamSyncInfo(ptr, data.Length, (IntPtr) config);
-            Marshal.FreeHGlobal(ptr);
+            var ptr = new PtrManager(data);
+            var ans = CLIB.ppf_Rtc_SendStreamSyncInfo(ptr.ptr, data.Length, (IntPtr) config);
+            ptr.Free();
             return ans;
         }
 
@@ -613,6 +622,7 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sets the callback to regularly get room statistics after joining a room.
+        ///
         /// </summary>
         /// <param name="handler">The callback handler.</param>
         public static void SetOnRoomStatsCallback(Message<RtcRoomStats>.Handler handler)
@@ -655,8 +665,13 @@ namespace Pico.Platform
         /// |-1000|Invalid token.|
         /// |-1001|Unknown error.|
         /// |-1002|No permission to publish audio stream.|
+        /// |-1003|No permission to subscribe audio stream.|
         /// |-1004|A user with the same user Id joined this room. You are kicked out of the room.|
         /// |-1005|Incorrect configuration on the Developer Platform.|
+        /// |-1007|Invalid room id.|
+        /// |-1009|Token expired. You should get a new token and join the room.|
+        /// |-1010|Token is invalid when you call `UpdateToken`|
+        /// |-1011|The room is dismissed and all user is moved out from the room.|
         /// |-1070|Subscribing to audio stream failed. Perhaps the number of subscribed audio streams has exceeded the limit.|
         /// </summary>
         /// <param name="handler">The callback handler.</param>
@@ -704,6 +719,8 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sets the callback to get notified when the user has started audio capture.
+        ///
+        /// When a remote user called \ref StartAudioCapture,RTC engine will call this callback.
         /// </summary>
         /// <param name="handler">The callback handler.</param>
         public static void SetOnUserStartAudioCapture(Message<string>.Handler handler)
@@ -713,6 +730,8 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sets the callback to get notified when the user has stopped audio capture.
+        ///
+        /// When a remote user called \ref StopAudioCapture,RTC engine will call this callback.
         /// </summary>
         /// <param name="handler">The callback handler.</param>
         public static void SetOnUserStopAudioCapture(Message<string>.Handler handler)
@@ -731,6 +750,7 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sets the callback to receive local audio report.
+        /// Rtc engine will call this callback periodically once you call \ref EnableAudioPropertiesReport.
         /// </summary>
         /// <param name="handler">The callback handler.</param>
         public static void SetOnLocalAudioPropertiesReport(Message<RtcLocalAudioPropertiesReport>.Handler handler)
@@ -740,6 +760,7 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sets the callback to receive remote audio report.
+        /// Rtc engine will call this callback periodically once you call \ref EnableAudioPropertiesReport.
         /// </summary>
         /// <param name="handler">The callback handler.</param>
         public static void SetOnRemoteAudioPropertiesReport(Message<RtcRemoteAudioPropertiesReport>.Handler handler)

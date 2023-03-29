@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -68,16 +68,29 @@ namespace Unity.XR.PXR
 
         private void BeginRendering(ScriptableRenderContext arg1, Camera[] arg2)
         {
-            OnPreRenderCallBack(arg2[0]);
+            foreach (Camera cam in arg2)
+            {
+                if (cam != null && Camera.main.tag == cam.tag)
+                {
+                    OnPreRenderCallBack(cam);
+                }
+            }
         }
 
         private void EndRendering(ScriptableRenderContext arg1, Camera[] arg2)
         {
-            OnPostRenderCallBack(arg2[0]);
+            foreach (Camera cam in arg2)
+            {
+                if (cam != null && Camera.main.tag == cam.tag)
+                {
+                    OnPostRenderCallBack(cam);
+                }
+            }
         }
 
         private void OnPreRenderCallBack(Camera cam)
         {
+            // There is only one XR main camera in the scene.
             if (cam.tag != Camera.main.tag || cam.stereoActiveEye == Camera.MonoOrStereoscopicEye.Right) return;
 
             //CompositeLayers
@@ -97,6 +110,7 @@ namespace Unity.XR.PXR
 
         private void OnPostRenderCallBack(Camera cam)
         {
+            // There is only one XR main camera in the scene.
             if (cam.tag != Camera.main.tag || cam.stereoActiveEye == Camera.MonoOrStereoscopicEye.Right) return;
 
             int boundaryState = PXR_Plugin.Boundary.UPxr_GetSeeThroughState();
@@ -422,63 +436,124 @@ namespace Unity.XR.PXR
                     }
                     else if (compositeLayer.overlayShape == PXR_OverLay.OverlayShape.Equirect)
                     {
-                        PxrLayerEquirect2 layerSubmit2 = new PxrLayerEquirect2();
-                        layerSubmit2.header.layerId = compositeLayer.overlayIndex;
-                        layerSubmit2.header.layerFlags = (UInt32)(
+                        PxrLayerEquirect layerSubmit = new PxrLayerEquirect();
+                        layerSubmit.header.layerId = compositeLayer.overlayIndex;
+                        layerSubmit.header.layerFlags = (UInt32)(
                                 PxrLayerSubmitFlags.PxrLayerFlagUseExternalHeadPose |
                                 PxrLayerSubmitFlags.PxrLayerFlagLayerPoseNotInTrackingSpace);
-                        layerSubmit2.header.colorScaleX = colorScale.x;
-                        layerSubmit2.header.colorScaleY = colorScale.y;
-                        layerSubmit2.header.colorScaleZ = colorScale.z;
-                        layerSubmit2.header.colorScaleW = colorScale.w;
-                        layerSubmit2.header.colorBiasX = colorBias.x;
-                        layerSubmit2.header.colorBiasY = colorBias.y;
-                        layerSubmit2.header.colorBiasZ = colorBias.z;
-                        layerSubmit2.header.colorBiasW = colorBias.w;
-                        layerSubmit2.header.compositionDepth = compositeLayer.layerDepth;
-                        layerSubmit2.header.headPose.orientation.x = compositeLayer.cameraRotations[0].x;
-                        layerSubmit2.header.headPose.orientation.y = compositeLayer.cameraRotations[0].y;
-                        layerSubmit2.header.headPose.orientation.z = -compositeLayer.cameraRotations[0].z;
-                        layerSubmit2.header.headPose.orientation.w = -compositeLayer.cameraRotations[0].w;
-                        layerSubmit2.header.headPose.position.x = (compositeLayer.cameraTranslations[0].x + compositeLayer.cameraTranslations[1].x) / 2;
-                        layerSubmit2.header.headPose.position.y = (compositeLayer.cameraTranslations[0].y + compositeLayer.cameraTranslations[1].y) / 2;
-                        layerSubmit2.header.headPose.position.z = -(compositeLayer.cameraTranslations[0].z + compositeLayer.cameraTranslations[1].z) / 2;
-                        layerSubmit2.header.layerShape = PXR_OverLay.OverlayShape.Equirect;
-                        layerSubmit2.header.useLayerBlend = (UInt32)(compositeLayer.useLayerBlend ? 1 : 0);
-                        layerSubmit2.header.layerBlend.srcColor = compositeLayer.srcColor;
-                        layerSubmit2.header.layerBlend.dstColor = compositeLayer.dstColor;
-                        layerSubmit2.header.layerBlend.srcAlpha = compositeLayer.srcAlpha;
-                        layerSubmit2.header.layerBlend.dstAlpha = compositeLayer.dstAlpha;
-                        layerSubmit2.header.useImageRect = (UInt32)(compositeLayer.useImageRect ? 1 : 0);
-                        layerSubmit2.header.imageRectLeft = compositeLayer.getPxrRectiLeft(true);
-                        layerSubmit2.header.imageRectRight = compositeLayer.getPxrRectiLeft(false);
+                        layerSubmit.header.colorScaleX = colorScale.x;
+                        layerSubmit.header.colorScaleY = colorScale.y;
+                        layerSubmit.header.colorScaleZ = colorScale.z;
+                        layerSubmit.header.colorScaleW = colorScale.w;
+                        layerSubmit.header.colorBiasX = colorBias.x;
+                        layerSubmit.header.colorBiasY = colorBias.y;
+                        layerSubmit.header.colorBiasZ = colorBias.z;
+                        layerSubmit.header.colorBiasW = colorBias.w;
+                        layerSubmit.header.compositionDepth = compositeLayer.layerDepth;
+                        layerSubmit.header.headPose.orientation.x = compositeLayer.cameraRotations[0].x;
+                        layerSubmit.header.headPose.orientation.y = compositeLayer.cameraRotations[0].y;
+                        layerSubmit.header.headPose.orientation.z = -compositeLayer.cameraRotations[0].z;
+                        layerSubmit.header.headPose.orientation.w = -compositeLayer.cameraRotations[0].w;
+                        layerSubmit.header.headPose.position.x = (compositeLayer.cameraTranslations[0].x + compositeLayer.cameraTranslations[1].x) / 2;
+                        layerSubmit.header.headPose.position.y = (compositeLayer.cameraTranslations[0].y + compositeLayer.cameraTranslations[1].y) / 2;
+                        layerSubmit.header.headPose.position.z = -(compositeLayer.cameraTranslations[0].z + compositeLayer.cameraTranslations[1].z) / 2;
+                        layerSubmit.header.layerShape = PXR_OverLay.OverlayShape.Equirect;
+                        layerSubmit.header.useLayerBlend = (UInt32)(compositeLayer.useLayerBlend ? 1 : 0);
+                        layerSubmit.header.layerBlend.srcColor = compositeLayer.srcColor;
+                        layerSubmit.header.layerBlend.dstColor = compositeLayer.dstColor;
+                        layerSubmit.header.layerBlend.srcAlpha = compositeLayer.srcAlpha;
+                        layerSubmit.header.layerBlend.dstAlpha = compositeLayer.dstAlpha;
+                        layerSubmit.header.useImageRect = (UInt32)(compositeLayer.useImageRect ? 1 : 0);
+                        layerSubmit.header.imageRectLeft = compositeLayer.getPxrRectiLeft(true);
+                        layerSubmit.header.imageRectRight = compositeLayer.getPxrRectiLeft(false);
 
-                        layerSubmit2.poseLeft.orientation.x = compositeLayer.modelRotations[0].x;
-                        layerSubmit2.poseLeft.orientation.y = compositeLayer.modelRotations[0].y;
-                        layerSubmit2.poseLeft.orientation.z = -compositeLayer.modelRotations[0].z;
-                        layerSubmit2.poseLeft.orientation.w = -compositeLayer.modelRotations[0].w;
-                        layerSubmit2.poseLeft.position.x = compositeLayer.modelTranslations[0].x;
-                        layerSubmit2.poseLeft.position.y = compositeLayer.modelTranslations[0].y;
-                        layerSubmit2.poseLeft.position.z = -compositeLayer.modelTranslations[0].z;
+                        layerSubmit.poseLeft.orientation.x = compositeLayer.modelRotations[0].x;
+                        layerSubmit.poseLeft.orientation.y = compositeLayer.modelRotations[0].y;
+                        layerSubmit.poseLeft.orientation.z = -compositeLayer.modelRotations[0].z;
+                        layerSubmit.poseLeft.orientation.w = -compositeLayer.modelRotations[0].w;
+                        layerSubmit.poseLeft.position.x = compositeLayer.modelTranslations[0].x;
+                        layerSubmit.poseLeft.position.y = compositeLayer.modelTranslations[0].y;
+                        layerSubmit.poseLeft.position.z = -compositeLayer.modelTranslations[0].z;
 
-                        layerSubmit2.poseRight.orientation.x = compositeLayer.modelRotations[0].x;
-                        layerSubmit2.poseRight.orientation.y = compositeLayer.modelRotations[0].y;
-                        layerSubmit2.poseRight.orientation.z = -compositeLayer.modelRotations[0].z;
-                        layerSubmit2.poseRight.orientation.w = -compositeLayer.modelRotations[0].w;
-                        layerSubmit2.poseRight.position.x = compositeLayer.modelTranslations[0].x;
-                        layerSubmit2.poseRight.position.y = compositeLayer.modelTranslations[0].y;
-                        layerSubmit2.poseRight.position.z = -compositeLayer.modelTranslations[0].z;
+                        layerSubmit.poseRight.orientation.x = compositeLayer.modelRotations[0].x;
+                        layerSubmit.poseRight.orientation.y = compositeLayer.modelRotations[0].y;
+                        layerSubmit.poseRight.orientation.z = -compositeLayer.modelRotations[0].z;
+                        layerSubmit.poseRight.orientation.w = -compositeLayer.modelRotations[0].w;
+                        layerSubmit.poseRight.position.x = compositeLayer.modelTranslations[0].x;
+                        layerSubmit.poseRight.position.y = compositeLayer.modelTranslations[0].y;
+                        layerSubmit.poseRight.position.z = -compositeLayer.modelTranslations[0].z;
 
-                        layerSubmit2.radiusLeft = compositeLayer.radius;
-                        layerSubmit2.radiusRight = compositeLayer.radius;
-                        layerSubmit2.centralHorizontalAngleLeft = compositeLayer.centralHorizontalAngle / Mathf.Rad2Deg;
-                        layerSubmit2.centralHorizontalAngleRight = compositeLayer.centralHorizontalAngle / Mathf.Rad2Deg;
-                        layerSubmit2.upperVerticalAngleLeft = compositeLayer.upperVerticalAngle / (2 * Mathf.Rad2Deg);
-                        layerSubmit2.upperVerticalAngleRight = compositeLayer.upperVerticalAngle / (2 * Mathf.Rad2Deg);
-                        layerSubmit2.lowerVerticalAngleLeft = compositeLayer.lowerVerticalAngle / (2 * Mathf.Rad2Deg);
-                        layerSubmit2.lowerVerticalAngleRight = compositeLayer.lowerVerticalAngle / (2 * Mathf.Rad2Deg);
+                        layerSubmit.radiusLeft = compositeLayer.radius;
+                        layerSubmit.radiusRight = compositeLayer.radius;
+                        layerSubmit.scaleXLeft = 1 / compositeLayer.dstRectLeft.width;
+                        layerSubmit.scaleXRight = 1 / compositeLayer.dstRectRight.width;
+                        layerSubmit.scaleYLeft = 1 / compositeLayer.dstRectLeft.height;
+                        layerSubmit.scaleYRight = 1 / compositeLayer.dstRectRight.height;
+                        layerSubmit.biasXLeft = -compositeLayer.dstRectLeft.x / compositeLayer.dstRectLeft.width;
+                        layerSubmit.biasXRight = -compositeLayer.dstRectRight.x / compositeLayer.dstRectRight.width;
+                        layerSubmit.biasYLeft = 1 + (compositeLayer.dstRectLeft.y - 1) / compositeLayer.dstRectLeft.height;
+                        layerSubmit.biasYRight = 1 + (compositeLayer.dstRectRight.y - 1) / compositeLayer.dstRectRight.height;
 
-                        PXR_Plugin.Render.UPxr_SubmitLayerEquirect2(layerSubmit2);
+                        if (PXR_Plugin.Render.UPxr_SubmitLayerEquirect(layerSubmit))
+                        {
+                            PxrLayerEquirect2 layerSubmit2 = new PxrLayerEquirect2();
+                            layerSubmit2.header.layerId = compositeLayer.overlayIndex;
+                            layerSubmit2.header.layerFlags = (UInt32)(
+                                    PxrLayerSubmitFlags.PxrLayerFlagUseExternalHeadPose |
+                                    PxrLayerSubmitFlags.PxrLayerFlagLayerPoseNotInTrackingSpace);
+                            layerSubmit2.header.colorScaleX = colorScale.x;
+                            layerSubmit2.header.colorScaleY = colorScale.y;
+                            layerSubmit2.header.colorScaleZ = colorScale.z;
+                            layerSubmit2.header.colorScaleW = colorScale.w;
+                            layerSubmit2.header.colorBiasX = colorBias.x;
+                            layerSubmit2.header.colorBiasY = colorBias.y;
+                            layerSubmit2.header.colorBiasZ = colorBias.z;
+                            layerSubmit2.header.colorBiasW = colorBias.w;
+                            layerSubmit2.header.compositionDepth = compositeLayer.layerDepth;
+                            layerSubmit2.header.headPose.orientation.x = compositeLayer.cameraRotations[0].x;
+                            layerSubmit2.header.headPose.orientation.y = compositeLayer.cameraRotations[0].y;
+                            layerSubmit2.header.headPose.orientation.z = -compositeLayer.cameraRotations[0].z;
+                            layerSubmit2.header.headPose.orientation.w = -compositeLayer.cameraRotations[0].w;
+                            layerSubmit2.header.headPose.position.x = (compositeLayer.cameraTranslations[0].x + compositeLayer.cameraTranslations[1].x) / 2;
+                            layerSubmit2.header.headPose.position.y = (compositeLayer.cameraTranslations[0].y + compositeLayer.cameraTranslations[1].y) / 2;
+                            layerSubmit2.header.headPose.position.z = -(compositeLayer.cameraTranslations[0].z + compositeLayer.cameraTranslations[1].z) / 2;
+                            layerSubmit2.header.layerShape = (PXR_OverLay.OverlayShape)4;
+                            layerSubmit2.header.useLayerBlend = (UInt32)(compositeLayer.useLayerBlend ? 1 : 0);
+                            layerSubmit2.header.layerBlend.srcColor = compositeLayer.srcColor;
+                            layerSubmit2.header.layerBlend.dstColor = compositeLayer.dstColor;
+                            layerSubmit2.header.layerBlend.srcAlpha = compositeLayer.srcAlpha;
+                            layerSubmit2.header.layerBlend.dstAlpha = compositeLayer.dstAlpha;
+                            layerSubmit2.header.useImageRect = (UInt32)(compositeLayer.useImageRect ? 1 : 0);
+                            layerSubmit2.header.imageRectLeft = compositeLayer.getPxrRectiLeft(true);
+                            layerSubmit2.header.imageRectRight = compositeLayer.getPxrRectiLeft(false);
+
+                            layerSubmit2.poseLeft.orientation.x = compositeLayer.modelRotations[0].x;
+                            layerSubmit2.poseLeft.orientation.y = compositeLayer.modelRotations[0].y;
+                            layerSubmit2.poseLeft.orientation.z = -compositeLayer.modelRotations[0].z;
+                            layerSubmit2.poseLeft.orientation.w = -compositeLayer.modelRotations[0].w;
+                            layerSubmit2.poseLeft.position.x = compositeLayer.modelTranslations[0].x;
+                            layerSubmit2.poseLeft.position.y = compositeLayer.modelTranslations[0].y;
+                            layerSubmit2.poseLeft.position.z = -compositeLayer.modelTranslations[0].z;
+
+                            layerSubmit2.poseRight.orientation.x = compositeLayer.modelRotations[0].x;
+                            layerSubmit2.poseRight.orientation.y = compositeLayer.modelRotations[0].y;
+                            layerSubmit2.poseRight.orientation.z = -compositeLayer.modelRotations[0].z;
+                            layerSubmit2.poseRight.orientation.w = -compositeLayer.modelRotations[0].w;
+                            layerSubmit2.poseRight.position.x = compositeLayer.modelTranslations[0].x;
+                            layerSubmit2.poseRight.position.y = compositeLayer.modelTranslations[0].y;
+                            layerSubmit2.poseRight.position.z = -compositeLayer.modelTranslations[0].z;
+
+                            layerSubmit2.radiusLeft = compositeLayer.radius;
+                            layerSubmit2.radiusRight = compositeLayer.radius;
+                            layerSubmit2.centralHorizontalAngleLeft = compositeLayer.dstRectLeft.width * 2 * Mathf.PI;
+                            layerSubmit2.centralHorizontalAngleRight = compositeLayer.dstRectRight.width * 2 * Mathf.PI;
+                            layerSubmit2.upperVerticalAngleLeft = (compositeLayer.dstRectLeft.height + compositeLayer.dstRectLeft.y - 0.5f) * Mathf.PI;
+                            layerSubmit2.upperVerticalAngleRight = (compositeLayer.dstRectRight.height + compositeLayer.dstRectRight.y - 0.5f) * Mathf.PI;
+                            layerSubmit2.lowerVerticalAngleLeft = (compositeLayer.dstRectLeft.y - 0.5f) * Mathf.PI;
+                            layerSubmit2.lowerVerticalAngleRight = (compositeLayer.dstRectRight.y - 0.5f) * Mathf.PI;
+
+                            PXR_Plugin.Render.UPxr_SubmitLayerEquirect2(layerSubmit2);
+                        }
                     }
                     else if (compositeLayer.overlayShape == PXR_OverLay.OverlayShape.Cubemap)
                     {

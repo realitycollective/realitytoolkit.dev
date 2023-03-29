@@ -41,7 +41,7 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
             return _api;
         }
     }
-    
+
     private static PXR_Audio_Spatializer_Context _instance;
 
     public static PXR_Audio_Spatializer_Context Instance => _instance;
@@ -49,6 +49,8 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
     private IntPtr context = IntPtr.Zero;
 
     private bool initialized = false;
+
+    private bool isSceneDirty = false;
 
     public bool Initialized
     {
@@ -67,7 +69,7 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
     #endregion
 
     public PXR_Audio.Spatializer.RenderingMode RenderingQuality => renderingQuality;
-    
+
     [SerializeField] private UnityEvent lateInitEvent;
 
     private AudioConfiguration audioConfig;
@@ -98,6 +100,7 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
         PXR_Audio.Spatializer.AcousticsMaterial material,
         ref int geometryId)
     {
+        isSceneDirty = true;
         return PXR_Audio_Spatializer_Api.SubmitMesh(
             context,
             vertices,
@@ -118,6 +121,7 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
         float transmissionFactor,
         ref int geometryId)
     {
+        isSceneDirty = true;
         return PXR_Audio_Spatializer_Api.SubmitMeshAndMaterialFactor(
             context,
             vertices,
@@ -128,6 +132,26 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
             scatteringFactor,
             transmissionFactor,
             ref geometryId);
+    }
+
+    public Result SubmitMeshWithConfig(float[] vertices, int verticesCount, int[] indices, int indicesCount,
+        ref MeshConfig config, ref int geometryId)
+    {
+        isSceneDirty = true;
+        return PXR_Audio_Spatializer_Api.SubmitMeshWithConfig(context, vertices, verticesCount, indices, indicesCount,
+            ref config, ref geometryId);
+    }
+
+    public Result RemoveMesh(int geometryId)
+    {
+        isSceneDirty = true;
+        return PXR_Audio_Spatializer_Api.RemoveMesh(context, geometryId);
+    }
+
+    public Result SetMeshConfig(int geometryId, ref MeshConfig config, uint propertyMask)
+    {
+        isSceneDirty = true;
+        return PXR_Audio_Spatializer_Api.SetMeshConfig(context, geometryId, ref config, propertyMask);
     }
 
     public PXR_Audio.Spatializer.Result AddSource(
@@ -170,6 +194,11 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
         bool isAsync)
     {
         return PXR_Audio_Spatializer_Api.AddSourceWithConfig(context, ref sourceConfig, ref sourceId, isAsync);
+    }
+
+    public Result SetSourceConfig(int sourceId, ref SourceConfig sourceConfig, uint propertyMask)
+    {
+        return PXR_Audio_Spatializer_Api.SetSourceConfig(context, sourceId, ref sourceConfig, propertyMask);
     }
 
     public PXR_Audio.Spatializer.Result SetSourceAttenuationMode(int sourceId,
@@ -420,8 +449,10 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
             //  Create context
             StartInternal(renderingQuality);
             Debug.Log("Pico Spatializer Initialized.");
+            
+            DontDestroyOnLoad(this);
         }
-        else
+        else if (_instance != this)
         {
             Destroy(this);
         }
@@ -429,6 +460,7 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
 
     private void StartInternal(PXR_Audio.Spatializer.RenderingMode quality)
     {
+        uuid = GetUuid();
         PXR_Audio.Spatializer.Result ret = Result.Success;
         if (spatializerApiImpl != SpatializerApiImpl.wwise)
         {
@@ -472,11 +504,10 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
         {
             Debug.LogError("Failed to commit scene, error code: " + ret);
         }
-        
+
         lateInitEvent.Invoke();
 
         initialized = true;
-        uuid = GetUuid();
         if (spatializerApiImpl != SpatializerApiImpl.wwise)
         {
             //  Add all the sources back
@@ -535,7 +566,7 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
 
     private void OnDisable()
     {
-        if (_instance != null)
+        if (_instance != null && _instance == this)
         {
             _instance = null;
 
@@ -548,6 +579,12 @@ public partial class PXR_Audio_Spatializer_Context : MonoBehaviour
 
     void Update()
     {
+        if (isSceneDirty)
+        {
+            PXR_Audio_Spatializer_Api.CommitScene(context);
+            isSceneDirty = false;
+        }
+
         PXR_Audio_Spatializer_Api.UpdateScene(context);
     }
 

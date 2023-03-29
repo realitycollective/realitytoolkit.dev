@@ -1,13 +1,13 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
@@ -19,6 +19,15 @@ namespace Pico.Platform
 {
     /**
      * \ingroup Platform
+     *
+     * The Achievements service can help build a "positive feedback mechanism"
+     * in your games. You can create prizes such as trophies and badges and
+     * distribute them to players when they hit a goal, like completing the
+     * beginner tutorial or reaching level x. Advanced achievements such as
+     * completing a hidden level/task should be closely integrated with game
+     * content design and, meanwhile, collaborate with prizes like diamonds
+     * or props to make your games more challenging and further enhance players'
+     * engagement.
      */
     public static class AchievementsService
     {
@@ -60,18 +69,18 @@ namespace Pico.Platform
         /// </returns>
         public static Task<AchievementUpdate> AddCount(string name, long count, byte[] extraData)
         {
-            if (CoreService.IsInitialized())
+            if (!CoreService.Initialized)
             {
-                GCHandle hobj = GCHandle.Alloc(extraData, GCHandleType.Pinned);
-                IntPtr pobj = hobj.AddrOfPinnedObject();
-                var result = new Task<AchievementUpdate>(CLIB.ppf_Achievements_AddCount(name, count, pobj, (uint) (extraData != null ? extraData.Length : 0)));
-                if (hobj.IsAllocated)
-                    hobj.Free();
-                return result;
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
-
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            
+            GCHandle hobj = GCHandle.Alloc(extraData, GCHandleType.Pinned);
+            IntPtr pobj = hobj.AddrOfPinnedObject();
+            var result = new Task<AchievementUpdate>(CLIB.ppf_Achievements_AddCount(name, count, pobj, (uint) (extraData != null ? extraData.Length : 0)));
+            if (hobj.IsAllocated)
+                hobj.Free();
+            return result;
         }
 
         /// <summary>Unlocks the bit(s) of a specified bitfield achievement. The status of the bit(s) is then unchangeable.
@@ -108,23 +117,23 @@ namespace Pico.Platform
         /// </returns>
         public static Task<AchievementUpdate> AddFields(string name, string fields, byte[] extraData)
         {
-            if (CoreService.IsInitialized())
+            if (!CoreService.Initialized)
             {
-                GCHandle hobj = GCHandle.Alloc(extraData, GCHandleType.Pinned);
-                IntPtr pobj = hobj.AddrOfPinnedObject();
-                var result = new Task<AchievementUpdate>(CLIB.ppf_Achievements_AddFields(name, fields, pobj, (uint) (extraData != null ? extraData.Length : 0)));
-                if (hobj.IsAllocated)
-                    hobj.Free();
-                return result;
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
-
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            
+            GCHandle hobj = GCHandle.Alloc(extraData, GCHandleType.Pinned);
+            IntPtr pobj = hobj.AddrOfPinnedObject();
+            var result = new Task<AchievementUpdate>(CLIB.ppf_Achievements_AddFields(name, fields, pobj, (uint) (extraData != null ? extraData.Length : 0)));
+            if (hobj.IsAllocated)
+                hobj.Free();
+            return result;
         }
 
         /// <summary>Gets the information about all achievements, including API names, descriptions, types,
         /// the targets which must be reached to unlock those achievements, and more.</summary>
-        /// <param name="pageIdx">The start index of the pages.</param>
+        /// <param name="pageIdx">Defines which page of achievements to return. The first page index is `0`.</param>
         /// <param name="pageSize">The size of the page.</param>
         /// <returns>The request ID of this async function.
         /// | Error Code| Error Message |
@@ -156,19 +165,19 @@ namespace Pico.Platform
         /// </returns>
         public static Task<AchievementDefinitionList> GetAllDefinitions(int pageIdx, int pageSize)
         {
-            if (CoreService.IsInitialized())
+            if (!CoreService.Initialized)
             {
-                return new Task<AchievementDefinitionList>(CLIB.ppf_Achievements_GetAllDefinitions(pageIdx, pageSize));
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
-
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            
+            return new Task<AchievementDefinitionList>(CLIB.ppf_Achievements_GetAllDefinitions(pageIdx, pageSize));
         }
 
         /// <summary>Gets the user's progress on all achievements, including API names,
         /// whether or not the achievements are unlocked, the time at which they were unlocked,
         /// achievement types and, depending on the type, the progress made towards unlocking them, and more.</summary>
-        /// <param name="pageIdx">The start index of the pages.</param>
+        /// <param name="pageIdx">Defines which page of achievements to return. The first page index is `0`.</param>
         /// <param name="pageSize">The size of the page.</param>
         /// <returns>The request ID of this async function.
         /// | Error Code| Error Message |
@@ -192,13 +201,13 @@ namespace Pico.Platform
         /// </returns>
         public static Task<AchievementProgressList> GetAllProgress(int pageIdx, int pageSize)
         {
-            if (CoreService.IsInitialized())
+            if (!CoreService.Initialized)
             {
-                return new Task<AchievementProgressList>(CLIB.ppf_Achievements_GetAllProgress(pageIdx, pageSize));
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
-
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            
+            return new Task<AchievementProgressList>(CLIB.ppf_Achievements_GetAllProgress(pageIdx, pageSize));
         }
 
         /// <summary>Gets the information about specified achievements, including API names, descriptions, types,
@@ -236,14 +245,13 @@ namespace Pico.Platform
         /// </returns>
         public static Task<AchievementDefinitionList> GetDefinitionsByName(string[] names)
         {
-            if (CoreService.IsInitialized())
+            if (!CoreService.Initialized)
             {
-                var result = new Task<AchievementDefinitionList>(CLIB.ppf_Achievements_GetDefinitionsByName(names));
-                return result;
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
-
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            
+            return new Task<AchievementDefinitionList>(CLIB.ppf_Achievements_GetDefinitionsByName(names));
         }
 
         /// <summary>Gets the user's progress on specified achievements, including API names,
@@ -274,14 +282,13 @@ namespace Pico.Platform
         /// </returns>
         public static Task<AchievementProgressList> GetProgressByName(string[] names)
         {
-            if (CoreService.IsInitialized())
+            if (!CoreService.Initialized)
             {
-                var result = new Task<AchievementProgressList>(CLIB.ppf_Achievements_GetProgressByName(names));
-                return result;
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
-
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            
+            return new Task<AchievementProgressList>(CLIB.ppf_Achievements_GetProgressByName(names));
         }
 
         /// <summary>Unlocks a specified achievement of any type even if the target for
@@ -315,18 +322,18 @@ namespace Pico.Platform
         /// </returns>
         public static Task<AchievementUpdate> Unlock(string name, byte[] extraData)
         {
-            if (CoreService.IsInitialized())
+            if (!CoreService.Initialized)
             {
-                GCHandle hobj = GCHandle.Alloc(extraData, GCHandleType.Pinned);
-                IntPtr pobj = hobj.AddrOfPinnedObject();
-                var result = new Task<AchievementUpdate>(CLIB.ppf_Achievements_Unlock(name, pobj, (uint) (extraData != null ? extraData.Length : 0)));
-                if (hobj.IsAllocated)
-                    hobj.Free();
-                return result;
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
-
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            
+            GCHandle hobj = GCHandle.Alloc(extraData, GCHandleType.Pinned);
+            IntPtr pobj = hobj.AddrOfPinnedObject();
+            var result = new Task<AchievementUpdate>(CLIB.ppf_Achievements_Unlock(name, pobj, (uint) (extraData != null ? extraData.Length : 0)));
+            if (hobj.IsAllocated)
+                hobj.Free();
+            return result;
         }
     }
 }

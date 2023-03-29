@@ -1,17 +1,18 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Pico.Platform
 {
@@ -49,10 +50,34 @@ namespace Pico.Platform
             return result;
         }
 
+        public static ulong ppf_Challenges_GetEntriesByIds(ulong challengeID, LeaderboardStartAt startAt, string[] userIDs, int pageIdx, int pageSize)
+        {
+            var userIds = new PtrArray(userIDs);
+            var result = ppf_Challenges_GetEntriesByIds(challengeID, startAt, userIds.a, (uint) userIDs.Length, pageIdx, pageSize);
+            userIds.Free();
+            return result;
+        }
+
+        public static ulong ppf_Challenges_Invites(ulong challengeID, string[] userIDs)
+        {
+            var userIds = new PtrArray(userIDs);
+            var result = ppf_Challenges_Invites(challengeID, userIds.a, (uint) userIDs.Length);
+            userIds.Free();
+            return result;
+        }
+
         public static ulong ppf_User_RequestUserPermissions(string[] permissions)
         {
             var ptrs = new PtrArray(permissions);
             var result = ppf_User_RequestUserPermissions(ptrs.a, permissions.Length);
+            ptrs.Free();
+            return result;
+        }
+
+        public static ulong ppf_User_GetRelations(string[] userIds)
+        {
+            var ptrs = new PtrArray(userIds);
+            var result = ppf_User_GetRelations(ptrs.a, userIds.Length);
             ptrs.Free();
             return result;
         }
@@ -77,5 +102,27 @@ namespace Pico.Platform
 
             return map;
         }
+
+        [DllImport("pxrplatformloader", EntryPoint = "ppf_PcInitWrapper", CallingConvention = CallingConvention.Cdecl)]
+        public static extern PlatformInitializeResult ppf_PcInitWrapper([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string appId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string configJson, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string logDirectory);
+
+        [DllImport("pxrplatformloader", EntryPoint = "ppf_PcInitAsynchronousWrapper", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong ppf_PcInitAsynchronousWrapper([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string appId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string configJson, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string logDirectory);
+
+
+        [DllImport("pxrplatformloader", EntryPoint = "ppf_AdbLoaderInit", CallingConvention = CallingConvention.Cdecl)]
+        public static extern PlatformInitializeResult ppf_AdbLoaderInit([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string appId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string configJson);
+
+        [DllImport("pxrplatformloader", EntryPoint = "ppf_AdbLoaderInitAsynchronous", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong ppf_AdbLoaderInitAsynchronous([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string appId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string configJson);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void LogFunction(string logText, int level);
+
+        [DllImport("pxrplatformloader", EntryPoint = "ppf_SetUnityLog", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ppf_SetUnityLog(LogFunction logFun);
+
+        [DllImport("pxrplatformloader", EntryPoint = "ppf_GetLoaderVersion", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int ppf_GetLoaderVersion();
     }
 }

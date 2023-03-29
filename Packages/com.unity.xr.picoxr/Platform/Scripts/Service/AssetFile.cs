@@ -1,13 +1,13 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
@@ -18,6 +18,10 @@ namespace Pico.Platform
 {
     /**
      * \ingroup Platform
+     *
+     * Downloadable content (DLC) represents the contents/files such as expansion packs that users can purchase and download, which can help grow your revenue. Each DLC is associated with an add-on and has an individual SKU as its unique identifier. Users must purchase the app before purchasing the DLCs provided in it. DLCs are downloadable in apps only.
+     *
+     * DLC enables you to update your app in a more flexible and lightweight way. Once you want to update the content for a published app, you only need to upload new resources such as levels and cosmetics as DLCs on the PICO Developer Platform, but do not need to upload a new build. Users can thereby purchase, download, and experience the latest resources without having to update or reinstall your app.
      */
     public static class AssetFileService
     {
@@ -33,7 +37,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -52,7 +56,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -74,7 +78,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -96,7 +100,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -115,7 +119,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -134,7 +138,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -152,7 +156,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -170,7 +174,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -188,7 +192,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -204,7 +208,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 

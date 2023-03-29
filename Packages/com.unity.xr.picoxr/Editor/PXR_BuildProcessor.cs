@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -88,6 +88,122 @@ namespace Unity.XR.PXR.Editor
         }
     }
 
+#if UNITY_2021_3_OR_NEWER
+    internal class PXR_BuildHooks : IPreprocessBuildWithReport, IPostprocessBuildWithReport
+    {
+        public int callbackOrder { get; }
+
+        private static readonly Dictionary<string, string> AndroidBootConfigVars = new Dictionary<string, string>()
+        {
+            { "xr-meta-enabled", "1" }
+        };
+
+        public void OnPreprocessBuild(BuildReport report)
+        {
+
+            if (report.summary.platformGroup == BuildTargetGroup.Android)
+            {
+
+                var bootConfig = new BootConfig(report);
+                bootConfig.ReadBootConfig();
+
+                foreach (var entry in AndroidBootConfigVars)
+                {
+                    bootConfig.SetValueForKey(entry.Key, entry.Value);
+                }
+
+                bootConfig.WriteBootConfig();
+            }
+
+        }
+
+        public void OnPostprocessBuild(BuildReport report)
+        {
+            if (report.summary.platformGroup == BuildTargetGroup.Android)
+            {
+                BootConfig bootConfig = new BootConfig(report);
+                bootConfig.ReadBootConfig();
+
+                foreach (KeyValuePair<string, string> entry in AndroidBootConfigVars)
+                {
+                    bootConfig.ClearEntryForKeyAndValue(entry.Key, entry.Value);
+                }
+
+                bootConfig.WriteBootConfig();
+
+            }
+
+        }
+    }
+
+    /// <summary>
+    /// Small utility class for reading, updating and writing boot config.
+    /// </summary>
+    internal class BootConfig
+    {
+        private const string XrBootSettingsKey = "xr-boot-settings";
+
+        private readonly Dictionary<string, string> bootConfigSettings;
+        private readonly string buildTargetName;
+
+        public BootConfig(BuildReport report)
+        {
+            bootConfigSettings = new Dictionary<string, string>();
+            buildTargetName = BuildPipeline.GetBuildTargetName(report.summary.platform);
+        }
+
+        public void ReadBootConfig()
+        {
+            bootConfigSettings.Clear();
+
+            string xrBootSettings = EditorUserBuildSettings.GetPlatformSettings(buildTargetName, XrBootSettingsKey);
+            if (!string.IsNullOrEmpty(xrBootSettings))
+            {
+                var bootSettings = xrBootSettings.Split(';');
+                foreach (var bootSetting in bootSettings)
+                {
+                    var setting = bootSetting.Split(':');
+                    if (setting.Length == 2 && !string.IsNullOrEmpty(setting[0]) && !string.IsNullOrEmpty(setting[1]))
+                    {
+                        bootConfigSettings.Add(setting[0], setting[1]);
+                    }
+                }
+            }
+        }
+
+        public void SetValueForKey(string key, string value) => bootConfigSettings[key] = value;
+
+        public bool TryGetValue(string key, out string value) => bootConfigSettings.TryGetValue(key, out value);
+
+        public void ClearEntryForKeyAndValue(string key, string value)
+        {
+            if (bootConfigSettings.TryGetValue(key, out string dictValue) && dictValue == value)
+            {
+                bootConfigSettings.Remove(key);
+            }
+        }
+
+        public void WriteBootConfig()
+        {
+            bool firstEntry = true;
+            var sb = new System.Text.StringBuilder();
+            foreach (var kvp in bootConfigSettings)
+            {
+                if (!firstEntry)
+                {
+                    sb.Append(";");
+                }
+
+                sb.Append($"{kvp.Key}:{kvp.Value}");
+                firstEntry = false;
+            }
+
+            EditorUserBuildSettings.SetPlatformSettings(buildTargetName, XrBootSettingsKey, sb.ToString());
+        }
+    }
+
+#endif
+
 #if UNITY_ANDROID
     internal class PXR_Manifest : IPostGenerateGradleAndroidProject
     {
@@ -105,14 +221,21 @@ namespace Unity.XR.PXR.Editor
             var settings = PXR_XmlTools.GetSettings();
             doc.InsertAttributeInTargetTag(applicationTagPath,null, new Dictionary<string, string>() {{"requestLegacyExternalStorage", "true"}});
             doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name","pvr.app.type"}},new Dictionary<string, string>{{"value","vr"}});
-            doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name","pvr.sdk.version"}},new Dictionary<string, string>{{"value","XR Platform_2.1.1.3"}});
+            doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name","pvr.sdk.version"}},new Dictionary<string, string>{{"value","XR Platform_2.1.4.3"}});
             doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name","enable_cpt"}},new Dictionary<string, string>{{"value",PXR_ProjectSetting.GetProjectConfig().useContentProtect ? "1" : "0"}});
             doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name","enable_entitlementcheck"}},new Dictionary<string, string>{{"value",PXR_PlatformSetting.Instance.startTimeEntitlementCheck ? "1" : "0"}});
             doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name","handtracking"}},new Dictionary<string, string> {{"value",PXR_ProjectSetting.GetProjectConfig().handTracking ? "1" : "0" }});
             doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name","rendering_mode"}},new Dictionary<string, string>{{"value",((int)settings.stereoRenderingModeAndroid).ToString()}});
             doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name","display_rate"}},new Dictionary<string, string>{{"value",((int)settings.systemDisplayFrequency).ToString()}});
             doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name","color_Space"}},new Dictionary<string, string>{{"value",QualitySettings.activeColorSpace == ColorSpace.Linear ? "1" : "0"}});
+            doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name","MRCsupport"}},new Dictionary<string, string>{{"value",PXR_ProjectSetting.GetProjectConfig().openMRC ? "1" : "0" }});
+            doc.InsertAttributeInTargetTag(metaDataTagPath,new Dictionary<string, string>{{"name", "pvr.LateLatchingDebug"}}, new Dictionary<string, string> {{"value","0"}});
             doc.CreateElementInTag(manifestTagPath,usesPermissionTagName,new Dictionary<string, string>{{"name","android.permission.WRITE_SETTINGS"}});
+            if (PXR_ProjectSetting.GetProjectConfig().eyeTracking){doc.CreateElementInTag(manifestTagPath, usesPermissionTagName,new Dictionary<string, string> {{"name", "com.picovr.permission.EYE_TRACKING" }});}
+            if (PXR_ProjectSetting.GetProjectConfig().eyeTracking) { doc.InsertAttributeInTargetTag(metaDataTagPath, new Dictionary<string, string> { { "name", "picovr.software.eye_tracking" } }, new Dictionary<string, string> { { "value", "false/true" } }); }
+            if (PXR_ProjectSetting.GetProjectConfig().faceTracking){doc.CreateElementInTag(manifestTagPath, usesPermissionTagName,new Dictionary<string, string>{{"name", "com.picovr.permission.FACE_TRACKING" }});}
+            if (PXR_ProjectSetting.GetProjectConfig().lipsyncTracking){doc.CreateElementInTag(manifestTagPath, usesPermissionTagName,new Dictionary<string, string>{{"name", "android.permission.RECORD_AUDIO" }});}
+            if (PXR_ProjectSetting.GetProjectConfig().faceTracking || PXR_ProjectSetting.GetProjectConfig().lipsyncTracking) { doc.InsertAttributeInTargetTag(metaDataTagPath, new Dictionary<string, string> { { "name", "picovr.software.face_tracking" } }, new Dictionary<string, string> { { "value", "false/true" } }); }
             doc.Save(originManifestPath);
         }
         public int callbackOrder { get { return 10000; } }
@@ -156,21 +279,24 @@ namespace Unity.XR.PXR.Editor
         public static void CreateElementInTag(this XmlDocument doc, string parentPath, string tagName,
             Dictionary<string, string> attributeDic)
         {
-            XmlElement parentElement = doc.SelectSingleNode(parentPath) as XmlElement;
-            if (parentElement == null)
+            XmlNode parentNode = doc.SelectSingleNode(parentPath);
+            if (parentNode == null)
             {
                 return;
             }
 
-            foreach (XmlElement childElement in parentElement.ChildNodes)
+            foreach (XmlNode childNode in parentNode.ChildNodes)
             {
-                if (FilterCheck(childElement, attributeDic))
-                    return;
+                if (childNode.NodeType == XmlNodeType.Element)
+                {
+                    if (FilterCheck((XmlElement)childNode, attributeDic))
+                        return;
+                }
             }
 
             XmlElement newElement = doc.CreateElement(tagName);
             UpdateOrCreateAttribute(newElement, attributeDic);
-            parentElement.AppendChild(newElement);
+            parentNode.AppendChild(newElement);
         }
         private static bool FilterCheck(XmlElement element, Dictionary<string, string> filterDic)
         {

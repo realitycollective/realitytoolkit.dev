@@ -1,5 +1,6 @@
 //  Copyright © 2015-2022 Pico Technology Co., Ltd. All Rights Reserved.
 
+using System;
 using System.Collections;
 using PXR_Audio.Spatializer;
 using UnityEditor;
@@ -10,18 +11,29 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
 {
     [SerializeField] [Range(0.0f, 24.0f)] private float sourceGainDB = 0.0f;
     private float sourceGainAmplitude = 1.0f;
-    private bool sourceGainChanged = false;
 
-    [SerializeField] [Range(0.0f, 100000.0f)] private float sourceSize = 0.0f;
-    private bool sourceSizeChanged = false;
+    [SerializeField] private float reflectionGainDB = 0.0f;
+    private float reflectionGainAmplitude = 1.0f;
+
+    [SerializeField] [Range(0.0f, 100000.0f)]
+    private float sourceSize = 0.0f;
 
     [SerializeField] private bool enableDoppler = true;
-    private bool enableDopplerChanged = false;
 
     [SerializeField] public SourceAttenuationMode sourceAttenuationMode = SourceAttenuationMode.InverseSquare;
     [SerializeField] public float minAttenuationDistance = 1.0f;
     [SerializeField] public float maxAttenuationDistance = 100.0f;
-    private bool attenuationDistanceChanged = false;
+    [SerializeField] [Range(0.0f, 1.0f)] private float directivityAlpha = 0.0f;
+
+    [SerializeField] [Range(0.0f, 1000.0f)]
+    private float directivityOrder = 1.0f;
+
+#if UNITY_EDITOR
+    private Mesh directivityDisplayMesh;
+#endif
+
+    private SourceConfig sourceConfig;
+    private uint sourcePropertyMask = 0;
 
     private bool isActive;
     private bool isAudioDSPInProgress = false;
@@ -81,7 +93,8 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
         positionArray[1] = transform.position.y;
         positionArray[2] = -transform.position.z;
 
-        SourceConfig sourceConfig = new SourceConfig(PXR_Audio.Spatializer.SourceMode.Spatialize);
+        sourceConfig = new SourceConfig(PXR_Audio.Spatializer.SourceMode.Spatialize);
+        sourcePropertyMask = 0;
 
         sourceConfig.position.x = positionArray[0];
         sourceConfig.position.y = positionArray[1];
@@ -95,7 +108,15 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
         sourceConfig.enableDoppler = enableDoppler;
         sourceGainAmplitude = DB2Mag(sourceGainDB);
         sourceConfig.sourceGain = sourceGainAmplitude;
-        
+        reflectionGainAmplitude = DB2Mag(reflectionGainDB);
+        sourceConfig.reflectionGain = reflectionGainAmplitude;
+        sourceConfig.radius = sourceSize;
+        sourceConfig.attenuationMode = sourceAttenuationMode;
+        sourceConfig.minAttenuationDistance = minAttenuationDistance;
+        sourceConfig.maxAttenuationDistance = maxAttenuationDistance;
+        sourceConfig.directivityAlpha = directivityAlpha;
+        sourceConfig.directivityOrder = directivityOrder;
+
         PXR_Audio.Spatializer.Result ret = Context.AddSourceWithConfig(
             ref sourceConfig,
             ref sourceId,
@@ -104,24 +125,6 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
         {
             Debug.LogError("Failed to add source.");
             return;
-        }
-
-        ret = Context.SetSourceSize(sourceId, sourceSize);
-        if (ret != PXR_Audio.Spatializer.Result.Success)
-        {
-            Debug.LogError("Failed to recover source size.");
-        }
-
-        ret = Context.SetSourceAttenuationMode(sourceId, sourceAttenuationMode, null, null);
-        if (ret != PXR_Audio.Spatializer.Result.Success)
-        {
-            Debug.LogError("Failed to initialize source #" + sourceId + " attenuation mode.");
-        }
-
-        ret = Context.SetSourceRange(sourceId, minAttenuationDistance, maxAttenuationDistance);
-        if (ret != PXR_Audio.Spatializer.Result.Success)
-        {
-            Debug.LogError("Failed to initialize source #" + sourceId + " attenuation range.");
         }
 
         isActive = true;
@@ -148,9 +151,10 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
     /// <param name="gainDB">Gain in dB</param>
     public void SetGainDB(float gainDB)
     {
+        // if (Mathf.Abs(gainDB - sourceGainDB) < 1e-7) return;
         sourceGainDB = gainDB;
-        sourceGainAmplitude = DB2Mag(gainDB);
-        sourceGainChanged = true;
+        sourceConfig.sourceGain = sourceGainAmplitude = DB2Mag(gainDB);
+        sourcePropertyMask |= (uint)SourceProperty.SourceGain;
     }
 
     /// <summary>
@@ -159,9 +163,20 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
     /// <param name="gainAmplitude">Gain in Amplitude</param>
     public void SetGainAmplitude(float gainAmplitude)
     {
-        sourceGainAmplitude = gainAmplitude;
+        sourceConfig.sourceGain = sourceGainAmplitude = gainAmplitude;
         sourceGainDB = Mag2DB(gainAmplitude);
-        sourceGainChanged = true;
+        sourcePropertyMask |= (uint)SourceProperty.SourceGain;
+    }
+
+    /// <summary>
+    /// Setup source reflection gain in dB
+    /// </summary>
+    /// <param name="gainDB">Gain in dB</param>
+    public void SetReflectionGainDB(float gainDB)
+    {
+        reflectionGainDB = gainDB;
+        sourceConfig.reflectionGain = reflectionGainAmplitude = DB2Mag(gainDB);
+        sourcePropertyMask |= (uint)SourceProperty.ReflectionGain;
     }
 
     /// <summary>
@@ -170,8 +185,8 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
     /// <param name="radius">source radius in meter</param>
     public void SetSize(float radius)
     {
-        sourceSize = radius;
-        sourceSizeChanged = true;
+        sourceConfig.radius = sourceSize = radius;
+        sourcePropertyMask |= (uint)SourceProperty.VolumetricRadius;
     }
 
     /// <summary>
@@ -180,8 +195,8 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
     /// <param name="on">Turn doppler effect on/off </param>
     public void SetDopplerStatus(bool on)
     {
-        enableDoppler = on;
-        enableDopplerChanged = true;
+        sourceConfig.enableDoppler = enableDoppler = on;
+        sourcePropertyMask |= (uint)SourceProperty.DopplerOnOff;
     }
 
     /// <summary>
@@ -191,8 +206,8 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
     /// distance is shorter than this </param>
     public void SetMinAttenuationRange(float min)
     {
-        minAttenuationDistance = min;
-        attenuationDistanceChanged = true;
+        sourceConfig.minAttenuationDistance = minAttenuationDistance = min;
+        sourcePropertyMask |= (uint)SourceProperty.RangeMin;
     }
 
     /// <summary>
@@ -202,8 +217,24 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
     /// distance is further than this </param>
     public void SetMaxAttenuationRange(float max)
     {
-        maxAttenuationDistance = max;
-        attenuationDistanceChanged = true;
+        sourceConfig.maxAttenuationDistance = maxAttenuationDistance = max;
+        sourcePropertyMask |= (uint)SourceProperty.RangeMax;
+    }
+
+    /// <summary>
+    /// Setup the radiation polar pattern of source, which describes the gain of initial sound wave radiated towards
+    /// different directions. The relation between sound emission direction, alpha, and order can be described as
+    /// follows: Let theta equals the angle between radiation direction and source front direction, the directivity
+    /// gain g is:
+    ///     g = (|1 - alpha| + alpha * cos(theta)) ^ order;
+    /// </summary>
+    /// <param name="alpha"> Define the shape of the directivity pattern.
+    /// <param name="order"> Indicates how sharp the source polar pattern is.
+    public void SetDirectivity(float alpha, float order)
+    {
+        sourceConfig.directivityAlpha = directivityAlpha = alpha;
+        sourceConfig.directivityOrder = directivityOrder = order;
+        sourcePropertyMask |= (uint)SourceProperty.Directivity;
     }
 
     void Update()
@@ -212,47 +243,31 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
         {
             if (transform.hasChanged)
             {
-                positionArray[0] = transform.position.x;
-                positionArray[1] = transform.position.y;
-                positionArray[2] = -transform.position.z;
+                sourceConfig.position.x = transform.position.x;
+                sourceConfig.position.y = transform.position.y;
+                sourceConfig.position.z = -transform.position.z;
+                sourceConfig.front.x = transform.forward.x;
+                sourceConfig.front.y = transform.forward.y;
+                sourceConfig.front.z = -transform.forward.z;
+                sourceConfig.up.x = transform.up.x;
+                sourceConfig.up.y = transform.up.y;
+                sourceConfig.up.z = -transform.up.z;
+                
+                sourcePropertyMask |= (uint)SourceProperty.Position | (uint)SourceProperty.Orientation;
+                transform.hasChanged = false;
+            }
 
-                PXR_Audio.Spatializer.Result ret = Context.SetSourcePosition(sourceId, positionArray);
+            if (sourcePropertyMask != 0)
+            {
+                var ret = Context.SetSourceConfig(sourceId, ref sourceConfig, sourcePropertyMask);
+                if (ret == Result.Success)
+                    sourcePropertyMask = 0;
             }
 
             if (nativeSource.isPlaying)
                 playheadPosition = nativeSource.time;
             wasPlaying = nativeSource.isPlaying;
-
-            if (sourceGainChanged)
-            {
-                PXR_Audio.Spatializer.Result ret = Context.SetSourceGain(sourceId, sourceGainAmplitude);
-                if (ret == PXR_Audio.Spatializer.Result.Success)
-                    sourceGainChanged = false;
-            }
-
-            if (sourceSizeChanged)
-            {
-                PXR_Audio.Spatializer.Result ret = Context.SetSourceSize(sourceId, sourceSize);
-                if (ret == PXR_Audio.Spatializer.Result.Success)
-                    sourceSizeChanged = false;
-            }
-
-            if (enableDopplerChanged)
-            {
-                PXR_Audio.Spatializer.Result ret = Context.SetDopplerEffect(sourceId, enableDoppler);
-                if (ret == PXR_Audio.Spatializer.Result.Success)
-                    enableDopplerChanged = false;
-            }
-
-            if (attenuationDistanceChanged)
-            {
-                PXR_Audio.Spatializer.Result ret = 
-                    Context.SetSourceRange(sourceId, minAttenuationDistance, maxAttenuationDistance);
-                if (ret == PXR_Audio.Spatializer.Result.Success)
-                    attenuationDistanceChanged = false;
-            }
         }
-
     }
 
     private void OnDisable()
@@ -272,8 +287,10 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
         if (EditorApplication.isPlaying)
         {
             SetGainDB(sourceGainDB);
+            SetReflectionGainDB(reflectionGainDB);
             SetSize(sourceSize);
             SetDopplerStatus(enableDoppler);
+            SetDirectivity(directivityAlpha, directivityOrder);
         }
     }
 #endif
@@ -309,7 +326,7 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
 
         isAudioDSPInProgress = true;
         int numFrames = data.Length / channels;
-        float oneOverChannelsF = 1.0f / ((float) channels);
+        float oneOverChannelsF = 1.0f / ((float)channels);
 
         //  force to mono
         if (channels > 1)
@@ -321,10 +338,12 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
                 {
                     sample += data[frame * channels + channel];
                 }
+
                 data[frame] = sample * oneOverChannelsF;
             }
         }
-        Context.SubmitSourceBuffer(sourceId, data, (uint) numFrames);
+
+        Context.SubmitSourceBuffer(sourceId, data, (uint)numFrames);
 
         //  Mute Original signal
         for (int i = 0; i < data.Length; ++i)
@@ -384,4 +403,87 @@ public class PXR_Audio_Spatializer_AudioSource : MonoBehaviour
             Gizmos.DrawSphere(transform.position, maxAttenuationDistance);
         }
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        //  Draw directivity mesh
+        GeneratePolarPatternMesh(directivityDisplayMesh, directivityAlpha, directivityOrder);
+    }
+    
+    private void GeneratePolarPatternMesh(Mesh mesh, float alpha, float order)
+    {
+        if (mesh == null)
+            mesh = new Mesh();
+        Vector2[] cardioidVertices2D = GeneratePolarPatternVertices2D(alpha, order, 90);
+        int numVertices = cardioidVertices2D.Length * 2;
+        Vector3[] vertices = new Vector3[numVertices];
+        for (int i = 0; i < cardioidVertices2D.Length; ++i)
+        {
+            var vertex2D = cardioidVertices2D[i];
+            vertices[i] = new Vector3(vertex2D.x, 0.0f, vertex2D.y);
+            vertices[cardioidVertices2D.Length + i] = Quaternion.AngleAxis(45, Vector3.forward) *
+                                                      new Vector3(vertex2D.x, 0.0f, vertex2D.y);
+        }
+
+        int[] indices = new int[cardioidVertices2D.Length * 2 * 3];
+        int idx = 0;
+        for (idx = 0; idx < cardioidVertices2D.Length - 1; ++idx)
+        {
+            indices[idx * 6 + 0] = idx;
+            indices[idx * 6 + 1] = idx + 1;
+            indices[idx * 6 + 2] = idx + cardioidVertices2D.Length;
+            indices[idx * 6 + 3] = idx + 1;
+            indices[idx * 6 + 4] = idx + cardioidVertices2D.Length + 1;
+            indices[idx * 6 + 5] = idx + cardioidVertices2D.Length;
+        }
+
+        // Construct a new mesh for the gizmo.
+        mesh.vertices = vertices;
+        mesh.triangles = indices;
+        mesh.RecalculateNormals();
+        // Draw the mesh.
+        Vector3 scale = 2.0f * Mathf.Max(transform.lossyScale.x, transform.lossyScale.z) * Vector3.one;
+        Color c;
+        c.r = 0.2f;
+        c.g = 0.5f;
+        c.b = 0.7f;
+        c.a = 0.5f;
+        Gizmos.color = c;
+        Gizmos.DrawMesh(mesh, transform.position, transform.rotation, scale);
+        Gizmos.DrawMesh(mesh, transform.position, transform.rotation * Quaternion.AngleAxis(45, Vector3.forward),
+            scale);
+        Gizmos.DrawMesh(mesh, transform.position, transform.rotation * Quaternion.AngleAxis(90, Vector3.forward),
+            scale);
+        Gizmos.DrawMesh(mesh, transform.position, transform.rotation * Quaternion.AngleAxis(135, Vector3.forward),
+            scale);
+        Gizmos.DrawMesh(mesh, transform.position, transform.rotation * Quaternion.AngleAxis(180, Vector3.forward),
+            scale);
+        Gizmos.DrawMesh(mesh, transform.position, transform.rotation * Quaternion.AngleAxis(225, Vector3.forward),
+            scale);
+        Gizmos.DrawMesh(mesh, transform.position, transform.rotation * Quaternion.AngleAxis(270, Vector3.forward),
+            scale);
+        Gizmos.DrawMesh(mesh, transform.position, transform.rotation * Quaternion.AngleAxis(315, Vector3.forward),
+            scale);
+    }
+
+    private Vector2[] GeneratePolarPatternVertices2D(float alpha, float order, int numVertices)
+    {
+        Vector2[] points = new Vector2[numVertices];
+        float interval = Mathf.PI / (numVertices - 1);
+        for (int i = 0; i < numVertices; ++i)
+        {
+            float theta = 0.0f;
+            if (i != numVertices - 1)
+                theta = i * interval;
+            else
+                theta = Mathf.PI;
+            // Magnitude |r| for |theta| in radians.
+            float r = Mathf.Pow(Mathf.Abs((1 - alpha) + alpha * Mathf.Cos(theta)), order);
+            points[i] = new Vector2(r * Mathf.Sin(theta), r * Mathf.Cos(theta));
+        }
+
+        return points;
+    }
+#endif
 }

@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -48,8 +48,8 @@ namespace Unity.XR.PXR.Editor
 
         string[] strInfo1Text =
         {
-        "1 Support Unity Version: Unity2019.4 and above",
-        "1 支持Unity版本：Unity2019.4及以上版本"
+        "1 Support Unity Version: Unity2020.3.19 and above",
+        "1 支持Unity版本：Unity2020.3.19及以上版本"
     };
         string[] strInfo2Text =
         {
@@ -643,26 +643,7 @@ namespace Unity.XR.PXR.Editor
         static void UnitySDKQualitySettings()
         {
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
-
-            SetAntiAliasingLevel(4);
         }
-
-        static void SetAntiAliasingLevel(int level)
-        {
-            int currentLevel = QualitySettings.GetQualityLevel();
-            for (int i = currentLevel; i >= 1; i--)
-            {
-                QualitySettings.DecreaseLevel(true);
-                QualitySettings.antiAliasing = level;
-            }
-            QualitySettings.SetQualityLevel(currentLevel, true);
-            for (int i = currentLevel; i < 10; i++)
-            {
-                QualitySettings.IncreaseLevel(true);
-                QualitySettings.antiAliasing = level;
-            }
-        }
-
     }
 
     [InitializeOnLoad]

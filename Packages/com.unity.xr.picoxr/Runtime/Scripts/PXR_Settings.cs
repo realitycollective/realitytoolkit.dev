@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -43,6 +43,12 @@ namespace Unity.XR.PXR
         [SerializeField, Tooltip("Set the system display frequency")]
         public SystemDisplayFrequency systemDisplayFrequency;
 
+        [SerializeField, Tooltip("if enabled,will always discarding depth and resolving MSAA color to improve performance on tile-based architectures. This only affects Vulkan. Note that this may break user content")]
+        public bool optimizeBufferDiscards = true;
+        
+        [SerializeField, Tooltip("Enable Application SpaceWarp")]
+        public bool enableAppSpaceWarp;
+
         public ushort GetStereoRenderingMode()
         {
             return (ushort)stereoRenderingModeAndroid;
@@ -50,6 +56,11 @@ namespace Unity.XR.PXR
         public ushort GetSystemDisplayFrequency()
         {
             return (ushort)systemDisplayFrequency;
+        }
+
+        public ushort GetOptimizeBufferDiscards()
+        {
+            return optimizeBufferDiscards ? (ushort)1 : (ushort)0;
         }
 
 #if UNITY_ANDROID && !UNITY_EDITOR

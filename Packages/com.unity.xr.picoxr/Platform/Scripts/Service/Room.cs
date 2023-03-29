@@ -1,13 +1,13 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
@@ -22,6 +22,26 @@ namespace Pico.Platform
      */
     public static class RoomService
     {
+        /// <summary>Launches the invitation flow to let the current user invite friends to a specified room.
+        /// This launches the system default invite UI where all of the user's friends are displayed.
+        /// This is intended to be a shortcut for developers not wanting to build their own invite-friends UI.
+        /// </summary>
+        /// <param name="roomId">The ID of the room.</param>
+        /// <returns>The request ID of this async function.
+        /// A message of type `MessageType.Room_LaunchInvitableUserFlow` will be generated in response.
+        /// Call `message.IsError()` to check if any error has occurred.
+        /// </returns>
+        public static Task LaunchInvitableUserFlow(UInt64 roomID)
+        {
+            if (!CoreService.IsInitialized())
+            {
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
+            }
+
+            return new Task(CLIB.ppf_Room_LaunchInvitableUserFlow(roomID));
+        }
+
         /// <summary>Updates the data store of the current room (the caller should be the room owner).
         /// @note Room data stores only allow string values. The maximum key length is 32 bytes and the maximum value length is 64 bytes.
         /// If you provide illegal values, this method will return an error.</summary>
@@ -81,11 +101,11 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
-            return new Task<Room>(CLIB.ppf_Room_CreateAndJoinPrivate2( policy, maxUsers, roomOptions.GetHandle()));
+            return new Task<Room>(CLIB.ppf_Room_CreateAndJoinPrivate2(policy, maxUsers, roomOptions.GetHandle()));
         }
 
         /// <summary>Gets the information about a specified room.</summary>
@@ -105,7 +125,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -127,7 +147,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -155,7 +175,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -179,7 +199,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -211,7 +231,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -235,7 +255,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -265,7 +285,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -293,13 +313,13 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
             return new Task<Room>(CLIB.ppf_Room_KickUser(roomId, userId, kickDuration));
         }
-        
+
         /// <summary>Leaves the current room.
         /// @note  The room you are now in will be returned if the request succeeds.</summary>
         ///
@@ -319,7 +339,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -344,7 +364,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -375,7 +395,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -400,7 +420,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -433,7 +453,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -608,5 +628,4 @@ namespace Pico.Platform
             return Handle;
         }
     }
-    
 }

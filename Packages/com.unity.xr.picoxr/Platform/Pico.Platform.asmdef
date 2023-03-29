@@ -1,5 +1,5 @@
 ﻿{
-    "name": "Pico.Platform",
+    "name": "PICO.Platform",
     "references": [
         "Unity.XR.PICO.Editor",
         "Unity.XR.PICO"

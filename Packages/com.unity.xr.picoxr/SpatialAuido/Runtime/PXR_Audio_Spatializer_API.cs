@@ -37,6 +37,23 @@ namespace PXR_Audio
                 float transmissionFactor,
                 ref int geometryId);
 
+            public abstract Result SubmitMeshWithConfig(
+                IntPtr ctx,
+                float[] vertices,
+                int verticesCount,
+                int[] indices,
+                int indicesCount,
+                ref MeshConfig config,
+                ref int geometryId);
+
+            public abstract Result RemoveMesh(IntPtr ctx, int geometryId);
+
+            public abstract Result SetMeshConfig(
+                IntPtr ctx,
+                int geometryId,
+                ref MeshConfig config,
+                uint propertyMask);
+
             public abstract Result GetAbsorptionFactor(
                 AcousticsMaterial material,
                 float[] absorptionFactor);
@@ -73,6 +90,9 @@ namespace PXR_Audio
                 ref SourceConfig sourceConfig,
                 ref int sourceId,
                 bool isAsync);
+
+            public abstract Result SetSourceConfig(IntPtr ctx, int sourceId, ref SourceConfig sourceConfig,
+                uint propertyMask);
 
             public abstract Result SetSourceAttenuationMode(
                 IntPtr ctx,
@@ -280,6 +300,37 @@ namespace PXR_Audio
                     absorptionFactor, scatteringFactor, transmissionFactor, ref geometryId);
             }
 
+            [DllImport(DLLNAME, EntryPoint = "yggdrasil_audio_submit_mesh_with_config")]
+            private static extern Result SubmitMeshWithConfigImport(IntPtr ctx, float[] vertices, int verticesCount,
+                int[] indices,
+                int indicesCount,
+                ref MeshConfig config, ref int geometryId);
+
+            public override Result SubmitMeshWithConfig(IntPtr ctx, float[] vertices, int verticesCount, int[] indices,
+                int indicesCount,
+                ref MeshConfig config, ref int geometryId)
+            {
+                return SubmitMeshWithConfigImport(ctx, vertices, verticesCount, indices, indicesCount, ref config,
+                    ref geometryId);
+            }
+
+            [DllImport(DLLNAME, EntryPoint = "yggdrasil_audio_remove_mesh")]
+            private static extern Result RemoveMeshImport(IntPtr ctx, int geometryId);
+            
+            public override Result RemoveMesh(IntPtr ctx, int geometryId)
+            {
+                return RemoveMeshImport(ctx, geometryId);
+            }
+
+            [DllImport(DLLNAME, EntryPoint = "yggdrasil_audio_set_mesh_config")]
+            private static extern Result SetMeshConfigImport(IntPtr ctx, int geometryId, ref MeshConfig config,
+                uint propertyMask);
+
+            public override Result SetMeshConfig(IntPtr ctx, int geometryId, ref MeshConfig config, uint propertyMask)
+            {
+                return SetMeshConfigImport(ctx, geometryId, ref config, propertyMask);
+            }
+
             [DllImport(DLLNAME, EntryPoint = "yggdrasil_audio_get_absorption_factor")]
             private static extern Result GetAbsorptionFactorImport(
                 AcousticsMaterial material,
@@ -388,6 +439,15 @@ namespace PXR_Audio
                 return AddSourceWithConfigImport(ctx, ref sourceConfig, ref sourceId, isAsync);
             }
 
+            [DllImport(DLLNAME, EntryPoint = "yggdrasil_audio_set_source_config")]
+            private static extern Result SetSourceConfigImport(IntPtr ctx, int sourceId, ref SourceConfig sourceConfig,
+                uint propertyMask);
+
+            public override Result SetSourceConfig(IntPtr ctx, int sourceId, ref SourceConfig sourceConfig,
+                uint propertyMask)
+            {
+                return SetSourceConfigImport(ctx, sourceId, ref sourceConfig, propertyMask);
+            }
 
             [DllImport(DLLNAME, EntryPoint = "yggdrasil_audio_set_source_attenuation_mode")]
             private static extern Result SetSourceAttenuationModeImport(IntPtr ctx,
@@ -565,6 +625,7 @@ namespace PXR_Audio
 
             public override Result UpdateScene(IntPtr ctx)
             {
+                AmbisonicDecoderUpdate();
                 return UpdateSceneImport(ctx);
             }
 
@@ -736,6 +797,10 @@ namespace PXR_Audio
                 Debug.LogWarning("Unexpected API calling.");
                 return Result.Error;
             }
+
+            //  Call from Pico's unity native ambisonic decoder
+            [DllImport("PicoAmbisonicDecoder", EntryPoint = "yggdrasil_audio_unity_ambisonic_decoder_update")]
+            private static extern void AmbisonicDecoderUpdate();
         }
 
         public class ApiWwiseImpl : Api
@@ -821,6 +886,26 @@ namespace PXR_Audio
             {
                 return SubmitMeshAndMaterialFactorImport(ctx, vertices, verticesCount, indices, indicesCount,
                     absorptionFactor, scatteringFactor, transmissionFactor, ref geometryId);
+            }
+
+            public override Result SubmitMeshWithConfig(IntPtr ctx, float[] vertices, int verticesCount, int[] indices,
+                int indicesCount,
+                ref MeshConfig config, ref int geometryId)
+            {
+                Debug.LogWarning("Un-implemented API calling.");
+                return Result.Error;
+            }
+
+            public override Result RemoveMesh(IntPtr ctx, int geometryId)
+            {
+                Debug.LogWarning("Un-implemented API calling.");
+                return Result.Error;
+            }
+
+            public override Result SetMeshConfig(IntPtr ctx, int geometryId, ref MeshConfig config, uint propertyMask)
+            {
+                Debug.LogWarning("Un-implemented API calling.");
+                return Result.Error;
             }
 
             [DllImport(DLLNAME, EntryPoint = "CSharp_PicoSpatializerWwise_GetAbsorptionFactor")]
@@ -911,6 +996,12 @@ namespace PXR_Audio
                 return Result.Error;
             }
 
+            public override Result SetSourceConfig(IntPtr ctx, int sourceId, ref SourceConfig sourceConfig,
+                uint propertyMask)
+            {
+                Debug.LogWarning("Unexpected API calling.");
+                return Result.Error;
+            }
 
             public override Result SetSourceAttenuationMode(
                 IntPtr ctx,

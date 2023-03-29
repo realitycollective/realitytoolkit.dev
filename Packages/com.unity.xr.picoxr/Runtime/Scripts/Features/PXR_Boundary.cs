@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -110,8 +110,8 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Get the camera image of the device and use it as the environmental background. Before calling this function, make sure you have set the clear flags of the camera to solid color and have set the background color of the camera to 0 for the alpha channel.
-        /// Note: If the app is paused, this function will cease. Therefore, you need to call this function again after the app has been resumed.
+        /// Gets the camera image of the device and use it as the environmental background. Before calling this function, make sure you have set the clear flags of the camera to solid color and have set the background color of the camera to 0 for the alpha channel.
+        /// @note If the app is paused, this function will cease. Therefore, you need to call this function again after the app has been resumed.
         /// </summary>
         /// <param name="value">Whether to enable SeeThrough: `true`-enable; `false`-do not enable.</param>
         public static void EnableSeeThroughManual(bool value)
@@ -120,12 +120,23 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets why the boundary dialog box appears.
+        /// Gets the current status of seethrough tracking.
         /// </summary>
-        /// <returns>The reason why the boundary dialog box has appeared: `-1`-NothingDialog (position tracking not enabled, no dialog); `0`-GobackDialog (HMD has been outside te boundary, the dialog box will disappear when the HMD is back inside the boundary); `1`-ToofarDialog (HDM is 3 merters away from the boundary); `2`-LostDialog (reserved UI. Not to display the reason but to display the UI when 6Dof has lost); `3`-LostNoReason (the 6Dof has lost, but the system does not report any reason for that); `4`-LostCamera (incorrect camera calibration data has caused the loss of 6Dof); `5`-LostHighLight (environmental light too strong); `6`-LostLowLight (environmental light too weak); `7`-LostLowFeatureCount (few environmental features); `8`-LostReLocation (the system is in the state of relocation and 6Dof is still lost).</returns>
-        public static int GetDialogState()
-        {
-            return PXR_Plugin.Boundary.UPxr_GetDialogState();
+        /// <returns>Returns `PxrTrackingState`. Below are the enumerations:
+        /// * `LostNoReason`: no reason
+        /// * `LostCamera`: camera calibration data error
+        /// * `LostHighLight`: environment lighting too bright
+        /// * `LostLowLight`: environment lighting too dark
+        /// * `LostLowFeatureCount`: few environmental features
+        /// * `LostReLocation`: relocation in progress
+        /// * `LostInitialization`: initialization in progress
+        /// * `LostNoCamera`: camera data error
+        /// * `LostNoIMU`: IMU data error
+        /// * `LostIMUJitter`: IMU data jitter
+        /// * `LostUnknown`: unknown error
+        /// </returns>
+        public static PxrTrackingState GetSeeThroughTrackingState() {
+            return PXR_Plugin.Boundary.UPxr_GetSeeThroughTrackingState();
         }
     }
 }

@@ -1,13 +1,13 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
@@ -19,12 +19,18 @@ namespace Pico.Platform
 {
     /**
      * \ingroup Platform
+     * Leaderboard is one of the basic and important features of an app.
+     * By displaying users' rankings in a multi-dimensional approach, leaderboards can give rise to a competitive atmosphere among users in specific scenarios such as gaming, drive users to improve their skills, and therefore increase app engagement. You can also use leaderboards to promote the app and attract new users.
+     * Currently, Leaderboard service offers the following key features:
+     * * Create leaderboards
+     * * Get leaderboard data
+     * * Update leaderboard data
      */
     public static class LeaderboardService
     {
-        /// <summary>Gets the information of a leaderboard.</summary>
+        /// <summary>Gets the information for a specified leaderboard.</summary>
         ///
-        /// <param name="leaderboardName">The name of the leaderboard to get information of.</param>
+        /// <param name="leaderboardName">The name of the leaderboard to get information for.</param>
         /// <returns>Request information of type `Task`, including the request ID, and its response message will contain data of type `LeaderboardList`.
         /// | Error Code| Error Message |
         /// |---|---|
@@ -39,20 +45,25 @@ namespace Pico.Platform
         /// </returns>
         public static Task<LeaderboardList> Get(string leaderboardName)
         {
-            if (CoreService.Initialized) return new Task<LeaderboardList>(CLIB.ppf_Leaderboard_Get(leaderboardName));
+            if (!CoreService.Initialized)
+            {
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
+            }
 
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            return new Task<LeaderboardList>(CLIB.ppf_Leaderboard_Get(leaderboardName));
         }
 
-        /// <summary>Gets the entries of a leaderboard.</summary>
+        /// <summary>Gets a list of entries.</summary>
         ///
-        /// <param name="leaderboardName">The name of the leaderboard to get entries of.</param>
+        /// <param name="leaderboardName">The name of the leaderboard whose entries are to be returned.</param>
         /// <param name="pageSize">The number of entries to return on each page.</param>
-        /// <param name="pageIdx">The start page index of the leaderboard entries you want to get, start at zero (the first page).</param>
-        /// <param name="filter">You can filter returned entries by this parameter, the enumerations are:
+        /// <param name="pageIdx">Defines which page of entries to return. The first page index is `0`.
+        /// For example, if you want to get the first page of entries, pass `0`; if you want to get the second page of entries, pass `1`.
+        /// </param>
+        /// <param name="filter">Restricts the scope of entries to return:
         /// * `0`: None (returns all entries of the specified leaderboard)
-        /// * `1`: Frineds (returns the entries of the friends of the current logged-in user)
+        /// * `1`: Friends (returns the entries of the friends of the current logged-in user)
         /// * `2`: Unknown (returns no entry)
         /// * `3`: UserIds (returns the entries of specified users)
         /// </param>
@@ -85,20 +96,22 @@ namespace Pico.Platform
         /// </returns>
         public static Task<LeaderboardEntryList> GetEntries(string leaderboardName, int pageSize, int pageIdx, LeaderboardFilterType filter, LeaderboardStartAt startAt)
         {
-            if (CoreService.Initialized)
+            if (!CoreService.Initialized)
             {
-                return new Task<LeaderboardEntryList>(CLIB.ppf_Leaderboard_GetEntries(leaderboardName, pageSize, pageIdx, filter, startAt));
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
 
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            return new Task<LeaderboardEntryList>(CLIB.ppf_Leaderboard_GetEntries(leaderboardName, pageSize, pageIdx, filter, startAt));
         }
 
-        /// <summary>Gets the entries after a specific rank of a leaderboard.</summary>
+        /// <summary>Gets a list of entries after a specified rank.</summary>
         ///
-        /// <param name="leaderboardName">The name of the leaderboard to get entries of.</param>
+        /// <param name="leaderboardName">The name of the leaderboard whose entries are to be returned.</param>
         /// <param name="pageSize">The number of entries to return on each page.</param>
-        /// <param name="pageIdx">The start page index of the leaderboard entries you want to get, start at zero (the first page).</param>
+        /// <param name="pageIdx">Defines which page of entries to return. The first page index is `0`.
+        /// For example, if you want to get the first page of entries, pass `0`; if you want to get the second page of entries, pass `1`.
+        /// </param>
         /// <param name="afterRank">Defines after which rank to return entries.</param>
         /// <returns>Request information of type `Task`, including the request ID, and its response message will contain data of type `LeaderboardEntryList`.
         /// | Error Code| Error Message |
@@ -118,19 +131,23 @@ namespace Pico.Platform
         public static Task<LeaderboardEntryList> GetEntriesAfterRank(string leaderboardName, int pageSize, int pageIdx,
             ulong afterRank)
         {
-            if (CoreService.Initialized)
-                return new Task<LeaderboardEntryList>(
-                    CLIB.ppf_Leaderboard_GetEntriesAfterRank(leaderboardName, pageSize, pageIdx, afterRank));
+            if (!CoreService.Initialized)
+            {
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
+            }
 
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            return new Task<LeaderboardEntryList>(
+                CLIB.ppf_Leaderboard_GetEntriesAfterRank(leaderboardName, pageSize, pageIdx, afterRank));
         }
 
-        /// <summary>Get the entries of a leaderboard filtered by user ID.</summary>
+        /// <summary>Gets a list of entries for specified users.</summary>
         ///
-        /// <param name="leaderboardName">The name of the leaderboard to get entries of.</param>
+        /// <param name="leaderboardName">The name of the leaderboard whose entries are to be returned.</param>
         /// <param name="pageSize">The number of entries to return on each page.</param>
-        /// <param name="pageIdx">The start page index of the leaderboard entries you want to get, start at zero (the first page).</param>
+        /// <param name="pageIdx">Defines which page of entries to return. The first page index is `0`.
+        /// For example, if you want to get the first page of entries, pass `0`; if you want to get the second page of entries, pass `1`.
+        /// </param>
         /// <param name="startAt">Defines where to start returning leaderboard entries, the enumerations are:
         /// * `0`: Top (return entries from top 1)
         /// * `1`: CenteredOnViewer (place the current logged-in user's entry in the middle of the list on the first page.
@@ -162,15 +179,14 @@ namespace Pico.Platform
         public static Task<LeaderboardEntryList> GetEntriesByIds(string leaderboardName, int pageSize, int pageIdx,
             LeaderboardStartAt startAt, string[] userIDs)
         {
-            if (CoreService.Initialized)
+            if (!CoreService.Initialized)
             {
-                var result = new Task<LeaderboardEntryList>(CLIB.ppf_Leaderboard_GetEntriesByIds(leaderboardName,
-                    pageSize, pageIdx, startAt, userIDs));
-                return result;
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
 
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            return new Task<LeaderboardEntryList>(CLIB.ppf_Leaderboard_GetEntriesByIds(leaderboardName,
+                pageSize, pageIdx, startAt, userIDs));
         }
 
         /// <summary>Writes an entry to a leaderboard.</summary>
@@ -199,20 +215,19 @@ namespace Pico.Platform
         public static Task<bool> WriteEntry(string leaderboardName, long score, byte[] extraData = null,
             bool forceUpdate = false)
         {
-            if (CoreService.Initialized)
+            if (!CoreService.Initialized)
             {
-                GCHandle hobj = GCHandle.Alloc(extraData, GCHandleType.Pinned);
-                IntPtr pobj = hobj.AddrOfPinnedObject();
-                var result = new Task<bool>(CLIB.ppf_Leaderboard_WriteEntry(leaderboardName, score, pobj,
-                    (uint) (extraData != null ? extraData.Length : 0), forceUpdate));
-                if (hobj.IsAllocated)
-                    hobj.Free();
-                return result;
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
 
-
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            GCHandle hobj = GCHandle.Alloc(extraData, GCHandleType.Pinned);
+            IntPtr pobj = hobj.AddrOfPinnedObject();
+            var result = new Task<bool>(CLIB.ppf_Leaderboard_WriteEntry(leaderboardName, score, pobj,
+                (uint) (extraData != null ? extraData.Length : 0), forceUpdate));
+            if (hobj.IsAllocated)
+                hobj.Free();
+            return result;
         }
 
         /// <summary>Writes an entry to a leaderboard. The entry can include the supplementary metric for tiebreakers.</summary>
@@ -242,19 +257,19 @@ namespace Pico.Platform
         public static Task<bool> WriteEntryWithSupplementaryMetric(string leaderboardName, long score,
             long supplementaryMetric, byte[] extraData = null, bool forceUpdate = false)
         {
-            if (CoreService.Initialized)
+            if (!CoreService.Initialized)
             {
-                GCHandle hobj = GCHandle.Alloc(extraData, GCHandleType.Pinned);
-                IntPtr pobj = hobj.AddrOfPinnedObject();
-                var result = new Task<bool>(CLIB.ppf_Leaderboard_WriteEntryWithSupplementaryMetric(leaderboardName, score,
-                    supplementaryMetric, pobj, (uint) (extraData != null ? extraData.Length : 0), forceUpdate));
-                if (hobj.IsAllocated)
-                    hobj.Free();
-                return result;
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
             }
 
-            Debug.LogError(CoreService.UninitializedError);
-            return null;
+            GCHandle hobj = GCHandle.Alloc(extraData, GCHandleType.Pinned);
+            IntPtr pobj = hobj.AddrOfPinnedObject();
+            var result = new Task<bool>(CLIB.ppf_Leaderboard_WriteEntryWithSupplementaryMetric(leaderboardName, score,
+                supplementaryMetric, pobj, (uint) (extraData != null ? extraData.Length : 0), forceUpdate));
+            if (hobj.IsAllocated)
+                hobj.Free();
+            return result;
         }
     }
 }

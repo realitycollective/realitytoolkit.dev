@@ -1,13 +1,13 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
@@ -18,6 +18,8 @@ namespace Pico.Platform
 {
     /**
      * \ingroup Platform
+     *
+     * Account & Friends service allows developers to access the info of a specified account, get the friends list of the currently logged-in users, send friend requests, and more.
      */
     public static class UserService
     {
@@ -30,7 +32,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -45,7 +47,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -62,7 +64,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -78,11 +80,27 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
             return new Task<UserList>(CLIB.ppf_User_GetLoggedInUserFriends());
+        }
+        
+        /// <summary>
+        /// Get user relations to current user based on user ids passed as parameter.
+        /// </summary>
+        /// <param name="userIds">An array of strings representing the user ids.</param>
+        /// <returns>`UserRelationResult` which is a dictionary of user relationships.</returns>
+        public static Task<UserRelationResult> GetUserRelations(string[] userIds)
+        {
+            if (!CoreService.Initialized)
+            {
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
+            }
+
+            return new Task<UserRelationResult>(CLIB.ppf_User_GetRelations(userIds));
         }
 
         /// <summary>
@@ -94,7 +112,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -109,7 +127,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -125,7 +143,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -153,7 +171,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -182,7 +200,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -203,7 +221,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 

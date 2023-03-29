@@ -1,34 +1,99 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
 
 namespace Pico.Platform.Models
 {
+    /**
+     * \ingroup Models
+     */
+    public static class DownloadStatus
+    {
+        public const string Downloaded = "downloaded";
+        public const string Available = "available";
+        public const string InProgress = "in-progress";
+    }
+    /**
+     * \ingroup Models
+     */
+    /// <summary>
+    /// Constants indicates whether the user purchased the in-app product.
+    /// </summary>
+    public static class IapStatus
+    {
+        /** @brief Purchased */
+        public const string Entitled = "entitled";
+        /** @brief Not purchased. */
+        public const string NotEntitled = "not-entitled";
+    }
+    /**
+     * \ingroup Models
+     */
+    /// <summary> Indicates where the DLC file is displayed.</summary>
+    public static class AssetType
+    {
+        /** @brief The DLC file is displayed in the PICO Store and the app. */
+        public const string Store = "store";
+        /** @brief The DLC file is displayed in the app only. */
+        public const string Default = "default";
+    }
+    /**
+     * \ingroup Models
+     */
     public class AssetDetails
     {
+        /** @brief The unique identifier of DLC file.*/
         public ulong AssetId;
+
+        /** @brief Some DLC files can be displayed in the PICO Store. Now it has two values: `default` or `store`.
+         * You can refer to \ref AssetType for details.
+         */
         public string AssetType;
-        public string DownloadStatus; // One of 'downloaded', 'available' and 'in-progress'
+
+        /** @brief One of `downloaded`, `available`, and `in-progress`. You can refer to \ref DownloadStatus for details.*/
+        public string DownloadStatus;
+
+        /** @brief The path to the downloaded DLC file. For a non-downloaded DLC file, this field will be empty.*/
         public string Filepath;
+
+        /** @brief The meta info of the DLC file.*/
         public string Metadata;
+
+        /** @brief The name of the DLC file.*/
         public string Filename;
+
+        /** @brief The version of the DLC file.*/
         public int Version;
-        public string IapStatus; // One of 'entitled','not-entitled'
+
+        /** @brief One of `entitled`, `not-entitled`. You can refer to \ref IapStatus for details.*/
+        public string IapStatus;
+
+        /** @brief The SKU of the in-app product that the DLC file associated with.*/
         public string IapSku;
+
+        /** @brief The name of the in-app product that the DLC fiel associated with.*/
         public string IapName;
+
+        /** @brief The price of this DLC file.*/
         public string IapPrice;
+
+        /** @brief The currency required for purchasing the DLC file.*/
         public string IapCurrency;
+
+        /** @brief The description of the in-app product that the DLC file associated with.*/
         public string IapDescription;
+
+        /** @brief The icon of the in-app product that the DLC file associated with.*/
         public string IapIcon;
 
         public AssetDetails(IntPtr o)
@@ -49,7 +114,6 @@ namespace Pico.Platform.Models
             IapIcon = CLIB.ppf_AssetDetails_GetIapIcon(o);
         }
     }
-
     public class AssetDetailsList : MessageArray<AssetDetails>
     {
         public AssetDetailsList(IntPtr a)
@@ -64,11 +128,19 @@ namespace Pico.Platform.Models
             NextPageParam = CLIB.ppf_AssetDetailsArray_GetNextPageParam(a);
         }
     }
-
-
+    /**
+     * \ingroup Models
+     */
+    /// <summary>
+    /// If the downloaded DLC file is different from the original one, 
+    /// the DLC file will be automatically removed, and the app will receive a notification.
+    /// </summary>
     public class AssetFileDeleteForSafety
     {
+        /** @brief The ID of the DLC file. */
         public readonly ulong AssetId;
+
+        /** @brief The description for why this asset file is deleted. */
         public readonly string Reason;
 
         public AssetFileDeleteForSafety(IntPtr o)
@@ -77,12 +149,21 @@ namespace Pico.Platform.Models
             Reason = CLIB.ppf_AssetFileDeleteForSafety_GetReason(o);
         }
     }
-
-
+    /**
+     * \ingroup Models
+     */
+    /// <summary>
+    /// The callback for \ref AssetFileService.DeleteById and \ref AssetFileService.DeleteByName.
+    /// </summary>
     public class AssetFileDeleteResult
     {
+        /**@brief The path to the DLC file.*/
         public readonly string Filepath;
+
+        /**@brief Whether the DLC file is deleted successfully.*/
         public readonly bool Success;
+
+        /** @brief The ID of the DLC file. */
         public readonly ulong AssetId;
 
         public AssetFileDeleteResult(IntPtr o)
@@ -92,11 +173,17 @@ namespace Pico.Platform.Models
             AssetId = CLIB.ppf_AssetFileDeleteResult_GetAssetId(o);
         }
     }
-
+    /**
+     * \ingroup Models
+     */
+    /// <summary>Indicates whether the download of the DLC file is successfully canceled.</summary>
     public class AssetFileDownloadCancelResult
     {
+        /** @brief The path to the DLC file. */
         public readonly string Filepath;
+        /** @brief Whether the download is successfully canceled. */
         public readonly bool Success;
+        /** @brief The ID of the DLC file. */
         public readonly ulong AssetId;
 
         public AssetFileDownloadCancelResult(IntPtr o)
@@ -106,11 +193,15 @@ namespace Pico.Platform.Models
             AssetId = CLIB.ppf_AssetFileDownloadCancelResult_GetAssetId(o);
         }
     }
-
-
+    /**
+     * \ingroup Models
+     */
+    /// <summary>The result returned after calling /ref AssetFileService.DownloadById or /ref AssetFileService.DownloadByName.</summary>
     public class AssetFileDownloadResult
     {
+        /** @brief The ID of the DLC file. */
         public readonly ulong AssetId;
+        /** @brief The path to the DLC file. */
         public readonly string Filepath;
 
         public AssetFileDownloadResult(IntPtr o)
@@ -119,12 +210,25 @@ namespace Pico.Platform.Models
             Filepath = CLIB.ppf_AssetFileDownloadResult_GetFilepath(o);
         }
     }
-
+    /**
+     * \ingroup Models
+     */
+    /// <summary>
+    /// You will receive this message periodically once you call \ref AssetFileService.DownloadById
+    /// or \ref AssetFile.DownloadByName.
+    /// </summary>
     public class AssetFileDownloadUpdate
     {
+        /** @brief The ID of the DLC file. */
         public readonly ulong AssetId;
+
+        /** @brief The total bytes of the DLC file.*/
         public readonly ulong BytesTotal;
+
+        /** @brief The transferred bytes of the DLC file. */
         public readonly long BytesTransferred;
+
+        /** @brief The download status of the DLC file.*/
         public readonly AssetFileDownloadCompleteStatus CompleteStatus;
 
         public AssetFileDownloadUpdate(IntPtr o)
@@ -135,12 +239,21 @@ namespace Pico.Platform.Models
             CompleteStatus = CLIB.ppf_AssetFileDownloadUpdate_GetCompleteStatus(o);
         }
     }
-
+    /**
+     * \ingroup Models
+     */
+    /// <summary>
+    /// The callback for \ref AssetFileService.StatusById or \ref AssetFileService.StatusByName.
+    /// </summary>
     public class AssetStatus
     {
+        /** @brief The ID of the DLC file. */
         public readonly ulong AssetId;
+        /** @brief The name of the DLC file. */
         public readonly string Filename;
+        /** @brief The path to the DLC file. */
         public readonly string Filepath;
+        /** @brief The download status of the DLC file. You can refer to \ref DownloadStatus for details.*/
         public readonly string DownloadStatus;
 
         public AssetStatus(IntPtr o)

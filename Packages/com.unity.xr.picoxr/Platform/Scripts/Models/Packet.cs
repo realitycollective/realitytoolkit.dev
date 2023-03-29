@@ -1,13 +1,13 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 namespace Pico.Platform.Models
@@ -17,7 +17,9 @@ namespace Pico.Platform.Models
 
     public sealed class Packet : IDisposable
     {
+        /** @brief The size of the message packet. */
         private readonly ulong size;
+        /** @brief The handler of the message packet. */
         private readonly IntPtr handler;
 
         public Packet(IntPtr handler)
@@ -26,6 +28,7 @@ namespace Pico.Platform.Models
             this.size = (ulong) CLIB.ppf_Packet_GetSize(handler);
         }
 
+        /// <summary>Get message content.</summary>
         public ulong GetBytes(byte[] dest)
         {
             if ((ulong) dest.LongLength >= size)
@@ -39,6 +42,7 @@ namespace Pico.Platform.Models
             }
         }
 
+        /// <summary>Get message content.</summary>
         public string GetBytes()
         {
             if (size > 0)
@@ -53,11 +57,12 @@ namespace Pico.Platform.Models
             }
         }
 
+        /// <summary>Get the ID of the message sender.</summary>
         public string SenderId
         {
             get { return CLIB.ppf_Packet_GetSenderID(handler); }
         }
-
+        /// <summary>Get message size.</summary>
         public ulong Size
         {
             get { return size; }

@@ -1,13 +1,13 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
@@ -19,8 +19,8 @@ namespace Pico.Platform
     public class Looper
     {
         private static readonly ConcurrentDictionary<ulong, Delegate> TaskMap = new ConcurrentDictionary<ulong, Delegate>();
-
         private static readonly ConcurrentDictionary<MessageType, Delegate> NotifyMap = new ConcurrentDictionary<MessageType, Delegate>();
+        public static readonly ConcurrentDictionary<MessageType, MessageParser> MessageParserMap = new ConcurrentDictionary<MessageType, MessageParser>();
 
         public static void ProcessMessages(uint limit = 0)
         {
@@ -28,7 +28,7 @@ namespace Pico.Platform
             {
                 while (true)
                 {
-                    var msg = MessageQueue.Next();
+                    var msg = PopMessage();
                     if (msg == null)
                     {
                         break;
@@ -41,7 +41,7 @@ namespace Pico.Platform
             {
                 for (var i = 0; i < limit; ++i)
                 {
-                    var msg = MessageQueue.Next();
+                    var msg = PopMessage();
                     if (msg == null)
                     {
                         break;
@@ -50,6 +50,38 @@ namespace Pico.Platform
                     dispatchMessage(msg);
                 }
             }
+        }
+
+        public static Message PopMessage()
+        {
+            if (!CoreService.Initialized)
+            {
+                return null;
+            }
+
+            var handle = CLIB.ppf_PopMessage();
+            if (handle == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            MessageType messageType = CLIB.ppf_Message_GetType(handle);
+            Message msg = MessageQueue.ParseMessage(handle);
+            if (msg == null)
+            {
+                if (MessageParserMap.TryGetValue(messageType, out MessageParser parser))
+                {
+                    msg = parser(handle);
+                }
+            }
+
+            if (msg == null)
+            {
+                Debug.LogError($"Cannot parse message type {messageType}");
+            }
+
+            CLIB.ppf_FreeMessage(handle);
+            return msg;
         }
 
         private static void dispatchMessage(Message msg)
@@ -70,10 +102,8 @@ namespace Pico.Platform
                 }
                 else
                 {
-                    Debug.LogError($"No handler for task: requestId={msg.RequestID}, msg.Type = {msg.Type}");
+                    Debug.LogError($"No handler for task: requestId={msg.RequestID}, msg.Type = {msg.Type}. You should call `OnComplete()` when use request API.");
                 }
-
-                return;
             }
             else
             {
@@ -89,30 +119,43 @@ namespace Pico.Platform
             }
         }
 
-        public static bool RegisterTaskHandler(ulong taskId, Delegate handler)
+        public static void RegisterTaskHandler(ulong taskId, Delegate handler)
         {
             if (taskId == 0)
             {
                 Debug.LogError("The task is invalid.");
-                return false;
+                return;
             }
 
             TaskMap[taskId] = handler;
-            return true;
         }
 
-        public static bool RegisterNotifyHandler(MessageType type, Delegate handler)
+        public static void RegisterNotifyHandler(MessageType type, Delegate handler)
         {
             if (handler == null)
             {
                 Debug.LogError("Cannot register null notification handler.");
-                return false;
+                return;
             }
 
             NotifyMap[type] = handler;
-            return true;
         }
 
+        public static void RegisterMessageParser(MessageType messageType, MessageParser messageParser)
+        {
+            if (messageParser == null)
+            {
+                Debug.LogError($"invalid message parser for {messageType}");
+                return;
+            }
+
+            if (MessageParserMap.ContainsKey(messageType))
+            {
+                Debug.LogWarning($"Duplicate register of {messageType}");
+            }
+
+            MessageParserMap.TryAdd(messageType, messageParser);
+        }
 
         public static void Clear()
         {

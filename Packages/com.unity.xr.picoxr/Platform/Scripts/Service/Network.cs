@@ -1,13 +1,13 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
@@ -29,7 +29,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return null;
             }
 
@@ -40,10 +40,10 @@ namespace Pico.Platform
         }
 
         /// <summary>
-        /// Sends messages to a specified user.
+        /// Sends messages to a specified user. The maximum messaging frequency is 1000/s.
         /// </summary>
         /// <param name="userId">The ID of the user to send messages to.</param>
-        /// <param name="bytes">The message length (in bytes).</param>
+        /// <param name="bytes">The message length (in bytes). The maximum bytes allowed is 512.</param>
         /// <returns>
         /// * `true`: success
         /// * `false`: failure
@@ -52,13 +52,13 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return false;
             }
 
             if (string.IsNullOrEmpty(userId))
             {
-                Debug.LogError(CoreService.UserIdEmptyError);
+                Debug.LogError("User ID is null or empty!");
                 return false;
             }
 
@@ -69,11 +69,12 @@ namespace Pico.Platform
                 hobj.Free();
             return ok;
         }
+
         /// <summary>
-        /// Sends messages to a specified user.
+        /// Sends messages to a specified user. The maximum messaging frequency is 1000/s.
         /// </summary>
         /// <param name="userId">The ID of the user to send messages to.</param>
-        /// <param name="bytes">The message length (in bytes).</param>
+        /// <param name="bytes">The message length (in bytes). The maximum bytes allowed is 512.</param>
         /// <param name="reliable">When `reliable` is set to `true`, messages between lost and resume will not be lost.
         /// The retention time is determined by the `reserve_period` parameter configured for the matchmaking pool, with a maximum of 1 minute.
         /// When `reliable` is set to `false`, this function works the same as the other `SendPacket` function.</param>
@@ -85,12 +86,13 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return false;
             }
+
             if (string.IsNullOrEmpty(userId))
             {
-                Debug.LogError(CoreService.UserIdEmptyError);
+                Debug.LogError("User ID is null or empty!");
                 return false;
             }
 
@@ -98,14 +100,17 @@ namespace Pico.Platform
             IntPtr pobj = hobj.AddrOfPinnedObject();
             var ok = CLIB.ppf_Net_SendPacket2(userId, (UIntPtr) bytes.Length, pobj, reliable);
             if (hobj.IsAllocated)
+            {
                 hobj.Free();
+            }
+
             return ok;
         }
 
         /// <summary>
-        /// Sends messages to other users in the room.
+        /// Sends messages to other users in the room. The maximum messaging frequency is 1000/s.
         /// </summary>
-        /// <param name="bytes">The message length (in bytes).</param>
+        /// <param name="bytes">The message length (in bytes). The maximum bytes allowed is 512.</param>
         /// <returns>
         /// * `true`: success
         /// * `false`: failure
@@ -114,7 +119,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return false;
             }
 
@@ -122,13 +127,17 @@ namespace Pico.Platform
             IntPtr pobj = hobj.AddrOfPinnedObject();
             var ok = CLIB.ppf_Net_SendPacketToCurrentRoom((UIntPtr) bytes.Length, pobj);
             if (hobj.IsAllocated)
+            {
                 hobj.Free();
+            }
+
             return ok;
         }
+
         /// <summary>
-        /// Sends messages to other users in the room.
+        /// Sends messages to other users in the room. The maximum messaging frequency is 1000/s.
         /// </summary>
-        /// <param name="bytes">The message length (in bytes).</param>
+        /// <param name="bytes">The message length (in bytes). The maximum bytes allowed is 512.</param>
         /// <param name="reliable">When `reliable` is set to `true`, messages between lost and resume will not be lost.
         /// The retention time is determined by the `reserve_period` parameter configured for the matchmaking pool, with a maximum of 1 minute.
         /// When `reliable` is set to `false`, this function works the same as the other `SendPacketToCurrentRoom` function.</param>
@@ -140,7 +149,7 @@ namespace Pico.Platform
         {
             if (!CoreService.Initialized)
             {
-                Debug.LogError(CoreService.UninitializedError);
+                Debug.LogError(CoreService.NotInitializedError);
                 return false;
             }
 

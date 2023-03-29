@@ -1,17 +1,57 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
+using System.Collections.Generic;
 using Pico.Platform.Models;
+
+namespace Pico.Platform.Models
+{
+    public class Error
+    {
+        public readonly int Code;
+        public readonly string Message;
+
+        public Error(int code, string msg)
+        {
+            this.Code = code;
+            this.Message = msg;
+        }
+
+        public Error(IntPtr handle)
+        {
+            this.Code = CLIB.ppf_Error_GetCode(handle);
+            this.Message = CLIB.ppf_Error_GetMessage(handle);
+        }
+
+        public override string ToString()
+        {
+            return $"Error(Code={this.Code},Message={this.Message})";
+        }
+    }
+
+    public class MessageArray<T> : List<T>
+    {
+        /**@brief The next page parameter. It's empty when it doesn't has next page.*/
+        public string NextPageParam;
+
+        /**@brief The previous page parameter. It's empty when it doesn't has previous page.*/
+        public string PreviousPageParam;
+
+        public bool HasNextPage => !String.IsNullOrEmpty(NextPageParam);
+
+        public bool HasPreviousPage => !String.IsNullOrEmpty(PreviousPageParam);
+    }
+}
 
 namespace Pico.Platform
 {
@@ -33,7 +73,7 @@ namespace Pico.Platform
             }
         }
 
-        public bool IsError => Error != null;
+        public bool IsError => Error != null && Error.Code != 0;
 
         public Error GetError()
         {
@@ -55,6 +95,22 @@ namespace Pico.Platform
             {
                 Data = getData(msgPointer);
             }
+        }
+    }
+
+
+    public delegate Message MessageParser(IntPtr ptr);
+
+    public static class CommonParsers
+    {
+        public static Message StringParser(IntPtr msgPointer)
+        {
+            return new Message<string>(msgPointer, ptr => { return CLIB.ppf_Message_GetString(ptr); });
+        }
+
+        public static Message VoidParser(IntPtr msgPointer)
+        {
+            return new Message(msgPointer);
         }
     }
 }

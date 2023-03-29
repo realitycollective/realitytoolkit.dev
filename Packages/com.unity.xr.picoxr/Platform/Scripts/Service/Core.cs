@@ -1,16 +1,17 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 using Unity.XR.PXR;
 using UnityEngine;
@@ -20,16 +21,17 @@ using UnityEngine;
 namespace Pico.Platform
 {
     /**
-     * \defgroup Platform PICO Platform Unity SDK
+     * \defgroup Platform Services
+     * \defgroup Models Structs & Enums
      */
     /**
      * \ingroup Platform
+     *
      */
     public static class CoreService
     {
         public static bool Initialized = false;
-        public static string UninitializedError = "Platform SDK has not been initialized!";
-        public static string UserIdEmptyError = "User ID is null or empty!";
+        public static string NotInitializedError = "Platform SDK has not been initialized!";
 
         /// <summary>Gets whether the Platform SDK has been initialized.</summary>
         /// <returns>
@@ -46,7 +48,7 @@ namespace Pico.Platform
         /// </summary>
         /// <returns>The app ID.</returns>
         /// <exception cref="UnityException">If the app ID cannot be found, this exception will be thrown.</exception>
-        private static string GetAppID(string appId = null)
+        public static string GetAppID(string appId = null)
         {
             string configAppID = PXR_PlatformSetting.Instance.appID.Trim();
             if (String.IsNullOrWhiteSpace(appId))
@@ -85,25 +87,49 @@ namespace Pico.Platform
             }
 
             Task<PlatformInitializeResult> task;
-            if (Application.platform == RuntimePlatform.Android
-                || (Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor)
-                || (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor))
+            if (Application.platform == RuntimePlatform.Android)
             {
                 var requestId = CLIB.ppf_UnityInitAsynchronousWrapper(appId);
                 if (requestId == 0)
                 {
-                    throw new UnityException("Pico Platform failed to initialize.");
+                    throw new Exception("PICO PlatformSDK failed to initialize");
+                }
+                else
+                {
+                    task = new Task<PlatformInitializeResult>(requestId);
+                }
+            }
+            else if ((Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor))
+            {
+                var config = Resources.Load<TextAsset>("PicoSdkPCConfig");
+                var logDirectory = Path.GetFullPath("Logs");
+                if (config == null)
+                {
+                    throw new UnityException($"cannot find PC config file Resources/PicoSdkPCConfig");
                 }
 
-                task = new Task<PlatformInitializeResult>(requestId);
+                if (!Directory.Exists(logDirectory))
+                {
+                    Directory.CreateDirectory(logDirectory);
+                }
+
+                var requestId = CLIB.ppf_PcInitAsynchronousWrapper(appId, config.text, logDirectory);
+                if (requestId == 0)
+                {
+                    throw new Exception("PICO PlatformSDK failed to initialize");
+                }
+                else
+                {
+                    task = new Task<PlatformInitializeResult>(requestId);
+                }
             }
             else
             {
-                throw new NotImplementedException("Pico platform is not implemented on this platform yet.");
+                throw new NotImplementedException("PICO platform is not implemented on this platform yet.");
             }
 
             Initialized = true;
-            (new GameObject("Pico.Platform.Runner")).AddComponent<Runner>();
+            Runner.RegisterGameObject();
             return task;
         }
 
@@ -127,9 +153,7 @@ namespace Pico.Platform
             }
 
             PlatformInitializeResult initializeResult;
-            if (Application.platform == RuntimePlatform.Android
-                || (Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor)
-                || (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor))
+            if (Application.platform == RuntimePlatform.Android)
             {
                 initializeResult = CLIB.ppf_UnityInitWrapper(appId);
 
@@ -139,19 +163,43 @@ namespace Pico.Platform
                     Initialized = true;
                 }
             }
+            else if ((Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor))
+            {
+                var config = Resources.Load<TextAsset>("PicoSdkPCConfig");
+                if (config == null)
+                {
+                    throw new UnityException($"cannot find PC config file Resources/PicoSdkPCConfig");
+                }
+
+                var logDirectory = Path.GetFullPath("Logs");
+                if (!Directory.Exists(logDirectory))
+                {
+                    Directory.CreateDirectory(logDirectory);
+                }
+
+                initializeResult = CLIB.ppf_PcInitWrapper(appId, config.text, logDirectory);
+                if (initializeResult == PlatformInitializeResult.Success ||
+                    initializeResult == PlatformInitializeResult.AlreadyInitialized)
+                {
+                    Initialized = true;
+                }
+            }
             else
             {
-                throw new NotImplementedException("Pico platform is not implemented on this platform yet.");
+                throw new NotImplementedException("PICO platform is not implemented on this platform yet.");
             }
 
             if (!Initialized)
             {
-                throw new UnityException($"Pico Platform failed to initialize：{initializeResult}.");
+                throw new UnityException($"PICO Platform failed to initialize：{initializeResult}.");
             }
 
-            (new GameObject("Pico.Platform.Runner")).AddComponent<Runner>();
+            Runner.RegisterGameObject();
         }
 
+        /**
+         * \overload Task<GameInitializeResult> GameInitialize(string accessToken)
+         */
         /// <summary>
         /// Initializes game-related modules, such as room, matchmaking, and network.
         /// </summary>
@@ -163,10 +211,13 @@ namespace Pico.Platform
                 return new Task<GameInitializeResult>(CLIB.ppf_Game_InitializeWithToken(accessToken));
             }
 
-            Debug.LogError(UninitializedError);
+            Debug.LogError(NotInitializedError);
             return null;
         }
 
+        /**
+         * \overload Task<GameInitializeResult> GameInitialize()
+         */
         /// <summary>
         /// Initializes modules without token related with game, such as room, matchmaking, and net.
         /// </summary>
@@ -177,7 +228,7 @@ namespace Pico.Platform
                 return new Task<GameInitializeResult>(CLIB.ppf_Game_InitializeAuto());
             }
 
-            Debug.LogError(UninitializedError);
+            Debug.LogError(NotInitializedError);
             return null;
         }
 

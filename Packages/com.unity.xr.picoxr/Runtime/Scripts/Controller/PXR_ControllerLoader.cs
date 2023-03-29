@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -22,34 +22,24 @@ namespace Unity.XR.PXR
         [SerializeField]
         private PXR_Input.Controller hand;
 
-        public bool customModel = false;
-
-        public GameObject g2;
-        public GameObject neo2L;
-        public GameObject neo2R;
         public GameObject neo3L;
         public GameObject neo3R;
         public GameObject PICO_4L;
         public GameObject PICO_4R;
+        public GameObject Merline;
 
-        public Material mobileMaterial;
-        public Material standardMaterial;
-
-        private bool loadModelSuccess = false;
+        public Material legacyMaterial;
+        private Texture2D modelTexture2D;
 
         private int controllerType = -1;
 
         private JsonData curControllerData = null;
         private int systemOrLocal = 0;
-
+        private bool loadModelSuccess = false;
         private string modelName = "";
         private string texFormat = "";
         private string prePath = "";
         private string modelFilePath = "/system/media/pxrRes/controller/";
-        private const string g2TexBasePath = "Controller/G2/controller3";
-        private const string neo2TexBasePath = "Controller/Neo2/controller4";
-        private const string neo3TexBasePath = "Controller/Neo3/controller5";
-        private const string pico_4TexBasePath = "Controller/PICO_4/controller6";
 
         private bool leftControllerState = false;
         private bool rightControllerState = false;
@@ -57,10 +47,9 @@ namespace Unity.XR.PXR
         private enum ControllerSimulationType
         {
             None,
-            G2,
-            Neo2,
             Neo3,
-            PICO_4
+            PICO4,
+            Merline
         }
 #if UNITY_EDITOR
         [SerializeField]
@@ -76,99 +65,79 @@ namespace Unity.XR.PXR
 #if UNITY_EDITOR
             switch (controllerSimulation)
             {
-                case ControllerSimulationType.G2:
-                    {
-                        var g2Object = Instantiate(hand == PXR_Input.Controller.LeftController ? g2 : null, transform, false);
-                        var g2Comp = g2Object.AddComponent<PXR_ControllerKeyEffects>();
-                        g2Comp.hand = hand;
-                        LoadTexture(g2Comp, g2TexBasePath, true);
-                        break;
-                    }
-                case ControllerSimulationType.Neo2:
-                    {
-                        var neo2Object = Instantiate(hand == PXR_Input.Controller.LeftController ? neo2L : neo2R, transform, false);
-                        var neo2Comp = neo2Object.AddComponent<PXR_ControllerKeyEffects>();
-                        neo2Comp.hand = hand;
-                        LoadTexture(neo2Comp, neo2TexBasePath, true);
-                        break;
-                    }
                 case ControllerSimulationType.Neo3:
                     {
-                        var neo3Object = Instantiate(hand == PXR_Input.Controller.LeftController ? neo3L : neo3R, transform, false);
-                        var neo3Comp = neo3Object.AddComponent<PXR_ControllerKeyEffects>();
-                        neo3Comp.hand = hand;
-                        LoadTexture(neo3Comp, neo3TexBasePath, true);
+                        Instantiate(hand == PXR_Input.Controller.LeftController ? neo3L : neo3R, transform, false);
                         break; ;
                     }
-                case ControllerSimulationType.PICO_4:
-                {
-                    var neo3Object = Instantiate(hand == PXR_Input.Controller.LeftController ? PICO_4L : PICO_4R, transform, false);
-                    break; ;
-                }
+                case ControllerSimulationType.PICO4:
+                    {
+                        Instantiate(hand == PXR_Input.Controller.LeftController ? PICO_4L : PICO_4R, transform, false);
+                        break; ;
+                    }
+                case ControllerSimulationType.Merline:
+                    {
+                        Instantiate(Merline, transform, false);
+                        break; ;
+                    }
             }
 #endif
         }
 
         void Start()
         {
-            if (!customModel)
-            {
-                controllerType = PXR_Plugin.Controller.UPxr_GetControllerType();
+            controllerType = PXR_Plugin.Controller.UPxr_GetControllerType();
 #if UNITY_ANDROID && !UNITY_EDITOR
                 LoadResFromJson();
 #endif
-                leftControllerState = PXR_Input.IsControllerConnected(PXR_Input.Controller.LeftController);
-                rightControllerState = PXR_Input.IsControllerConnected(PXR_Input.Controller.RightController);
-                if (hand == PXR_Input.Controller.LeftController)
-                    RefreshController(PXR_Input.Controller.LeftController);
-                if (hand == PXR_Input.Controller.RightController)
-                    RefreshController(PXR_Input.Controller.RightController);
-            }
+            leftControllerState = PXR_Input.IsControllerConnected(PXR_Input.Controller.LeftController);
+            rightControllerState = PXR_Input.IsControllerConnected(PXR_Input.Controller.RightController);
+            if (hand == PXR_Input.Controller.LeftController)
+                RefreshController(PXR_Input.Controller.LeftController);
+            if (hand == PXR_Input.Controller.RightController)
+                RefreshController(PXR_Input.Controller.RightController);
         }
 
         void Update()
         {
-            if (!customModel)
+            if (hand == PXR_Input.Controller.LeftController)
             {
-                if (hand == PXR_Input.Controller.LeftController)
+                if (PXR_Input.IsControllerConnected(PXR_Input.Controller.LeftController))
                 {
-                    if (PXR_Input.IsControllerConnected(PXR_Input.Controller.LeftController))
+                    if (!leftControllerState)
                     {
-                        if (!leftControllerState)
-                        {
-                            controllerType = PXR_Plugin.Controller.UPxr_GetControllerType();
-                            RefreshController(PXR_Input.Controller.LeftController);
-                            leftControllerState = true;
-                        }
-                    }
-                    else
-                    {
-                        if (leftControllerState)
-                        {
-                            DestroyLocalController();
-                            leftControllerState = false;
-                        }
+                        controllerType = PXR_Plugin.Controller.UPxr_GetControllerType();
+                        RefreshController(PXR_Input.Controller.LeftController);
+                        leftControllerState = true;
                     }
                 }
-
-                if (hand == PXR_Input.Controller.RightController)
+                else
                 {
-                    if (PXR_Input.IsControllerConnected(PXR_Input.Controller.RightController))
+                    if (leftControllerState)
                     {
-                        if (!rightControllerState)
-                        {
-                            controllerType = PXR_Plugin.Controller.UPxr_GetControllerType();
-                            RefreshController(PXR_Input.Controller.RightController);
-                            rightControllerState = true;
-                        }
+                        DestroyLocalController();
+                        leftControllerState = false;
                     }
-                    else
+                }
+            }
+
+            if (hand == PXR_Input.Controller.RightController)
+            {
+                if (PXR_Input.IsControllerConnected(PXR_Input.Controller.RightController))
+                {
+                    if (!rightControllerState)
                     {
-                        if (rightControllerState)
-                        {
-                            DestroyLocalController();
-                            rightControllerState = false;
-                        }
+                        controllerType = PXR_Plugin.Controller.UPxr_GetControllerType();
+                        RefreshController(PXR_Input.Controller.RightController);
+                        rightControllerState = true;
+                    }
+                }
+                else
+                {
+                    if (rightControllerState)
+                    {
+                        DestroyLocalController();
+                        rightControllerState = false;
                     }
                 }
             }
@@ -210,7 +179,6 @@ namespace Unity.XR.PXR
                         currentController.gameObject.SetActive(true);
                     }
                 }
-                PXR_ControllerKeyTips.RefreshTips();
             }
         }
 
@@ -243,20 +211,10 @@ namespace Unity.XR.PXR
         {
             foreach (Transform t in transform)
             {
+                Destroy(modelTexture2D);
                 Destroy(t.gameObject);
+                Resources.UnloadUnusedAssets();
                 loadModelSuccess = false;
-            }
-        }
-
-        private void DestroySysController()
-        {
-            foreach (Transform t in transform)
-            {
-                if (t.name == modelName)
-                {
-                    Destroy(t.gameObject);
-                    loadModelSuccess = false;
-                }
             }
         }
 
@@ -264,28 +222,16 @@ namespace Unity.XR.PXR
         {
             switch (controllerType)
             {
-                case 3:
-                    var g2Go = Instantiate(g2, transform, false);
-                    var g2Comp = g2Go.AddComponent<PXR_ControllerKeyEffects>();
-                    LoadTexture(g2Comp, g2TexBasePath, true);
-                    loadModelSuccess = true;
-                    break;
-                case 4:
-                    var neo2Go = Instantiate(hand == PXR_Input.Controller.LeftController ? neo2L : neo2R, transform, false);
-                    var neo2Comp = neo2Go.AddComponent<PXR_ControllerKeyEffects>();
-                    neo2Comp.hand = hand;
-                    LoadTexture(neo2Comp, neo2TexBasePath, true);
-                    loadModelSuccess = true;
-                    break;
                 case 5:
-                    var neo3Go = Instantiate(hand == PXR_Input.Controller.LeftController ? neo3L : neo3R, transform, false);
-                    var neo3Comp = neo3Go.AddComponent<PXR_ControllerKeyEffects>();
-                    neo3Comp.hand = hand;
-                    LoadTexture(neo3Comp, neo3TexBasePath, true);
+                    Instantiate(hand == PXR_Input.Controller.LeftController ? neo3L : neo3R, transform, false);
                     loadModelSuccess = true;
                     break;
                 case 6:
-                    var pico4Go = Instantiate(hand == PXR_Input.Controller.LeftController ? PICO_4L : PICO_4R, transform, false);
+                    Instantiate(hand == PXR_Input.Controller.LeftController ? PICO_4L : PICO_4R, transform, false);
+                    loadModelSuccess = true;
+                    break;
+                case 7:
+                    Instantiate(Merline, transform, false);
                     loadModelSuccess = true;
                     break;
                 default:
@@ -305,29 +251,26 @@ namespace Unity.XR.PXR
             }
             else
             {
-                GameObject go = new GameObject();
-                go.name = modelName;
+                GameObject go = new GameObject
+                {
+                    name = modelName
+                };
                 MeshFilter meshFilter = go.AddComponent<MeshFilter>();
                 meshFilter.mesh = PXR_ObjImporter.Instance.ImportFile(fullFilePath);
                 go.transform.SetParent(transform);
                 go.transform.localPosition = Vector3.zero;
 
                 MeshRenderer meshRenderer = go.AddComponent<MeshRenderer>();
-                int matID = (int)curControllerData["material_type"];
-                meshRenderer.material = matID == 0 ? standardMaterial : mobileMaterial;
-
-                loadModelSuccess = true;
-                PXR_ControllerKeyEffects controllerVisual = go.AddComponent<PXR_ControllerKeyEffects>();
-                
-                controllerVisual.hand = hand;
-                LoadTexture(controllerVisual, controllerType.ToString() + id.ToString(), false);
+                meshRenderer.material = legacyMaterial;
+                LoadTexture(meshRenderer, controllerType.ToString() + id.ToString(), false);
                 go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
                 go.transform.localScale = new Vector3(-0.01f, 0.01f, 0.01f);
+                loadModelSuccess = true;
             }
         }
 
 
-        private void LoadTexture(PXR_ControllerKeyEffects visual, string controllerName, bool fromRes)
+        private void LoadTexture(MeshRenderer  mr,string controllerName, bool fromRes)
         {
             if (fromRes)
             {
@@ -341,29 +284,7 @@ namespace Unity.XR.PXR
             }
 
             var texturePath = prePath + "_idle" + texFormat;
-            visual.textureIdle = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_app" + texFormat;
-            visual.textureApp = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_home" + texFormat;
-            visual.textureHome = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_touch" + texFormat;
-            visual.textureTouchpad = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_volume_down" + texFormat;
-            visual.textureVolDown = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_volume_up" + texFormat;
-            visual.textureVolUp = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_trigger" + texFormat;
-            visual.textureTrigger = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_a" + texFormat;
-            visual.textureA = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_b" + texFormat;
-            visual.textureB = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_x" + texFormat;
-            visual.textureX = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_y" + texFormat;
-            visual.textureY = LoadOneTexture(texturePath, fromRes);
-            texturePath = prePath + "_grip" + texFormat;
-            visual.textureGrip = LoadOneTexture(texturePath, fromRes);
+            mr.material.SetTexture("_MainTex", LoadOneTexture(texturePath, fromRes));
         }
 
         private Texture2D LoadOneTexture(string filepath, bool fromRes)
@@ -376,9 +297,9 @@ namespace Unity.XR.PXR
             {
                 int tW = (int)curControllerData["tex_width"];
                 int tH = (int)curControllerData["tex_height"];
-                var mTex = new Texture2D(tW, tH);
-                mTex.LoadImage(ReadPNG(filepath));
-                return mTex;
+                modelTexture2D = new Texture2D(tW, tH);
+                modelTexture2D.LoadImage(ReadPNG(filepath));
+                return modelTexture2D;
             }
         }
 
@@ -390,7 +311,6 @@ namespace Unity.XR.PXR
             fileStream.Read(binary, 0, (int)fileStream.Length);
             fileStream.Close();
             fileStream.Dispose();
-            fileStream = null;
             return binary;
         }
     }

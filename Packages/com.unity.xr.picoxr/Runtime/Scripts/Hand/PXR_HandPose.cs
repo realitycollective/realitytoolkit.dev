@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -69,7 +69,7 @@ public class PXR_HandPose : MonoBehaviour
 
                 if (i == (int)HandJoint.JointWrist)
                 {
-                    leftWirstRot = rightHandJointLocations.jointLocations[i].pose.Orientation.ToQuat();
+                    rightWirstRot = rightHandJointLocations.jointLocations[i].pose.Orientation.ToQuat();
                 }
             }
             rightShapesVaild = RightHandShapesRecognizerCheck(rightJointPos, rightWirstRot*Vector3.right, rightWirstRot*Vector3.forward);
@@ -134,7 +134,7 @@ public class PXR_HandPose : MonoBehaviour
             }
             else
             {
-                if (handPoseStart != null)
+                if (handPoseEnd != null)
                 {
                     handPoseEnd.Invoke();
                 }
@@ -259,9 +259,16 @@ public class PXR_HandPose : MonoBehaviour
 
     private void BonesRecognizerCheck(List<Vector3> jointPos, ref bool result)
     {
-        foreach (var bones in config.bonesRecognizer.listBones)
+        if (config.bonesRecognizer.listBones.Count == 0)
         {
-            BonesCheck(jointPos[(int)bones.bone1], jointPos[(int)bones.bone2], bones, ref result);
+            result = true;
+        }
+        else
+        {
+            foreach (var bones in config.bonesRecognizer.listBones)
+            {
+                BonesCheck(jointPos[(int)bones.bone1], jointPos[(int)bones.bone2], bones, ref result);
+            }
         }
     }
 

@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -93,17 +93,15 @@ namespace Unity.XR.PXR
                     colorSpace = (ushort)((QualitySettings.activeColorSpace == ColorSpace.Linear) ? 1 : 0),
                     useContentProtect = Convert.ToUInt16(PXR_ProjectSetting.GetProjectConfig().useContentProtect),
                     systemDisplayFrequency = settings.GetSystemDisplayFrequency(),
+                    optimizeBufferDiscards = settings.GetOptimizeBufferDiscards(),
+                    enableAppSpaceWarp = Convert.ToUInt16(settings.enableAppSpaceWarp)
                 };
 
                 PXR_Plugin.System.UPxr_Construct(ConvertRotationWith2Vector);
+                PXR_Plugin.System.UPxr_SetInputDeviceChangedCallBack(InputDeviceChangedFunction);
+                PXR_Plugin.System.UPxr_SetSeethroughStateChangedCallBack(SeethroughStateChangedFunction);
                 PXR_Plugin.System.UPxr_SetUserDefinedSettings(userDefinedSettings);
             }
-#endif
-
-#if UNITY_2020_1_OR_NEWER
-            PXR_Plugin.System.UPxr_SetSRPState(GraphicsSettings.currentRenderPipeline != null);
-#else
-            PXR_Plugin.System.UPxr_SetSRPState(false);
 #endif
 
             CreateSubsystem<XRDisplaySubsystemDescriptor, XRDisplaySubsystem>(displaySubsystemDescriptors, "PICO Display");
@@ -166,6 +164,15 @@ namespace Unity.XR.PXR
             if (PXR_Plugin.System.InputDeviceChanged != null)
             {
                 PXR_Plugin.System.InputDeviceChanged(value);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(SeethroughStateChangedCallBack))]
+        static void SeethroughStateChangedFunction(int value)
+        {
+            if (PXR_Plugin.System.SeethroughStateChangedChanged != null)
+            {
+                PXR_Plugin.System.SeethroughStateChangedChanged(value);
             }
         }
 

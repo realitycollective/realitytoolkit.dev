@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -62,9 +62,6 @@ namespace Unity.XR.PXR
 
         // 360 
         public float radius = 0; // >0
-        public float centralHorizontalAngle = 0;
-        public float upperVerticalAngle = 0;
-        public float lowerVerticalAngle = 0;
 
         // ImageRect
         public bool useImageRect = false;
@@ -106,7 +103,7 @@ namespace Unity.XR.PXR
             return layerDepth.CompareTo(other.layerDepth);
         }
 
-        private void Awake()
+        protected void Awake()
         {
             xrRig = Camera.main;
             Instances.Add(this);
@@ -385,7 +382,7 @@ namespace Unity.XR.PXR
             {
                 Texture nativeTexture = nativeTextures[i].textures[imageIndex];
 
-                if (null == nativeTexture)
+                if (null == nativeTexture || null == layerTextures[i])
                     continue;
 
                 RenderTexture texture = layerTextures[i] as RenderTexture;
@@ -525,7 +522,7 @@ namespace Unity.XR.PXR
         {
             Quad = 1,
             Cylinder = 2,
-            Equirect = 4,
+            Equirect = 3,
             Cubemap = 5
         }
 

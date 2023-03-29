@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -91,12 +91,6 @@ namespace Unity.XR.PXR.Editor
                 {
                     guiContent.text = "Radius";
                     overlayTarget.radius = EditorGUILayout.FloatField(guiContent, Mathf.Abs(overlayTarget.radius));
-                    guiContent.text = "Central Horizontal Angle";
-                    overlayTarget.centralHorizontalAngle = EditorGUILayout.Slider(guiContent, overlayTarget.centralHorizontalAngle, 0, 360);
-                    guiContent.text = "Upper Vertical Angle";
-                    overlayTarget.upperVerticalAngle = EditorGUILayout.Slider(guiContent, overlayTarget.upperVerticalAngle, -180, 180);
-                    guiContent.text = "Lower Vertical Angle";
-                    overlayTarget.lowerVerticalAngle = EditorGUILayout.Slider(guiContent, overlayTarget.lowerVerticalAngle, -180, 180);
                 }
 
                 if (overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Quad || overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Cylinder || overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Equirect)
@@ -138,7 +132,7 @@ namespace Unity.XR.PXR.Editor
                             overlayTarget.srcRectRight = new Rect(0.5f, 0, 0.5f, 1);
                         }
 
-                        if (overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Quad)
+                        if (overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Quad || overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Equirect)
                         {
                             guiContent.text = "Destination Rects";
                             overlayTarget.destinationRect = (PXR_OverLay.DestinationRect)EditorGUILayout.EnumPopup(guiContent, overlayTarget.destinationRect);
@@ -162,25 +156,12 @@ namespace Unity.XR.PXR.Editor
                                 EditorGUILayout.EndVertical();
                                 EditorGUILayout.Space();
                             }
-                            else if (overlayTarget.textureRect == PXR_OverLay.TextureRect.MonoScopic)
+                            else
                             {
-                                overlayTarget.srcRectLeft = new Rect(0, 0, 1, 1);
-                                overlayTarget.srcRectRight = new Rect(0, 0, 1, 1);
-                            }
-                            else if (overlayTarget.textureRect == PXR_OverLay.TextureRect.StereoScopic)
-                            {
-                                overlayTarget.srcRectLeft = new Rect(0, 0, 0.5f, 1);
-                                overlayTarget.srcRectRight = new Rect(0.5f, 0, 0.5f, 1);
+                                overlayTarget.dstRectLeft = new Rect(0, 0, 1, 1);
+                                overlayTarget.dstRectRight = new Rect(0, 0, 1, 1);
                             }
                         }
-                    }
-                    else
-                    {
-                        overlayTarget.srcRectLeft = new Rect(0, 0, 1, 1);
-                        overlayTarget.srcRectRight = new Rect(0, 0, 1, 1);
-
-                        overlayTarget.dstRectLeft = new Rect(0, 0, 1, 1);
-                        overlayTarget.dstRectRight = new Rect(0, 0, 1, 1);
                     }
                 }
 

@@ -2,12 +2,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PXR_Audio.Spatializer;
 using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(PXR_Audio_Spatializer_SceneMaterial))]
-public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
+public class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
 {
     [SerializeField] private bool includeChildren = false;
     [SerializeField] private bool visualizeMeshInEditor = false;
@@ -35,21 +36,6 @@ public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
 
     public int StaticGeometryId => staticGeometryID;
 
-    private PXR_Audio_Spatializer_Context context;
-
-    public PXR_Audio_Spatializer_Context Context
-    {
-        get
-        {
-            if (context == null)
-            {
-                context = FindObjectOfType<PXR_Audio_Spatializer_Context>();
-            }
-
-            return context;
-        }
-    }
-
     private PXR_Audio_Spatializer_SceneMaterial material;
 
     public PXR_Audio_Spatializer_SceneMaterial Material
@@ -63,6 +49,118 @@ public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
 
             return material;
         }
+    }
+
+    private MeshConfig meshConfig;
+    private uint propertyMask = 0;
+
+    private int currentContextUuid = -2;
+
+    private void OnEnable()
+    {
+        if (PXR_Audio_Spatializer_Context.Instance == null) return;
+
+        //  If geometries are added after context is initialized
+        if (PXR_Audio_Spatializer_Context.Instance.UUID != currentContextUuid)
+        {
+            var ret = SubmitMeshToContext();
+            var staticRet = SubmitStaticMeshToContext();
+        }
+        else
+        {
+            meshConfig = new MeshConfig(true, Material, transform.localToWorldMatrix);
+            if (geometryId >= 0)
+                PXR_Audio_Spatializer_Context.Instance.SetMeshConfig(geometryId, ref meshConfig,
+                    (uint)MeshProperty.All);
+            if (staticGeometryID >= 0)
+                PXR_Audio_Spatializer_Context.Instance.SetMeshConfig(staticGeometryID, ref meshConfig,
+                    (uint)MeshProperty.All);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (PXR_Audio_Spatializer_Context.Instance == null) return;
+        if (PXR_Audio_Spatializer_Context.Instance.UUID != currentContextUuid) return;
+
+        meshConfig.enabled = false;
+        if (geometryId >= 0)
+            PXR_Audio_Spatializer_Context.Instance.SetMeshConfig(geometryId, ref meshConfig,
+                (uint)MeshProperty.Enabled);
+        if (staticGeometryID >= 0)
+            PXR_Audio_Spatializer_Context.Instance.SetMeshConfig(staticGeometryID, ref meshConfig,
+                (uint)MeshProperty.Enabled);
+    }
+
+    private void OnDestroy()
+    {
+        if (PXR_Audio_Spatializer_Context.Instance == null) return;
+        if (PXR_Audio_Spatializer_Context.Instance.UUID != currentContextUuid) return;
+        if (geometryId >= 0)
+            PXR_Audio_Spatializer_Context.Instance.RemoveMesh(geometryId);
+        if (staticGeometryID >= 0)
+            PXR_Audio_Spatializer_Context.Instance.RemoveMesh(staticGeometryID);
+    }
+
+    private void Update()
+    {
+        if (PXR_Audio_Spatializer_Context.Instance == null) return;
+
+        // //  If geometries are added after context is initialized
+        // if (PXR_Audio_Spatializer_Context.Instance.UUID != currentContextUuid)
+        // {
+        //     var ret = SubmitMeshToContext();
+        //     var staticRet = SubmitStaticMeshToContext();
+        // }
+
+        if (transform.hasChanged)
+        {
+            meshConfig.SetTransformMatrix4x4(transform.localToWorldMatrix);
+            propertyMask |= (uint)MeshProperty.ToWorldTransform;
+            transform.hasChanged = false;
+        }
+
+        if (propertyMask > 0)
+        {
+            if (geometryId >= 0)
+                PXR_Audio_Spatializer_Context.Instance.SetMeshConfig(geometryId, ref meshConfig,
+                    propertyMask);
+            if (staticGeometryID >= 0)
+                PXR_Audio_Spatializer_Context.Instance.SetMeshConfig(staticGeometryID, ref meshConfig,
+                    propertyMask);
+
+            propertyMask = 0;
+        }
+    }
+
+    public void UpdateAbsorptionMultiband(float[] absorptions)
+    {
+        meshConfig.materialType = AcousticsMaterial.Custom;
+        meshConfig.absorption.v0 = Material.absorption[0] = absorptions[0];
+        meshConfig.absorption.v1 = Material.absorption[1] = absorptions[1];
+        meshConfig.absorption.v2 = Material.absorption[2] = absorptions[2];
+        meshConfig.absorption.v3 = Material.absorption[3] = absorptions[3];
+        propertyMask |= (uint)MeshProperty.Material | (uint)MeshProperty.Absorption;
+    }
+
+    public void UpdateScattering(float scattering)
+    {
+        meshConfig.materialType = AcousticsMaterial.Custom;
+        meshConfig.scattering = Material.scattering = scattering;
+        propertyMask |= (uint)MeshProperty.Material | (uint)MeshProperty.Scattering;
+    }
+
+    public void UpdateTransmission(float transmission)
+    {
+        meshConfig.materialType = AcousticsMaterial.Custom;
+        meshConfig.transmission = Material.transmission = transmission;
+        propertyMask |= (uint)MeshProperty.Material | (uint)MeshProperty.Transmission;
+    }
+
+    public void UpdateMaterialType(PXR_Audio.Spatializer.AcousticsMaterial materialType)
+    {
+        meshConfig.materialType = materialType;
+        propertyMask |= (uint)MeshProperty.Material;
     }
 
     private void GetAllMeshFilter(Transform transform, bool includeChildren, List<MeshFilter> meshFilterList,
@@ -84,19 +182,21 @@ public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
         //  Gather this mesh only when
         //  1. Its isStatic flag is equal to our requirement
         //  2. Its layer belongs to layerMask set 
-        if (transform.gameObject.isStatic == isStatic && ((1 << transform.gameObject.layer) & layerMask) != 0)
+        if (((1 << transform.gameObject.layer) & layerMask) != 0)
         {
             var meshFilterArray = transform.GetComponents<MeshFilter>();
             //  cases we don't add to mesh filter list
-            //   1. meshFilter.shardmesh == null
+            //   1. meshFilter.sharedmesh == null
             //   2. meshFilter.sharedmesh.isReadable == false
             if (meshFilterArray != null)
             {
-                for (int i = 0; i < meshFilterArray.Length; i++)
+                foreach (var meshFilter in meshFilterArray)
                 {
-                    var meshFilter = meshFilterArray[i];
                     if (meshFilter != null && meshFilter.sharedMesh != null &&
-                        (isStatic || meshFilter.sharedMesh.isReadable))
+                        (
+                            (isStatic && (transform.gameObject.isStatic || !meshFilter.sharedMesh.isReadable)) ||
+                            (!isStatic && (!transform.gameObject.isStatic && meshFilter.sharedMesh.isReadable))
+                        ))
                     {
                         meshFilterList.Add(meshFilter);
                     }
@@ -105,22 +205,41 @@ public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
         }
     }
 
-    private static Mesh CombineMeshes(List<MeshFilter> meshFilterList)
+    private static Mesh CombineMeshes(List<MeshFilter> meshFilterList, Transform rootTransform)
     {
-        CombineInstance[] combines = new CombineInstance[meshFilterList.Count];
-        for (int i = 0; i < meshFilterList.Count; i++)
-        {
-            combines[i].mesh = meshFilterList[i].sharedMesh;
-            combines[i].transform =
-                Matrix4x4.Scale(new Vector3(1, 1, -1)) * meshFilterList[i].transform.localToWorldMatrix;
-        }
-
         Mesh combinedMesh = new Mesh
         {
             name = "combined meshes",
             indexFormat = UnityEngine.Rendering.IndexFormat.UInt32
         };
-        combinedMesh.CombineMeshes(combines, true, true);
+
+        var combinedVertices = Array.Empty<Vector3>();
+        var combinedIndices = Array.Empty<int>();
+        //  Accumulate combined vertices buffer size
+        foreach (var meshFilter in meshFilterList)
+        {
+            int vertexOffset = combinedVertices.Length;
+            combinedVertices = combinedVertices.Concat(meshFilter.sharedMesh.vertices).ToArray();
+            int vertexSegmentEnd = combinedVertices.Length;
+            var toWorld = rootTransform.worldToLocalMatrix *
+                          meshFilter.transform.localToWorldMatrix;
+            for (int i = vertexOffset; i < vertexSegmentEnd; ++i)
+            {
+                combinedVertices[i] = toWorld.MultiplyPoint3x4(combinedVertices[i]);
+            }
+
+            var trianglesStartIdx = combinedIndices.Length;
+            combinedIndices = combinedIndices.Concat(meshFilter.sharedMesh.triangles).ToArray();
+            var trianglesEndIdx = combinedIndices.Length;
+            for (var i = trianglesStartIdx; i < trianglesEndIdx; ++i)
+            {
+                combinedIndices[i] += vertexOffset;
+            }
+        }
+
+        combinedMesh.vertices = combinedVertices;
+        combinedMesh.triangles = combinedIndices;
+        combinedMesh.RecalculateNormals();
 
         return combinedMesh;
     }
@@ -150,17 +269,27 @@ public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
         GetAllMeshFilter(transform, includeChildren, meshFilterList, false, ~0);
 
         //  Combine all meshes
-        Mesh combinedMesh = CombineMeshes(meshFilterList);
+        Mesh combinedMesh = CombineMeshes(meshFilterList, transform);
 
         //  flatten vertices buffer into a float array
         float[] vertices = FlattenVerticesBuffer(combinedMesh.vertices);
 
+        meshConfig = new MeshConfig(enabled, Material, transform.localToWorldMatrix);
+
         //  Submit all meshes
-        PXR_Audio.Spatializer.Result result = PXR_Audio_Spatializer_Context.Instance.SubmitMeshAndMaterialFactor(
+        PXR_Audio.Spatializer.Result result = PXR_Audio_Spatializer_Context.Instance.SubmitMeshWithConfig(
             vertices, vertices.Length / 3,
             combinedMesh.triangles, combinedMesh.triangles.Length / 3,
-            Material.absorption, Material.scattering, Material.transmission,
-            ref geometryId);
+            ref meshConfig, ref geometryId);
+
+        if (result != Result.Success)
+            Debug.LogError("Failed to submit audio mesh: " + gameObject.name + ", Error code is: " + result);
+        else
+            Debug.LogFormat("Submitted geometry #{0}, gameObject name is {1}", geometryId.ToString(),
+                name);
+
+        if (result == Result.Success)
+            currentContextUuid = PXR_Audio_Spatializer_Context.Instance.UUID;
 
         return result;
     }
@@ -176,9 +305,11 @@ public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
         {
             float[] tempVertices = FlattenVerticesBuffer(bakedStaticMesh.vertices);
 
-            result = PXR_Audio_Spatializer_Context.Instance.SubmitMeshAndMaterialFactor(tempVertices,
+            meshConfig = new MeshConfig(enabled, Material, transform.localToWorldMatrix);
+
+            result = PXR_Audio_Spatializer_Context.Instance.SubmitMeshWithConfig(tempVertices,
                 bakedStaticMesh.vertices.Length, bakedStaticMesh.triangles,
-                bakedStaticMesh.triangles.Length / 3, Material.absorption, Material.scattering, Material.transmission,
+                bakedStaticMesh.triangles.Length / 3, ref meshConfig,
                 ref staticGeometryID);
 
             if (result != Result.Success)
@@ -187,6 +318,9 @@ public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
                 Debug.LogFormat("Submitted static geometry #{0}, gameObject name is {1}", staticGeometryID.ToString(),
                     name);
         }
+
+        if (result == Result.Success)
+            currentContextUuid = PXR_Audio_Spatializer_Context.Instance.UUID;
 
         return result;
     }
@@ -205,7 +339,7 @@ public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
         }
         else
         {
-            bakedStaticMesh = CombineMeshes(meshList);
+            bakedStaticMesh = CombineMeshes(meshList, transform);
             bakedStaticMesh.name = "baked mesh for ygg";
         }
 
@@ -243,7 +377,8 @@ public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
             currentBakedStaticMeshAssetPath = null;
             serializedObject.FindProperty("currentBakedStaticMeshAssetPath").stringValue =
                 currentBakedStaticMeshAssetPath;
-        } 
+        }
+
         serializedObject.ApplyModifiedProperties();
     }
 #endif
@@ -275,8 +410,11 @@ public partial class PXR_Audio_Spatializer_SceneGeometry : MonoBehaviour
                 c.b = 0.0f;
                 c.a = 1.0f;
                 Gizmos.color = c;
-                Gizmos.DrawWireMesh(bakedStaticMesh, Vector3.zero, Quaternion.identity, new Vector3(1, 1, -1));
+                var gizmosMatrixBackup = Gizmos.matrix;
+                Gizmos.matrix = transform.localToWorldMatrix;
+                Gizmos.DrawWireMesh(bakedStaticMesh);
                 Gizmos.color = colorBackUp;
+                Gizmos.matrix = gizmosMatrixBackup;
             }
         }
     }

@@ -1,41 +1,22 @@
 /*******************************************************************************
-Copyright © 2015-2022 Pico Technology Co., Ltd.All rights reserved.
+Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of
-Pico Technology Co., Ltd. The intellectual and technical concepts
-contained herein are proprietary to Pico Technology Co., Ltd. and may be
+PICO Technology Co., Ltd. The intellectual and technical concepts
+contained herein are proprietary to PICO Technology Co., Ltd. and may be
 covered by patents, patents in process, and are protected by trade secret or
 copyright law. Dissemination of this information or reproduction of this
 material is strictly forbidden unless prior written permission is obtained from
-Pico Technology Co., Ltd.
+PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
 using Pico.Platform.Models;
-using UnityEngine;
 
 namespace Pico.Platform
 {
     public class MessageQueue
     {
-        public static Message Next()
-        {
-            if (!CoreService.Initialized)
-            {
-                return null;
-            }
-
-            var handle = CLIB.ppf_PopMessage();
-            if (handle == IntPtr.Zero)
-            {
-                return null;
-            }
-
-            Message msg = ParseMessage(handle);
-            CLIB.ppf_FreeMessage(handle);
-            return msg;
-        }
-
         public static Message ParseMessage(IntPtr msgPointer)
         {
             Message msg = null;
@@ -148,10 +129,32 @@ namespace Pico.Platform
                 case MessageType.Notification_Rtc_OnUserStartAudioCapture:
                 case MessageType.Notification_Rtc_OnUserStopAudioCapture:
                 case MessageType.Application_LaunchOtherApp:
+                case MessageType.Application_LaunchStore:
                 case MessageType.Notification_Room_InviteAccepted:
+                case MessageType.Notification_Challenge_LaunchByInvite:
                 case MessageType.Notification_ApplicationLifecycle_LaunchIntentChanged:
                 {
                     msg = new Message<string>(msgPointer, ptr => { return CLIB.ppf_Message_GetString(ptr); });
+                    break;
+                }
+                case MessageType.Notification_Presence_JoinIntentReceived:
+                {
+                    msg = new Message<PresenceJoinIntent>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetPresenceJoinIntent(ptr);
+                        if (obj == IntPtr.Zero) return null;
+                        return new PresenceJoinIntent(obj);
+                    });
+                    break;
+                }
+                case MessageType.Application_GetVersion:
+                {
+                    msg = new Message<ApplicationVersion>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetApplicationVersion(ptr);
+                        if (obj == IntPtr.Zero) return null;
+                        return new ApplicationVersion(obj);
+                    });
                     break;
                 }
 
@@ -185,6 +188,17 @@ namespace Pico.Platform
                         var obj = CLIB.ppf_Message_GetUserArray(ptr);
                         if (obj == IntPtr.Zero) return null;
                         return new UserList(obj);
+                    });
+                    break;
+                }
+
+                case MessageType.User_GetRelations:
+                {
+                    msg = new Message<UserRelationResult>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetUserRelationResult(ptr);
+                        if (obj == IntPtr.Zero) return null;
+                        return new UserRelationResult(obj);
                     });
                     break;
                 }
@@ -533,12 +547,15 @@ namespace Pico.Platform
                 case MessageType.Matchmaking_ReportResultInsecure:
                 case MessageType.Matchmaking_StartMatch:
                 case MessageType.Room_LaunchInvitableUserFlow:
+                case MessageType.Challenges_LaunchInvitableUserFlow:
                 case MessageType.Room_UpdateOwner:
                 case MessageType.Notification_MarkAsRead:
                 case MessageType.Notification_Game_StateReset:
                 case MessageType.Presence_Clear:
                 case MessageType.Presence_Set:
                 case MessageType.IAP_ConsumePurchase:
+                case MessageType.Presence_LaunchInvitePanel:
+                case MessageType.Presence_ShareMedia:
                 {
                     msg = new Message(msgPointer);
                     break;
@@ -726,11 +743,42 @@ namespace Pico.Platform
                     });
                     break;
                 }
+                case MessageType.Challenges_Invite:
+                case MessageType.Challenges_Get:
+                case MessageType.Challenges_Join:
+                case MessageType.Challenges_Leave:
+                {
+                    msg = new Message<Challenge>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetChallenge(ptr);
+                        return new Challenge(obj);
+                    });
+                    break;
+                }
+                case MessageType.Challenges_GetList:
+                {
+                    msg = new Message<ChallengeList>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetChallengeArray(ptr);
+                        return new ChallengeList(obj);
+                    });
+                    break;
+                }
+                case MessageType.Challenges_GetEntries:
+                case MessageType.Challenges_GetEntriesAfterRank:
+                case MessageType.Challenges_GetEntriesByIds:
+                {
+                    msg = new Message<ChallengeEntryList>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetChallengeEntryArray(ptr);
+                        return new ChallengeEntryList(obj);
+                    });
+                    break;
+                }
 
                 #endregion stark game
 
                 default:
-                    Debug.LogError($"Unknown message type {messageType}");
                     break;
             }
 

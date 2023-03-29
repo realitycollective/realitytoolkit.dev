@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -19,10 +19,14 @@ namespace Unity.XR.PXR
     public class PXR_EyeTracking
     {
         /// <summary>
-        /// Gets the PosMatrix of the head. This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets the PosMatrix of the head. 
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="matrix">The Matrix4x4 returned by the result.</param>
-        /// <returns>Whether Matrix4x4 has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="matrix">A Matrix4x4 value returned by the result.</param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetHeadPosMatrix(out Matrix4x4 matrix)
         {
             matrix = Matrix4x4.identity;
@@ -30,8 +34,7 @@ namespace Unity.XR.PXR
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             Vector3 headPos = Vector3.zero;
@@ -52,14 +55,26 @@ namespace Unity.XR.PXR
             return true;
         }
 
+        static InputDevice curDevice;
+
         /// <summary>
-        /// Gets the input device for eye tracking data. This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets the input device for eye tracking data. 
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
         /// <param name="device">The input device returned by the result.</param>
-        /// <returns>Whether the input device has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         static bool GetEyeTrackingDevice(out InputDevice device)
         {
-            device = default(InputDevice);
+            if (curDevice!= null&& curDevice.isValid)
+            {
+                device = curDevice;
+                return true;
+            }
+
+            device = default;
 
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
@@ -72,16 +87,24 @@ namespace Unity.XR.PXR
                 return false;
             }
             device = devices[0];
+            curDevice = device;
+
             if (!device.isValid)
+            {
                 Debug.LogError("PXRLog Failed at GetEyeTrackingDevice device.isValid");
+            }
             return device.isValid;
         }
 
         /// <summary>
-        /// Gets the position of the combined gaze point for left and right eye. This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets the position of the combined gaze point.
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="point">A vector3 value that indicates the position returned by the result.</param>
-        /// <returns>Whether the position has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="point">A vector3 value returned by the result.</param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetCombineEyeGazePoint(out Vector3 point)
         {
             point = Vector3.zero;
@@ -89,8 +112,7 @@ namespace Unity.XR.PXR
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.combineEyePoint, out point))
@@ -103,10 +125,14 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets the direction of the combined gaze point for left and right eye. This interface is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets the direction of the combined gaze point.
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="vector">A vector3 value that indicates the direction returned by the result.</param>
-        /// <returns>Whether the direction has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="vector">A vector3 value returned by the result.</param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetCombineEyeGazeVector(out Vector3 vector)
         {
             vector = Vector3.zero;
@@ -114,8 +140,7 @@ namespace Unity.XR.PXR
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.combineEyeVector, out vector))
@@ -128,10 +153,14 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets the openness of the left eye. This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets the openness/closeness of the left eye. 
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="openness">A float value that indicates the eye openness returned by the result. The valid value ranges from `0.0` to `1.0`. `0.0` incicates completely closed, `1.0` indicates completely open.</param>
-        /// <returns>Whether the openness of the left eye has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="openness">A float value returned by the result. The value ranges from `0.0` to `1.0`. `0.0` incicates completely closed, `1.0` indicates completely open.</param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetLeftEyeGazeOpenness(out float openness)
         {
             openness = 0;
@@ -139,8 +168,7 @@ namespace Unity.XR.PXR
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.leftEyeOpenness, out openness))
@@ -153,10 +181,14 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets the openness of the right eye. This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets the openness/closeness of the right eye. 
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="openness">A float value that indicates the eye openness returned by the result. The valid value ranges from `0.0` to `1.0`. `0.0` indicates completely closed, `1.0` indicates completely open.</param>
-        /// <returns>Whether the openness of the right eye has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="openness">A float value returned by the result. The value ranges from `0.0` to `1.0`. `0.0` indicates completely closed, `1.0` indicates completely open.</param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetRightEyeGazeOpenness(out float openness)
         {
             openness = 0;
@@ -164,8 +196,7 @@ namespace Unity.XR.PXR
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.rightEyeOpenness, out openness))
@@ -178,18 +209,24 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets the pose status of the left eye. This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets whether the data of the current left eye is available. 
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="status">An int value that indicates the pose status returned by the result: `0`-not good; `1`-good.</param>
-        /// <returns>Whether the pose status has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="status">An int value returned by the result: 
+        /// * `0`: not available
+        /// * `1`: available
+        /// </param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetLeftEyePoseStatus(out uint status)
         {
             status = 0;
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.leftEyePoseStatus, out status))
@@ -201,18 +238,24 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets the pose status of the right eye. This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets whether the data of the current right eye is available.
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="status">An int value that indicates the pose status returned by the result: `0`-not good; `1`-good.</param>
-        /// <returns>Whether the pose status has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="status">An int value returned by the result: 
+        /// * `0`: not available
+        /// * `1`: available
+        /// </param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetRightEyePoseStatus(out uint status)
         {
             status = 0;
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.rightEyePoseStatus, out status))
@@ -224,18 +267,24 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets the combined pose status for left and right eye. This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets whether the data of the combined eye is available.
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="status">An int value that indicates the combined pose status returned by the result: `0`-not good; `1`-good.</param>
-        /// <returns>Whether the pose status has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="status">An int value returned by the result: 
+        /// `0`: not available
+        /// `1`: available
+        /// </param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetCombinedEyePoseStatus(out uint status)
         {
             status = 0;
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.combinedEyePoseStatus, out status))
@@ -247,18 +296,21 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets the position of the left eye in a coordinate system. The upper-right point of the sensor is taken as the origin (0, 0) and the lower-left point is taken as (1, 1). This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets the position of the left eye in a coordinate system. The upper-right point of the sensor is taken as the origin (0, 0) and the lower-left point is taken as (1, 1). 
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="position">A vector3 value that indicates the position returned by the result.</param>
-        /// <returns>Whether the position has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="position">A vector3 value returned by the result.</param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetLeftEyePositionGuide(out Vector3 position)
         {
             position = Vector3.zero;
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.leftEyePositionGuide, out position))
@@ -270,18 +322,21 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets the position of the right eye in a coordinate system. The upper-right point of the sensor is taken as the origin (0, 0) and the lower-left point is taken as (1, 1). This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets the position of the right eye in a coordinate system. The upper-right point of the sensor is taken as the origin (0, 0) and the lower-left point is taken as (1, 1). 
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="position">A vector3 value that indicates the position returned by the result.</param>
-        /// <returns>Whether the vector 3 position has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="position">A vector3 value returned by the result.</param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetRightEyePositionGuide(out Vector3 position)
         {
             position = Vector3.zero;
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.rightEyePositionGuide, out position))
@@ -293,18 +348,21 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets the gaze direction for foveated rendering (i.e., the central point of fixed foveated rendering). This function is only available for Neo2 Eye and Neo3 Pro.
+        /// Gets the foveated gaze direction (i.e., the central point of fixed foveated rendering). 
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="direction">A vector3 value that indicates the direction returned by the result.</param>
-        /// <returns>Whether the vector 3 direction has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="direction">A vector3 value returned by the result.</param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetFoveatedGazeDirection(out Vector3 direction)
         {
             direction = Vector3.zero;
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.foveatedGazeDirection, out direction))
@@ -316,18 +374,24 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Gets the current state of the signal for foveated gaze direction. This function is only available for Neo 2 Eye and Neo 3 Pro.
+        /// Gets whether the current foveated gaze tracking data is available.
+        /// @note Available for Neo3 Pro Eye only.
         /// </summary>
-        /// <param name="status">An int value that indicates the signal's state returned by the result: `0`-not good; `1`-good.</param>
-        /// <returns>Whether the state has been returned: `true`-returned; `false`-failed to return.</returns>
+        /// <param name="status">An int value returned by the result: 
+        /// * `0`: not available 
+        /// * `1`: available
+        /// </param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
+        /// </returns>
         public static bool GetFoveatedGazeTrackingState(out uint state)
         {
             state = 0;
             if (!PXR_Manager.Instance.eyeTracking)
                 return false;
 
-            InputDevice device = default(InputDevice);
-            if (!GetEyeTrackingDevice(out device))
+            if (!GetEyeTrackingDevice(out InputDevice device))
                 return false;
 
             if (!device.TryGetFeatureValue(PXR_Usages.foveatedGazeTrackingState, out state))

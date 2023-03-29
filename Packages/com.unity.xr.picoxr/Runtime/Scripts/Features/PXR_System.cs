@@ -3,7 +3,7 @@ Copyright © 2015-2022 PICO Technology Co., Ltd.All rights reserved.
 
 NOTICE：All information contained herein is, and remains the property of 
 PICO Technology Co., Ltd. The intellectual and technical concepts 
-contained hererin are proprietary to PICO Technology Co., Ltd. and may be 
+contained herein are proprietary to PICO Technology Co., Ltd. and may be 
 covered by patents, patents in process, and are protected by trade secret or 
 copyright law. Dissemination of this information or reproduction of this 
 material is strictly forbidden unless prior written permission is obtained from
@@ -18,6 +18,7 @@ using UnityEngine;
 namespace Unity.XR.PXR
 {
     public delegate void InputDeviceChangedCallBack(int value);
+    public delegate void SeethroughStateChangedCallBack(int value);
 
     public class PXR_System
     {
@@ -101,9 +102,7 @@ namespace Unity.XR.PXR
         /// <returns>An int array. The first bit is the total brightness level supported, the second bit is the current brightness level, and it is the interval value of the brightness level from the third bit to the end bit.</returns>
         public static int[] GetScreenBrightnessLevel()
         {
-            int[] currentLight = { 0 };
-            currentLight = PXR_Plugin.System.UPxr_GetScreenBrightnessLevel();
-            return currentLight;
+            return PXR_Plugin.System.UPxr_GetScreenBrightnessLevel();
         }
 
         /// <summary>
@@ -132,7 +131,7 @@ namespace Unity.XR.PXR
         }
 
         /// <summary>
-        /// Turns on the volume service for a specified game pbject.
+        /// Turns on the volume service for a specified game object.
         /// </summary>
         /// <param name="objName">The name of the game object to turn on the volume service for.</param>
         /// <returns>Whether the volume service has been turned on:
@@ -342,6 +341,8 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Controls the device to shut down or reboot.
+        /// @note This is a protected API. You need to add `<meta-data android:name="pico_advance_interface" android:value="0"/>`
+        /// to the app's AndroidManifest.xml file for calling this API, after which the app is unable to be published on the PICO Store.
         /// </summary>
         /// <param name="deviceControl">Device action. Enumerations:
         /// * `DEVICE_CONTROL_REBOOT`
@@ -358,6 +359,8 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Installs or uninstalls app silently.
+        /// @note This is a protected API. You need to add `<meta-data android:name="pico_advance_interface" android:value="0"/>`
+        /// to the app's AndroidManifest.xml file for calling this API, after which the app is unable to be published on the PICO Store.
         /// </summary>
         /// <param name="packageControl">The action. Enumerations:
         /// * `PACKAGE_SILENCE_INSTALL`: silent installation
@@ -549,7 +552,9 @@ namespace Unity.XR.PXR
         /// * `SFS_POWER_CTRL_WIFI_ENABLE`: Neo3 device stays connected to the network when the device sleeps/turns off
         /// * `SFS_WIFI_DISABLE`: disable Wi-Fi for Neo3 device
         /// * `SFS_SIX_DOF_SWITCH`: 6DoF position tracking
-        /// * `SFS_INVERSE_DISPERSION`: anti-dispersion
+        /// * `SFS_INVERSE_DISPERSION`: anti-dispersion (need to restart the device to make the setting take effect)
+        /// * `PBS_SystemFunctionSwitchEnum.SFS_LOGCAT`: system log switch (/data/logs)
+        /// * `PBS_SystemFunctionSwitchEnum.SFS_PSENSOR`: PSensor switch (need to restart the device to make the setting take effect)
         /// </param>
         /// <param name="switchEnum">Whether to switch the function on/off:
         /// * `S_ON`: switch on
@@ -574,6 +579,8 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Turns the screen on.
+        /// @note This is a protected API. You need to add `<meta-data android:name="pico_advance_interface" android:value="0"/>`
+        /// to the app's AndroidManifest.xml file for calling this API, after which the app is unable to be published on the PICO Store.
         /// </summary>
         public static void ScreenOn()
         {
@@ -582,6 +589,8 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Turns the screen off.
+        /// @note This is a protected API. You need to add `<meta-data android:name="pico_advance_interface" android:value="0"/>`
+        /// to the app's AndroidManifest.xml file for calling this API, after which the app is unable to be published on the PICO Store.
         /// </summary>
         public static void ScreenOff()
         {
@@ -693,6 +702,8 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Force quits app(s) by passing app PID or package name.
+        /// @note This is a protected API. You need to add `<meta-data android:name="pico_advance_interface" android:value="0"/>`
+        /// to the app's AndroidManifest.xml file for calling this API, after which the app is unable to be published on the PICO Store.
         /// </summary>
         /// <param name="pids">An array of app PID(s).</param>
         /// <param name="packageNames">An array of package name(s).</param>
@@ -703,6 +714,8 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Force quits background app(s) expect those in the allowlist.
+        /// @note This is a protected API. You need to add `<meta-data android:name="pico_advance_interface" android:value="0"/>`
+        /// to the app's AndroidManifest.xml file for calling this API, after which the app is unable to be published on the PICO Store.
         /// </summary>
         /// <param name="packageNames">An array of package name(s) to be added to the allowlist. The corresponding app(s) in the allowlist will not be force quit.</param>
         public static void KillBackgroundAppsWithWhiteList(string[] packageNames)
@@ -1020,6 +1033,50 @@ namespace Unity.XR.PXR
         /// <param name="ext">Reserved parameter, pass `0` by default.</param>
         public static void AppKeepAlive(String appPackageName, bool keepAlive, int ext) {
             PXR_Plugin.System.UPxr_AppKeepAlive(appPackageName, keepAlive, ext);
+        }
+
+        /// <summary>
+        /// Enables/disables face tracking.
+        /// </summary>
+        /// <param name="enable">Whether to enable/disable face tracking:
+        /// * `true`: enable
+        /// * `false`: disable
+        /// </param>
+        public static void EnableFaceTracking(bool enable) {
+            PXR_Plugin.System.UPxr_EnableFaceTracking(enable);
+        }
+
+        /// <summary>
+        /// Enables/disables lipsync.
+        /// </summary>
+        /// <param name="enable">Whether to enable/disable lipsync:
+        /// * `true`: enable
+        /// * `false`: disable
+        /// </param>
+        public static void EnableLipSync(bool enable){
+            PXR_Plugin.System.UPxr_EnableLipSync(enable);
+        }
+
+        /// <summary>
+        /// Gets face tracking data.
+        /// </summary>
+        /// <param name="ts">(Optional) A reserved parameter, pass `0`.</param>
+        /// <param name="flags">The face tracking mode to retrieve data for. Enumertions:
+        /// * `PXR_GET_FACE_DATA_DEFAULT` (invalid, only for making it compatible with older SDK version)
+        /// * `PXR_GET_FACE_DATA`: face only
+        /// * `PXR_GET_LIP_DATA`: lipsync only
+        /// * `PXR_GET_FACELIP_DATA`: hybrid (both face and lipsync)
+        /// </param>
+        /// <param name="faceTrackingInfo">Returns the `PxrFaceTrackingInfo` struct that contains the following face tracking data:
+        /// * `timestamp`: Int64, reserved field
+        /// * `blendShapeWeight`: float[], pass `0`.
+        /// * `videoInputValid`: float[], the input validity of the upper and lower parts of the face.
+        /// * `laughingProb`: float[], the coefficient of laughter.
+        /// * `emotionProb`: float[], the emotion factor.
+        /// * `reserved`: float[], reserved field.
+        /// </param>
+        public static void GetFaceTrackingData(Int64 ts, GetDataType flags, ref PxrFaceTrackingInfo faceTrackingInfo) {
+            PXR_Plugin.System.UPxr_GetFaceTrackingData( ts,  (int)flags, ref  faceTrackingInfo);
         }
 
         /// <summary>
@@ -1456,6 +1513,351 @@ namespace Unity.XR.PXR
             return PXR_Plugin.System.UPxr_PICOCastGetOptionOrStatus(castOptionOrStatus);
         }
 
+        /// <summary>
+        /// Sets the duration after which the controllers enter the pairing mode.
+        /// </summary>
+        /// <param name="timeEnum">Duration enumerations:
+        /// * `SIX`: 6 seconds
+        /// * `FIFTEEN`: 15 seconds
+        /// * `SIXTY`: 60 seconds
+        /// * `ONE_HUNDRED_AND_TWENTY`: 120 seconds (2 minutes)
+        /// * `SIX_HUNDRED`: 600 seconds (5 minutes)
+        /// * `NEVER`: never enter the pairing mode
+        /// </param>
+        /// <param name="callback">Returns the result:
+        /// * `0`: failure
+        /// * `1`: success
+        /// </param>
+        public static void SetControllerPairTime(ControllerPairTimeEnum timeEnum, Action<int> callback)
+        {
+            PXR_Plugin.System.UPxr_SetControllerPairTime(timeEnum, callback);
+        }
+
+        /// <summary>
+        /// Gets the duration after which the controllers enter the pairing mode.
+        /// </summary>
+        /// <param name="callback">Returns a duration enumeration from the following:
+        /// * `SIX`: 6 seconds
+        /// * `FIFTEEN`: 15 seconds
+        /// * `SIXTY`: 60 seconds
+        /// * `ONE_HUNDRED_AND_TWENTY`: 120 seconds (2 minutes)
+        /// * `SIX_HUNDRED`: 600 seconds (5 minutes)
+        /// * `NEVER`: never enter the pairing mode
+        /// </param>
+        public static void GetControllerPairTime(Action<int> callback)
+        {
+            PXR_Plugin.System.UPxr_GetControllerPairTime(callback);
+        }
+
+        /// <summary>Sets the system language for the device. 
+        /// For a language that is spoken in different countries/regions, the system language is then co-set by the language code and the device's country/region code. 
+        /// For example, if the lanaguage code is set to `en` and the device's country/region code is `US`, the system language will be set to English (United States).</summary>
+        /// @note Only supported by PICO 4.
+        ///
+        /// <param name="language">Supported language codes:
+        /// * `cs`: Čeština (Czech)
+        /// * `da`: Dansk (Danish)
+        /// * `de`: Deutsch (German)
+        /// * `el`: Ελληνικά (Greek)
+        /// * `en`: English (United States) / English (United Kingdom)
+        /// * `es`: Español (España) / Español (Estados Unidos)
+        /// * `fi`: Suomi (Finnish)
+        /// * `fr`: Français (French)
+        /// * `it`: Italiano (Italian)
+        /// * `ja`: 日本語 (Japanese)
+        /// * `ko`: 한국어 (Korean)
+        /// * `ms`: Melayu (Malay)
+        /// * `nb`: Norsk bokmål (Norwegian)
+        /// * `nl`: Nederlands (Dutch)
+        /// * `pl`: Polski (Polish)
+        /// * `pt`: Português (Portuguese(Brasil)) / Português (Portuguese(Portugal))
+        /// * `ro`: Română (Romanian)
+        /// * `ru`: Русский (Russian)
+        /// * `sv`: Svenska (Swedish)
+        /// * `th`: ไทย (Thai)
+        /// * `tr`: Türkçe (Turkish)
+        /// * `zh`: 中文 (简体) (Chinese (Simplified)) / 中文 (中国香港) (Chinese (Hong Kong SAR of China)) 中文 (繁體) / (Chinese (Traditional)).
+        /// For devices in Mainland China / Taiwan, China / Hong Kong SAR of China / Macao SAR of China, the country/region code has been defined in factory settings.
+        /// </param>
+        /// <returns>
+        /// * `0`: success
+        /// * `1`: failure
+        /// * `22`: invalid language
+        /// </returns>
+        public static int SetSystemLanguage(String language) {
+            return PXR_Plugin.System.UPxr_SetSystemLanguage(language);
+        }
+
+        /// <summary>Gets the device's system language.</summary>
+        /// @note Only supported by PICO 4.
+        ///
+        /// <returns>The system language set for the device. For details, refer to the 
+        /// parameter description for `SetSystemLanguage`.</returns>
+        public static String GetSystemLanguage() {
+            return PXR_Plugin.System.UPxr_GetSystemLanguage();
+        }
+
+        /// <summary>Sets a default Wi-Fi network for the device. Once set, the device will automatically connect to the Wi-Fi network if accessible.</summary>
+        /// @note Only supported by PICO 4.
+        /// 
+        /// <param name="ssid">The SSID (name) of the Wi-Fi network.</param>
+        /// <param name="pwd">The password of the Wi-Fi network.</param>
+        /// <returns>
+        /// * `0`: success
+        /// * `1`: failure
+        /// </returns>
+        public static int ConfigWifi(String ssid, String pwd) {
+            return PXR_Plugin.System.UPxr_ConfigWifi(ssid, pwd);
+        }
+
+        /// <summary>Gets the device's default Wi-Fi network.</summary>
+        /// @note Only supported by PICO 4.
+        /// 
+        /// <returns>The SSID (name) of the Wi-Fi network.</returns>
+        public static String[] GetConfiguredWifi() {
+            return PXR_Plugin.System.UPxr_GetConfiguredWifi();
+        }
+
+        /// <summary>Sets a country/region for the device.</summary>
+        /// @note Only supported by PICO 4 in non-Mainland China countries/regions.
+        /// 
+        /// <param name="countryCode">The country/region code co-determines the device's system lanaguge with the language code you set via `SetSystemLanguage`.
+        /// Below are supported country/region codes:
+        /// * `AD`: Andorra
+        /// * `AT`: Austria
+        /// * `AU`: Australia
+        /// * `BE`: Belgium
+        /// * `BG`: Bulgaria
+        /// * `CA`: Canada
+        /// * `CH`: Switzerland
+        /// * `CZ`: Czech Republic
+        /// * `DE`: Germany
+        /// * `DK`: Denmark
+        /// * `EE`: Estonia
+        /// * `ES`: Spain
+        /// * `FI`: Finland
+        /// * `FR`: France
+        /// * `GB`: the Great Britain
+        /// * `GR`: Greece
+        /// * `HR`: Croatia
+        /// * `HU`: Hungary
+        /// * `IE`: Ireland
+        /// * `IL`: Israel
+        /// * `IS`: Iceland
+        /// * `IT`: Italy
+        /// * `JP`: Japan
+        /// * `KR`: Korea
+        /// * `LI`: Liechtenstein
+        /// * `LT`: Lithuania
+        /// * `LU`: Luxembourg
+        /// * `LV`: Latvia
+        /// * `MC`: Monaco
+        /// * `MT`: Malta
+        /// * `MY`: Malaysia
+        /// * `NL`: Netherlands
+        /// * `NO`: Norway
+        /// * `NZ`: New Zealand
+        /// * `PL`: Poland
+        /// * `PT`: Portugal
+        /// * `RO`: Romania
+        /// * `SE`: Sweden
+        /// * `SG`: Singapore
+        /// * `SI`: Slovenia
+        /// * `SK`: Slovakia
+        /// * `SM`: San Marino
+        /// * `TR`: Turkey
+        /// * `US`: the United States
+        /// * `VA`: Vatican
+        /// </param>
+        /// <param name="callback">Set the callback to get the result:
+        /// * `0`: success
+        /// * `1`: failure
+        /// </param>
+        public static int SetSystemCountryCode(String countryCode, Action<int> callback) {
+            return PXR_Plugin.System.UPxr_SetSystemCountryCode(countryCode, callback);
+        }
+
+        /// <summary>Gets the device's country/region code.</summary>
+        /// @note Only supported by PICO 4.
+        ///
+        /// <returns>A string value that indicates the device's current country/region code. 
+        /// For supported country/region codes, see the parameter description in `SetSystemCountryCode`.</returns>
+        public static string GetSystemCountryCode() {
+            return PXR_Plugin.System.UPxr_GetSystemCountryCode();
+        }
+
+        /// <summary>Sets the page to skip in initialization settings.</summary>
+        /// @note Only supported by PICO 4.
+        ///
+        /// <param name="flag">Set the flag.
+        /// The first 6 bits are valid, the 7th to 32rd bits are reserved. For each bit, `0` indicates showing and `1` indicates hiding.
+        /// * `Constants#INIT_SETTING_HANDLE_CONNECTION_TEACHING`: the controller connection tutorial page
+        /// * `Constants#INIT_SETTING_TRIGGER_KEY_TEACHING`: the Trigger button tutorial page
+        /// * `Constants#INIT_SETTING_SELECT_LANGUAGE`: the language selection page
+        /// * `Constants#INIT_SETTING_SELECT_COUNTRY`: the country/region selection page. Only available for devices in non-Mainland China countries/regions.
+        /// * `Constants#INIT_SETTING_WIFI_SETTING`: the Wi-Fi settings page
+        /// * `Constants#INIT_SETTING_QUICK_SETTING`: the quick settings page
+        /// </param>
+        /// Below is an example implementation:
+        /// ```csharp
+        /// int flag = Constants.INIT_SETTING_HANDLE_CONNECTION_TEACHING | Constants.INIT_SETTING_TRIGGER_KEY_TEACHING;
+        /// int result = serviceBinder.pbsSetSkipInitSettingPage(flag,0);
+        /// ```
+        /// <returns>
+        /// * `0`: success
+        /// * `1`: failure
+        /// </returns>
+        public static int SetSkipInitSettingPage(int flag) {
+            return PXR_Plugin.System.UPxr_SetSkipInitSettingPage(flag);
+        }
+
+        /// <summary>Gets the page to skip in initialization settings.</summary>
+        /// @note Only supported by PICO 4.
+        ///
+        /// <returns>Returns the flag set in `SetSkipInitSettingPage`.</returns>
+        public static int GetSkipInitSettingPage() {
+            return PXR_Plugin.System.UPxr_GetSkipInitSettingPage();
+        }
+
+        /// <summary>Gets whether the initialization settings have been complete.</summary>
+        /// @note Only supported by PICO 4.
+        ///
+        /// <returns> 
+        /// * `0`: not complete
+        /// * `1`: complete
+        /// </returns>
+        public static int IsInitSettingComplete() {
+            return PXR_Plugin.System.UPxr_IsInitSettingComplete();
+        }
+ 
+        /// <summary>Starts an activity in another app.</summary>
+        /// <param name="packageName">(Optional) The app's package name.</param>
+        /// <param name="className">(Optional) The app's class name.</param>
+        /// <param name="action">(Optional) The action to be performed.</param>
+        /// <param name="extra">The basic types of standard fields that can be used as extra data. See [here](https://developer.android.com/reference/android/content/Intent#standard-extra-data) for details.</param> 
+        /// <param name="categories">Standard categories that can be used to further clarify an Intent. Add a new category to the intent. See [here](https://developer.android.com/reference/android/content/Intent#addCategory(java.lang.String)) for details.</param>
+        /// <param name="flags">Add additional flags to the intent. See [here](https://developer.android.com/reference/android/content/Intent#flags) for details.</param>
+        /// Below is an example implementation:
+        /// ```csharp
+        /// // Launches the video player to play a video.
+        /// serviceBinder.pbsStartActivity("", "", "picovr.intent.action.player", "{\"uri\":\"/sdcard/test.mp4\",\"videoType\":0,\"videoSource\":1}", new String[]{Intent.CATEGORY_DEFAULT}, new int[]{Intent.FLAG_ACTIVITY_NEW_TASK},0);
+        /// ```
+        /// <returns>
+        /// * `0`: success
+        /// * `1`: failure
+        /// </returns>
+        public static int StartActivity(String packageName, String className, String action, String extra, String[] categories, int[] flags)
+        {
+            return PXR_Plugin.System.UPxr_StartActivity(packageName, className, action, extra, categories, flags);
+        }
+
+        /// <summary>Sets a GPU or CPU level for the device.</summary>
+        /// <param name="which">Choose to set a GPU or CPU level:
+        /// * `CPU`
+        /// * `GPU`
+        /// </param>
+        /// <param name="level">Select a level from the following:
+        /// * `POWER_SAVINGS`: power-saving level
+        /// * `SUSTAINED_LOW`: low level
+        /// * `SUSTAINED_HIGH`: high level
+        /// * `BOOST`: top-high level, be careful to use this level
+        /// </param>
+        /// <returns>
+        /// * `0`: success
+        /// * `1`: failure
+        /// </returns>
+        public static int SetPerformanceLevels(PxrPerfSettings which, PxrSettingsLevel level)
+        {
+            return PXR_Plugin.System.UPxr_SetPerformanceLevels(which, level);
+        }
+
+        /// <summary>Gets the device's GPU or CPU level.</summary>
+        /// <param name="which">Choose to get GPU or CPU level:
+        /// * `CPU`
+        /// * `GPU`
+        /// </param>
+        /// <returns>
+        /// Returns one of the following levels:
+        /// * `POWER_SAVINGS`: power-saving level
+        /// * `SUSTAINED_LOW`: low level
+        /// * `SUSTAINED_HIGH`: high level
+        /// * `BOOST`: top-high level, be careful to use this level
+        /// </returns>
+        public static PxrSettingsLevel GetPerformanceLevels(PxrPerfSettings which)
+        {
+            return PXR_Plugin.System.UPxr_GetPerformanceLevels(which);
+        }
+
+        /// <summary>Sets FOV in four directions (left, right, up, and down) for specified eye(s).</summary>
+        /// <param name="eye">The eye to set FOV for:
+        /// * `LeftEye`
+        /// * `RightEye`
+        /// * `BothEye`
+        /// </param>
+        /// <param name="fovLeft">The horizontal FOV (in degrees) for the left part of the eye, for example, `47.5`.</param>
+        /// <param name="fovRight">The horizontal FOV (in degrees) for the right part of the eye..</param>
+        /// <param name="fovUp">The vertical FOV (in degrees) for the upper part of the eye.</param>
+        /// <param name="fovDown">The vertical FOV (in degrees) for the lower part of the eye.</param>
+        /// <returns>
+        /// * `0`: success
+        /// * `1`: failure
+        /// </returns>
+        public static int SetEyeFOV(EyeType eye, float fovLeft, float fovRight, float fovUp, float fovDown)
+        {
+            return PXR_Plugin.Render.UPxr_SetEyeFOV(eye, fovLeft, fovRight, fovUp, fovDown);
+        }
+
+        /// <summary>Shows/hides specified app(s) in the library.
+        /// @note Only supported by PICO Neo3 and PICO 4 series.
+        /// </summary>
+        /// <param name="packageNames">Package name(s). If there are multiple names, use commas (,) to separate them.</param>
+        /// <param name="switchEnum">Specifies to show/hide the app(s), enums:
+        /// * `S_ON`: show
+        /// * `S_OFF`: hide
+        /// </param>
+        /// <returns>
+        /// * `0`: success
+        /// * `1`: failure
+        /// </returns>
+		public static int CustomizeAppLibrary(String[] packageNames, SwitchEnum switchEnum) {
+            return PXR_Plugin.System.UPxr_CustomizeAppLibrary( packageNames,  switchEnum);
+        }
+
+        /// <summary>
+        /// Gets the controller connectivity status.
+        /// @note Only supported by PICO Neo3 and PICO 4 series.
+        /// </summary>
+        /// <returns>
+        /// * `0`: both controllers are disconnected
+        /// * `1`: the left controller is connected
+        /// * `2`: the right controller is connected
+        /// * `3`: both controllers are connected
+        /// </returns>
+        public static int GetControllerConnectState() {
+            return PXR_Plugin.System.UPxr_GetControllerConnectState();
+        }
+
+        /// <summary>
+        /// Gets the controller battery level.
+        /// @note Only supported by PICO Neo3 and PICO 4 series.
+        /// </summary>
+        /// <returns>Returns the following information: 
+        /// * array[0]: the left controller's battery level
+        /// * array[1]: the right controller's battery level
+        /// * an integer from 1 to 5, which indicates the battery level, the bigger the integer, the higher the battery level
+        /// </returns>
+        public static int[] GetControllerBattery() {
+            return PXR_Plugin.System.UPxr_GetControllerBattery();
+        }
+
+        /// <summary>
+        /// Gets the apps that are hidden in the library.
+        /// @note Only supported by PICO Neo3 and PICO 4 series.
+        /// </summary>
+        /// <returns>The packages names of hidden apps. Multiple names are separated by commas (,).</returns>
+        public static string GetAppLibraryHideList() {
+            return PXR_Plugin.System.UPxr_GetAppLibraryHideList();
+        }
     }
 }
 
