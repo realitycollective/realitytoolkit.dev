@@ -302,6 +302,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1634786521743085562, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
   m_PrefabInstance: {fileID: 1894397325}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &649534667 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1634786521743085558, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
+  m_PrefabInstance: {fileID: 1894397325}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &649534668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +328,36 @@ MonoBehaviour:
   gazeTransform: {fileID: 0}
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
+--- !u!1 &891958446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 891958447}
+  m_Layer: 0
+  m_Name: UIRaycastCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &891958447
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891958446}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 649534667}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1663879850
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,7 +672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d4490c9d63e26f42a5ef632438faae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serviceProvidersProfile: {fileID: 11400000, guid: 130462f369ce49f4981914eb097fe71a, type: 2}
+  serviceProvidersProfile: {fileID: 11400000, guid: ddd7d9350c39a3c44a2e3cb3b50e1567, type: 2}
 --- !u!4 &1834235263
 Transform:
   m_ObjectHideFlags: 0
