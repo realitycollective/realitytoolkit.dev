@@ -10,7 +10,6 @@ public class RigMoveTest : MonoBehaviour
     private void Start()
     {
         cameraService = ServiceManager.Instance.GetService<ICameraService>();
-        cameraService.CameraOutOfBounds += CameraService_CameraOutOfBounds;
     }
 
     private void Update()
@@ -53,10 +52,5 @@ public class RigMoveTest : MonoBehaviour
         {
             cameraService.CameraRig.CameraTransform.Translate(Time.deltaTime * new Vector3(1f, 0f, 0f));
         }
-    }
-
-    private void CameraService_CameraOutOfBounds(Vector3 returnToBoundsDirection)
-    {
-        Debug.Log("CAMERA OUT OF BOUNDS");
     }
 }
