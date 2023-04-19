@@ -34,3 +34,6 @@
 [submodule "Packages/com.realitytoolkit.camera"]
 	path = Packages/com.realitytoolkit.camera
 	url = https://github.com/realitycollective/com.realitytoolkit.camera.git
+[submodule "Packages/com.realitycollective.prototyping"]
+	path = Packages/com.realitycollective.prototyping
+	url = https://github.com/realitycollective/com.realitycollective.prototyping
