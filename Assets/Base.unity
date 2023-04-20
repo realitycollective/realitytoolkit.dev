@@ -173,10 +173,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1634786521743085558, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.6
-      objectReference: {fileID: 0}
     - target: {fileID: 1634786522418503189, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
       propertyPath: m_Name
       value: XRPlayerController
@@ -347,29 +343,3 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
---- !u!1 &2134978804 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1634786521743085562, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
-  m_PrefabInstance: {fileID: 965300370}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2134978806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2134978804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 142a86e74d2d4606a1584ad8b4068753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxGazeCollisionDistance: 10
-  raycastLayerMasks:
-  - serializedVersion: 2
-    m_Bits: 4294967291
-  stabilizer:
-    storedStabilitySamples: 60
-  gazeTransform: {fileID: 0}
-  minHeadVelocityThreshold: 0.5
-  maxHeadVelocityThreshold: 2
