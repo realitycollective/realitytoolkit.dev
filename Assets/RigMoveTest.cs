@@ -19,36 +19,45 @@ public class RigMoveTest : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current.wKey.isPressed)
+        if (Keyboard.current.upArrowKey.isPressed)
         {
             cameraService.CameraRig.Move(new Vector3(0f, 0f, 1f));
         }
-        else if (Keyboard.current.sKey.isPressed)
+        else if (Keyboard.current.downArrowKey.isPressed)
         {
             cameraService.CameraRig.Move(new Vector3(0f, 0f, -1f));
         }
-        if (Keyboard.current.aKey.isPressed)
+        if (Keyboard.current.leftArrowKey.isPressed)
         {
             cameraService.CameraRig.Move(new Vector3(-1f, 0f, 0f));
         }
-        else if (Keyboard.current.dKey.isPressed)
+        else if (Keyboard.current.rightArrowKey.isPressed)
         {
             cameraService.CameraRig.Move(new Vector3(1f, 0f, 0f));
         }
 
-        if (Keyboard.current.upArrowKey.isPressed)
+
+        if (Keyboard.current.qKey.isPressed)
+        {
+            cameraService.CameraRig.CameraTransform.Translate(Time.deltaTime * new Vector3(0f, -1f, 0f));
+        }
+        else if (Keyboard.current.eKey.isPressed)
+        {
+            cameraService.CameraRig.CameraTransform.Translate(Time.deltaTime * new Vector3(0f, 1f, 0f));
+        }
+        if (Keyboard.current.wKey.isPressed)
         {
             cameraService.CameraRig.CameraTransform.Translate(Time.deltaTime * new Vector3(0f, 0f, 1f));
         }
-        else if (Keyboard.current.downArrowKey.isPressed)
+        else if (Keyboard.current.sKey.isPressed)
         {
             cameraService.CameraRig.CameraTransform.Translate(Time.deltaTime * new Vector3(0f, 0f, -1f));
         }
-        if (Keyboard.current.leftArrowKey.isPressed)
+        if (Keyboard.current.aKey.isPressed)
         {
             cameraService.CameraRig.CameraTransform.Translate(Time.deltaTime * new Vector3(-1f, 0f, 0f));
         }
-        else if (Keyboard.current.rightArrowKey.isPressed)
+        else if (Keyboard.current.dKey.isPressed)
         {
             cameraService.CameraRig.CameraTransform.Translate(Time.deltaTime * new Vector3(1f, 0f, 0f));
         }

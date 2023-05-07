@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &633458103
+--- !u!1 &739916100
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,40 +131,27 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 633458105}
-  - component: {fileID: 633458104}
+  - component: {fileID: 739916101}
   m_Layer: 0
-  m_Name: MoveTest
+  m_Name: UIRaycastCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &633458104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633458103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53dbb1b202f05604aa02e88789ef11e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &633458105
+--- !u!4 &739916101
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633458103}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 739916100}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 970219292}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &965300370
 PrefabInstance:
@@ -173,6 +160,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1634786521743085558, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1634786522418503189, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
       propertyPath: m_Name
       value: XRPlayerController
@@ -223,6 +214,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
+--- !u!4 &970219292 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1634786521743085558, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
+  m_PrefabInstance: {fileID: 965300370}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1834235261
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d4490c9d63e26f42a5ef632438faae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serviceProvidersProfile: {fileID: 11400000, guid: ddd7d9350c39a3c44a2e3cb3b50e1567, type: 2}
+  serviceProvidersProfile: {fileID: 11400000, guid: 130462f369ce49f4981914eb097fe71a, type: 2}
 --- !u!4 &1834235263
 Transform:
   m_ObjectHideFlags: 0
