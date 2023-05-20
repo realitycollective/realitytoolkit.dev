@@ -7,8 +7,9 @@ public class RigMoveTest : MonoBehaviour
 {
     private ICameraService cameraService;
 
-    private void Start()
+    private async void Start()
     {
+        await ServiceManager.WaitUntilInitializedAsync();
         cameraService = ServiceManager.Instance.GetService<ICameraService>();
     }
 
