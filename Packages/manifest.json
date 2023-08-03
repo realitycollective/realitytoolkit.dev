@@ -2,6 +2,7 @@
   "dependencies": {
     "com.microsoft.mixedreality.openxr": "file:Microsoft/com.microsoft.mixedreality.openxr-1.5.0.tgz",
     "com.unity.ai.navigation": "1.1.4",
+    "com.unity.animation.rigging": "1.2.1",
     "com.unity.ide.visualstudio": "2.0.18",
     "com.unity.ide.vscode": "1.2.5",
     "com.unity.services.core": "1.10.1",
