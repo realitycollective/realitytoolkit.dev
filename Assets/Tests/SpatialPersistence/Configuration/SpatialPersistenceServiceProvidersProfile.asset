@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e313293fba4e5a946adc1cc90678c91c, type: 3}
+  m_Name: SpatialPersistenceServiceProvidersProfile
+  m_EditorClassIdentifier: 
+  configurations:
+  - instancedType:
+      reference: c055102f-5204-42ed-a4d8-f80d129b6bbd
+    name: Spatial Persistence Service
+    priority: 0
+    profile: {fileID: 11400000, guid: 77ee19a28b253a8458e94cba21f5ff81, type: 2}
+    platformEntries:
+      runtimePlatforms:
+      - reference: e0d70d45-a52a-4b03-bcdf-8fe367555516
+  initializeOnPlay: 0
+  doNotDestroyServiceManagerOnLoad: 1
