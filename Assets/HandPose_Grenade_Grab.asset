@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 252c4320ebe746840813009e75615947, type: 3}
+  m_Name: HandPose_Grenade_Grab
+  m_EditorClassIdentifier: 
+  recordedHandedness: 1
+  poses:
+  - Joint: 0
+    Pose:
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.3125748, y: 0.76965183, z: 0.018750938, w: 0.5564005}
+  - Joint: 2
+    Pose:
+      position: {x: 0.026298406, y: -0.041470297, z: 0.020564148}
+      rotation: {x: 0.5702164, y: 0.74018717, z: -0.058081947, w: 0.3515718}
+  - Joint: 3
+    Pose:
+      position: {x: -0.03258824, y: 0, z: 0}
+      rotation: {x: -0, y: -0.000000029802322, z: -0.13945621, w: 0.9902283}
+  - Joint: 4
+    Pose:
+      position: {x: -0.026371535, y: 1.4210854e-16, z: -1.0658141e-16}
+      rotation: {x: -3.3019005e-17, y: 6.6511964e-18, z: 0.008720745, w: 0.999962}
+  - Joint: 5
+    Pose:
+      position: {x: -0.034079567, y: -7.105427e-17, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+  - Joint: 6
+    Pose:
+      position: {x: 0.087078705, y: -0.035099912, z: -0.0068139634}
+      rotation: {x: -0.06493613, y: 0.73014116, z: 0.6407832, w: 0.22819757}
+  - Joint: 7
+    Pose:
+      position: {x: -0.04157472, y: 0, z: 7.105427e-17}
+      rotation: {x: -2.7269937e-16, y: 5.169386e-17, z: -0.18624677, w: 0.982503}
+  - Joint: 8
+    Pose:
+      position: {x: -0.022153005, y: 7.105427e-17, z: 0}
+      rotation: {x: 2.6848176e-16, y: -4.3833895e-17, z: -0.05959589, w: 0.9982226}
+  - Joint: 10
+    Pose:
+      position: {x: -0.029121809, y: -1.7763567e-16, z: -7.105427e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+  - Joint: 11
+    Pose:
+      position: {x: 0.09142233, y: -0.0095321555, z: -0.010838781}
+      rotation: {x: -0.15358582, y: 0.6304438, z: 0.72837955, w: 0.22003472}
+  - Joint: 12
+    Pose:
+      position: {x: -0.045967426, y: 1.4210854e-16, z: 7.105427e-17}
+      rotation: {x: -2.6402464e-16, y: 2.0679773e-16, z: -0.23558192, w: 0.9718545}
+  - Joint: 13
+    Pose:
+      position: {x: -0.029590597, y: 3.5527136e-17, z: 0}
+      rotation: {x: 1.1443316e-16, y: 4.8088383e-17, z: -0.06577556, w: 0.99783444}
+  - Joint: 15
+    Pose:
+      position: {x: -0.02646961, y: -1.7763568e-17, z: -2.1316282e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+  - Joint: 16
+    Pose:
+      position: {x: 0.089531735, y: 0.012713979, z: -0.0018533266}
+      rotation: {x: -0.26527655, y: 0.5090739, z: 0.7673621, w: 0.28570524}
+  - Joint: 17
+    Pose:
+      position: {x: -0.038572025, y: 0, z: 7.105427e-17}
+      rotation: {x: -2.1295683e-16, y: 1.0081824e-16, z: -0.20290461, w: 0.9791985}
+  - Joint: 18
+    Pose:
+      position: {x: -0.025775291, y: -1.7763568e-17, z: -1.4210854e-16}
+      rotation: {x: 1.4978696e-16, y: -4.047208e-17, z: -0.08394361, w: 0.9964705}
+  - Joint: 20
+    Pose:
+      position: {x: -0.024214907, y: -1.4210854e-16, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+  - Joint: 21
+    Pose:
+      position: {x: 0.031271502, y: 0.01906803, z: 0.01150759}
+      rotation: {x: -0.46225113, y: -0.11616445, z: 0.024509877, w: 0.87876564}
+  - Joint: 22
+    Pose:
+      position: {x: 0.053570647, y: 0.0024384, z: -0.0014630399}
+      rotation: {x: -0.019913785, y: 0.0024993364, z: 0.9440235, w: 0.32926732}
+  - Joint: 23
+    Pose:
+      position: {x: -0.03335595, y: 1.4210854e-16, z: -1.4210854e-16}
+      rotation: {x: -1.7569053e-16, y: -8.32419e-17, z: -0.16458225, w: 0.98636335}
+  - Joint: 24
+    Pose:
+      position: {x: -0.017418223, y: 1.3322676e-16, z: 7.105427e-17}
+      rotation: {x: -6.36854e-17, y: -2.4790136e-17, z: -0.04699399, w: 0.9988952}
+  - Joint: 25
+    Pose:
+      position: {x: -0.019441238, y: -6.217249e-17, z: 7.105427e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
