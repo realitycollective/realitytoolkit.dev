@@ -3402,7 +3402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d4490c9d63e26f42a5ef632438faae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serviceProvidersProfile: {fileID: 11400000, guid: 130462f369ce49f4981914eb097fe71a, type: 2}
+  serviceProvidersProfile: {fileID: 11400000, guid: ddd7d9350c39a3c44a2e3cb3b50e1567, type: 2}
 --- !u!4 &1834235263
 Transform:
   m_ObjectHideFlags: 0
