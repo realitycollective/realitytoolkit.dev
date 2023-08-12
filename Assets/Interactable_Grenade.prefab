@@ -66,10 +66,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6488782811078892086}
+      addedObject: {fileID: 6420451340890384569}
     - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6420451340890384569}
+      addedObject: {fileID: 6488782811078892086}
     - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8638059141278997659}
@@ -99,31 +99,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
   m_PrefabInstance: {fileID: 6041578177612371555}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6488782811078892086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4126629076436202885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3e34b43b095a7e47858fda3d8354b71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  label: grenade
-  nearInteraction: 1
-  farInteraction: 1
-  selectAction:
-    profileGuid: 399335ccc89c4d12b79f3539ca7771db
-    id: 1
-    description: Select
-    axisConstraint: 2
-  grabAction:
-    profileGuid: 399335ccc89c4d12b79f3539ca7771db
-    id: 16
-    description: Grip Press
-    axisConstraint: 2
 --- !u!54 &6420451340890384569
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -151,6 +126,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6488782811078892086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126629076436202885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3e34b43b095a7e47858fda3d8354b71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  label: grenade
+  nearInteraction: 1
+  farInteraction: 1
+  selectAction:
+    profileGuid: 399335ccc89c4d12b79f3539ca7771db
+    id: 1
+    description: Select
+    axisConstraint: 2
+  grabAction:
+    profileGuid: 399335ccc89c4d12b79f3539ca7771db
+    id: 16
+    description: Grip Press
+    axisConstraint: 2
 --- !u!114 &8638059141278997659
 MonoBehaviour:
   m_ObjectHideFlags: 0
