@@ -79,6 +79,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4696937287213370866}
+    - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 515644826296898563}
+    - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7191964310130758036}
   m_SourcePrefab: {fileID: 100100000, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
 --- !u!23 &2469176800650499152 stripped
 MeshRenderer:
@@ -115,9 +121,6 @@ MonoBehaviour:
     id: 16
     description: Grip Press
     axisConstraint: 2
-  stateChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!54 &6420451340890384569
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -193,6 +196,32 @@ MonoBehaviour:
   focusedMaterial: {fileID: 2100000, guid: cff739f75e6f4d2aa27638b66200ef95, type: 2}
   selectedMaterial: {fileID: 2100000, guid: 86884506517247c991a07caf162eeba4, type: 2}
   meshRenderer: {fileID: 8588153496933821688}
+--- !u!114 &515644826296898563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126629076436202885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15bdd5fbf2626d74f9e485d389fce66e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
+--- !u!114 &7191964310130758036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126629076436202885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4427e6d1e5248c44f8a259d1f40601ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
 --- !u!23 &8588153496933821688 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2664089520144824987, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
