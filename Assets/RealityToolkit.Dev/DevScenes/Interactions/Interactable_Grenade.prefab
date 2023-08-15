@@ -72,9 +72,6 @@ PrefabInstance:
       addedObject: {fileID: 6488782811078892086}
     - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8428256639247372654}
-    - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1537024953096894109}
     - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
       insertIndex: -1
@@ -156,20 +153,6 @@ MonoBehaviour:
     axisConstraint: 2
   focusMode: 1
   activationMode: 1
---- !u!114 &8428256639247372654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4126629076436202885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30890a757e61ab54786e70fbbf2f8946, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 0
-  focusPose: {fileID: 11400000, guid: 025e908589c76fc418aabefc73dc5d9f, type: 2}
 --- !u!114 &1537024953096894109
 MonoBehaviour:
   m_ObjectHideFlags: 0
