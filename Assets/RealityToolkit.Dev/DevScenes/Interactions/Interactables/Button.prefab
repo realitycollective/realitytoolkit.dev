@@ -60,6 +60,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 632635661df8d6146b470c06ab5861ba, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7826645555830145449}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 632635661df8d6146b470c06ab5861ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6244741706883684413}
   m_SourcePrefab: {fileID: 100100000, guid: 632635661df8d6146b470c06ab5861ba, type: 3}
 --- !u!1 &7000837480271443740 stripped
 GameObject:
@@ -162,3 +165,58 @@ MonoBehaviour:
     axisConstraint: 2
   focusMode: 0
   activationMode: 1
+--- !u!114 &6244741706883684413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7000837480271443740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e3eab3b6de122545bb0a30a061e052c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
+  Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  FirstGrabEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  GrabEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  GrabExited:
+    m_PersistentCalls:
+      m_Calls: []
+  LastGrabExited:
+    m_PersistentCalls:
+      m_Calls: []
