@@ -85,6 +85,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7191964310130758036}
+    - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2877138553267839337}
   m_SourcePrefab: {fileID: 100100000, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
 --- !u!23 &2469176800650499152 stripped
 MeshRenderer:
@@ -148,6 +151,7 @@ MonoBehaviour:
     id: 16
     description: Grip Press
     axisConstraint: 2
+  focusMode: 1
 --- !u!114 &1537024953096894109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,6 +231,19 @@ MonoBehaviour:
   positionLerpSpeed: 0.2
   rotationLerpSpeed: 0.2
   rigidbody: {fileID: 0}
+--- !u!114 &2877138553267839337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126629076436202885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322229c5e231a41408a4dced09a7c618, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
 --- !u!23 &8588153496933821688 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2664089520144824987, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
