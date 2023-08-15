@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: grenade
-  nearInteraction: 1
+  directInteraction: 1
   farInteraction: 1
   selectAction:
     profileGuid: 399335ccc89c4d12b79f3539ca7771db
@@ -152,6 +152,7 @@ MonoBehaviour:
     description: Grip Press
     axisConstraint: 2
   focusMode: 1
+  activationMode: 1
 --- !u!114 &1537024953096894109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,7 +166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
-  handPose: {fileID: 11400000, guid: 54afb48037828e342ae86f05e9066cde, type: 2}
+  focusPose: {fileID: 11400000, guid: 025e908589c76fc418aabefc73dc5d9f, type: 2}
+  grabPose: {fileID: 11400000, guid: 54afb48037828e342ae86f05e9066cde, type: 2}
 --- !u!114 &5970569748243194955
 MonoBehaviour:
   m_ObjectHideFlags: 0
