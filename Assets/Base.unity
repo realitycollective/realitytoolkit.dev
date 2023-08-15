@@ -4254,6 +4254,10 @@ PrefabInstance:
       propertyPath: nearInteraction
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6488782811078892086, guid: c8bab1bcd9ed89b489b07cef0b01cba4, type: 3}
+      propertyPath: directInteraction
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4883,6 +4887,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6488782811078892086, guid: c8bab1bcd9ed89b489b07cef0b01cba4, type: 3}
       propertyPath: nearInteraction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488782811078892086, guid: c8bab1bcd9ed89b489b07cef0b01cba4, type: 3}
+      propertyPath: directInteraction
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
