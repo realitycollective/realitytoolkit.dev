@@ -718,6 +718,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8601878131999232834, guid: 7dc05ad4d2fdd7b47b5ef7a12dddeeee, type: 3}
+      propertyPath: click.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601878131999232834, guid: 7dc05ad4d2fdd7b47b5ef7a12dddeeee, type: 3}
+      propertyPath: click.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601878131999232834, guid: 7dc05ad4d2fdd7b47b5ef7a12dddeeee, type: 3}
+      propertyPath: click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1356046498}
+    - target: {fileID: 8601878131999232834, guid: 7dc05ad4d2fdd7b47b5ef7a12dddeeee, type: 3}
+      propertyPath: click.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601878131999232834, guid: 7dc05ad4d2fdd7b47b5ef7a12dddeeee, type: 3}
+      propertyPath: click.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601878131999232834, guid: 7dc05ad4d2fdd7b47b5ef7a12dddeeee, type: 3}
+      propertyPath: click.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIClickCount, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601878131999232834, guid: 7dc05ad4d2fdd7b47b5ef7a12dddeeee, type: 3}
+      propertyPath: click.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
