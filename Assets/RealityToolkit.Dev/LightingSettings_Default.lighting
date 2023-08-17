@@ -20,8 +20,8 @@ LightingSettings:
   m_LightmapMaxSize: 1024
   m_BakeResolution: 128
   m_Padding: 32
-  m_LightmapCompression: 0
-  m_AO: 0
+  m_LightmapCompression: 2
+  m_AO: 1
   m_AOMaxDistance: 1
   m_CompAOExponent: 1
   m_CompAOExponentDirect: 0
@@ -48,7 +48,7 @@ LightingSettings:
   m_PVRBounces: 2
   m_PVRMinBounces: 2
   m_PVREnvironmentImportanceSampling: 1
-  m_PVRFilteringMode: 0
+  m_PVRFilteringMode: 1
   m_PVRDenoiserTypeDirect: 1
   m_PVRDenoiserTypeIndirect: 1
   m_PVRDenoiserTypeAO: 1
