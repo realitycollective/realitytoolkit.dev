@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e313293fba4e5a946adc1cc90678c91c, type: 3}
+  m_Name: DemoServiceProvidersProfile
+  m_EditorClassIdentifier: 
+  configurations:
+  - instancedType:
+      reference: 5c656ee3-fe7c-4fb3-b3ee-df3fc0d0973d
+    name: Camera Service
+    priority: 0
+    profile: {fileID: 11400000, guid: f368f924d6f5238439191ad0e9ce47c2, type: 2}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
+  - instancedType:
+      reference: 18c9caf0-8d36-4add-bb49-cdf7561cf793
+    name: Input Service
+    priority: 0
+    profile: {fileID: 11400000, guid: 249743a624fc10141845607dadebbc69, type: 2}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
+  - instancedType:
+      reference: 9453c088-285e-47aa-bfbb-dafd9109fdd5
+    name: Locomotion Service
+    priority: 1
+    profile: {fileID: 11400000, guid: 82a19b7a12e69444abeb607a229c0f1f, type: 2}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
+  initializeOnPlay: 0
+  doNotDestroyServiceManagerOnLoad: 1

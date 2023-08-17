@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50519740e1dd4b5f97f104c7dc8d6ae6, type: 3}
+  m_Name: DemoCameraServiceProfile
+  m_EditorClassIdentifier: 
+  configurations:
+  - instancedType:
+      reference: 83eff552-adf4-47c8-ad53-df7406856d3f
+    name: Meta Camera Rig Service Module
+    priority: 0
+    profile: {fileID: 11400000, guid: ca50586ab4ae99649ae05adef51e974d, type: 2}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 5a504905-0968-4b2f-a537-7fe804f1bd8e
+      - reference: db1acc26-ec8d-4bc6-afca-c51351b2da2e
+  - instancedType:
+      reference: 92fef470-917e-4d54-9099-6c3e857b2bbc
+    name: Default Body Pose Provider Module
+    priority: 0
+    profile: {fileID: 0}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
+  - instancedType:
+      reference: a68682d3-3e9d-4d56-8a32-9805f58928f8
+    name: Camera Bounds Module
+    priority: 1
+    profile: {fileID: 0}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
+  isRigPersistent: 1
+  resetCameraToOrigin: 0
+  rigPrefab: {fileID: 1634786522418503189, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
