@@ -1,5 +1,6 @@
 using RealityCollective.ServiceFramework.Services;
 using RealityCollective.Utilities;
+using RealityCollective.Extensions;
 using RealityToolkit.SpatialPersistence.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -111,11 +112,14 @@ public class PlaceOnPlane : MonoBehaviour
         SpawnedObject = null;
 
         // Cache Placed object for future use
-        anchors.Add(anchorID, anchoredObject);
+        anchors.EnsureDictionaryItem(anchorID, anchoredObject);
 
-        // Place an Object on the new Anchor
-        var placedAnchor = GameObject.Instantiate(PlacedPrefab, anchoredObject.transform);
-        placedAnchor.GetComponent<MeshRenderer>().material.color = Color.magenta;
+        if (anchoredObject.IsNotNull())
+        {
+            // Place an Object on the new Anchor
+            var placedAnchor = GameObject.Instantiate(PlacedPrefab, anchoredObject.transform);
+            placedAnchor.GetComponent<MeshRenderer>().material.color = Color.magenta;
+        }
 
         // Update UI that placement was successful
         UpdateStatusText($"Anchor ID [{anchorID}] Saved", Color.green);
