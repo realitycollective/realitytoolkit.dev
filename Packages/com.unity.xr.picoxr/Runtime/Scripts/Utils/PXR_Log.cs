@@ -19,54 +19,53 @@ namespace Unity.XR.PXR
 {
     public class PLog
     {
-        //   7--all print, 6--info to fatal, 5--warning to fatal,
-        //   4--error to fatal, 3--only fatal print
-        //   0--not print
-        public static LogLevel logLevel = LogLevel.LogVerbose;
+        //   7--all print, 4--info to fatal, 3--warning to fatal,
+        //   2--error to fatal, 1--only fatal print
+        public static LogLevel logLevel = LogLevel.LogWarn;
+
         public enum LogLevel
         {
-            LogClose = 0,
-            LogVerbose = 2,
-            LogDebug,
-            LogInfo,
-            LogWarn,
-            LogError,
-            LogFatal,
+            LogFatal = 1,
+            LogError = 2,
+            LogWarn = 3,
+            LogInfo = 4,
+            LogDebug = 5,
+            LogVerbose,
         }
 
         public static void v(string tag, string message)
         {
-            if (9 - LogLevel.LogVerbose < logLevel)
+            if (LogLevel.LogVerbose <= logLevel)
                 Debug.Log(string.Format("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message));
         }
 
         public static void d(string tag, string message)
         {
-            if (9 - LogLevel.LogDebug < logLevel)
+            if (LogLevel.LogDebug <= logLevel)
                 Debug.Log(string.Format("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message));
         }
 
         public static void i(string tag, string message)
         {
-            if (9 - LogLevel.LogInfo < logLevel)
+            if (LogLevel.LogInfo <= logLevel)
                 Debug.Log(string.Format("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message));
         }
 
         public static void w(string tag, string message)
         {
-            if (9 - LogLevel.LogWarn < logLevel)
+            if (LogLevel.LogWarn <= logLevel)
                 Debug.LogWarning(string.Format("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message));
         }
 
         public static void e(string tag, string message)
         {
-            if (9 - LogLevel.LogError < logLevel)
+            if (LogLevel.LogError <= logLevel)
                 Debug.LogError(string.Format("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message));
         }
 
         public static void f(string tag, string message)
         {
-            if (9 - LogLevel.LogFatal < logLevel)
+            if (LogLevel.LogFatal <= logLevel)
                 Debug.LogError(string.Format("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message));
         }
     }

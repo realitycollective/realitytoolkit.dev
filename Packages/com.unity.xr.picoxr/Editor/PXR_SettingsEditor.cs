@@ -24,15 +24,17 @@ namespace Unity.XR.PXR.Editor
         private const string StereoRenderingModeAndroid = "stereoRenderingModeAndroid";
         private const string SystemDisplayFrequency = "systemDisplayFrequency";
         private const string OptimizeBufferDiscards = "optimizeBufferDiscards";
+        private const string SystemSplashScreen = "systemSplashScreen";
 
         static GUIContent guiStereoRenderingMode = EditorGUIUtility.TrTextContent("Stereo Rendering Mode");
         static GUIContent guiDisplayFrequency = EditorGUIUtility.TrTextContent("Display Refresh Rates");
         private static GUIContent guiOptimizeBuffer = EditorGUIUtility.TrTextContent("Optimize Buffer Discards(Vulkan)");
-
+        static GUIContent guiSystemSplashScreen = EditorGUIUtility.TrTextContent("System Splash Screen");
 
         private SerializedProperty stereoRenderingModeAndroid;
         private SerializedProperty systemDisplayFrequency;
         private SerializedProperty optimizeBufferDiscards;
+        private SerializedProperty systemSplashScreen;
 
         void OnEnable()
         {
@@ -41,7 +43,9 @@ namespace Unity.XR.PXR.Editor
             if (systemDisplayFrequency == null)
                 systemDisplayFrequency = serializedObject.FindProperty(SystemDisplayFrequency);
             if (optimizeBufferDiscards == null)
-                optimizeBufferDiscards = serializedObject.FindProperty(OptimizeBufferDiscards);
+                optimizeBufferDiscards = serializedObject.FindProperty(OptimizeBufferDiscards);            
+            if (systemSplashScreen == null)
+                systemSplashScreen = serializedObject.FindProperty(SystemSplashScreen);       
         }
 
         public override void OnInspectorGUI()
@@ -67,6 +71,7 @@ namespace Unity.XR.PXR.Editor
                 EditorGUILayout.PropertyField(systemDisplayFrequency, guiDisplayFrequency);
                 EditorGUILayout.PropertyField(optimizeBufferDiscards, guiOptimizeBuffer);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("enableAppSpaceWarp"), new GUIContent("Application SpaceWarp"));
+                EditorGUILayout.PropertyField(systemSplashScreen, guiSystemSplashScreen);
             }
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndVertical();

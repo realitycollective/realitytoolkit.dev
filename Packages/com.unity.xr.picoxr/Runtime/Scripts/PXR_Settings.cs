@@ -14,6 +14,7 @@ using System;
 using UnityEngine;
 using UnityEngine.XR.Management;
 #if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 #endif
 
@@ -49,6 +50,12 @@ namespace Unity.XR.PXR
         [SerializeField, Tooltip("Enable Application SpaceWarp")]
         public bool enableAppSpaceWarp;
 
+        [SerializeField, Tooltip("Set the system splash screen picture in PNG format")]
+        public Texture2D systemSplashScreen;
+
+        private string splashPath = string.Empty;
+
+
         public ushort GetStereoRenderingMode()
         {
             return (ushort)stereoRenderingModeAndroid;
@@ -69,6 +76,35 @@ namespace Unity.XR.PXR
 		{
             settings = this;
 		}
+        
+#elif UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (systemSplashScreen == null)
+            {
+                return;
+            }
+
+            splashPath = AssetDatabase.GetAssetPath(systemSplashScreen);
+            if (Path.GetExtension(splashPath).ToLower() != ".png")
+            {
+                systemSplashScreen = null;
+                Debug.LogError("Invalid file format of System Splash Screen, only PNG format is supported. The asset path: " + splashPath); 
+                 splashPath = string.Empty;
+            }
+        }
+
+        public string GetSystemSplashScreen(string path)
+        {
+            if (systemSplashScreen == null || splashPath == string.Empty)
+            {
+                return "0";
+            }
+
+            string targetPath = Path.Combine(path, "src/main/assets/pico_splash.png");
+            FileUtil.ReplaceFile(splashPath, targetPath);
+            return "1";
+        }
 #endif
     }
 }

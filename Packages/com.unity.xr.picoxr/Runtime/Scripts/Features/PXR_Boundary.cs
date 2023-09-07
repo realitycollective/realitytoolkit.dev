@@ -138,6 +138,27 @@ namespace Unity.XR.PXR
         public static PxrTrackingState GetSeeThroughTrackingState() {
             return PXR_Plugin.Boundary.UPxr_GetSeeThroughTrackingState();
         }
+        
+        /// <summary>
+        /// disable or enable boundary
+        /// </summary>
+        /// <param name="value"></param>
+        public static void SetGuardianSystemDisable(bool value)
+        {
+            PXR_Plugin.Boundary.UPxr_SetGuardianSystemDisable(value);
+        }
+
+        /// <summary>
+        /// Uses the global pose.
+        /// </summary>
+        /// <param name="value">Specifies whether to use the global pose.
+        /// * `true`: use
+        /// * `false`: do not use
+        /// </param>
+        public static void UseGlobalPose(bool value)
+        {
+            PXR_Plugin.Boundary.UPxr_SetSeeThroughState(value);
+        }
     }
 }
 

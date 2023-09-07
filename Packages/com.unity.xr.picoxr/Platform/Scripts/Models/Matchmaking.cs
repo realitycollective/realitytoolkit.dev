@@ -14,15 +14,13 @@ using System;
 
 namespace Pico.Platform.Models
 {
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Matchmaking admin snapshot. You will receive this after calling \ref MatchmakingService.GetAdminSnapshot.</summary>
     public class MatchmakingAdminSnapshot
     {
-        /** @brief List of matchmaking candidates */
+        /// List of matchmaking candidates 
         public readonly MatchmakingAdminSnapshotCandidateList CandidateList;
-        /** @brief The current matching threshold. */
+        /// The current matching threshold. 
         public readonly double MyCurrentThreshold;
 
         public MatchmakingAdminSnapshot(IntPtr o)
@@ -31,17 +29,15 @@ namespace Pico.Platform.Models
             MyCurrentThreshold = CLIB.ppf_MatchmakingAdminSnapshot_GetMyCurrentThreshold(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Matchmaking candidate.</summary>
     public class MatchmakingAdminSnapshotCandidate
     {
-        /** @brief Whether me and the other user can be matched. */
+        /// Whether me and the other user can be matched. 
         public readonly bool CanMatch;
-        /** @brief My matching threshold. */
+        /// My matching threshold. 
         public readonly double MyTotalScore;
-        /** @brief The other user's matching threshold. */
+        /// The other user's matching threshold. 
         public readonly double TheirCurrentThreshold;
 
         public MatchmakingAdminSnapshotCandidate(IntPtr o)
@@ -51,28 +47,31 @@ namespace Pico.Platform.Models
             TheirCurrentThreshold = CLIB.ppf_MatchmakingAdminSnapshotCandidate_GetTheirCurrentThreshold(o);
         }
     }
-
+    /// <summary>
+    /// Each element is \ref MatchmakingAdminSnapshotCandidate.
+    /// </summary>
     public class MatchmakingAdminSnapshotCandidateList : MessageArray<MatchmakingAdminSnapshotCandidate>
     {
+        /// The total number of MatchmakingAdminSnapshotCandidate in the list. 
+        public readonly ulong TotalCount;
         public MatchmakingAdminSnapshotCandidateList(IntPtr a)
         {
             var count = (int) CLIB.ppf_MatchmakingAdminSnapshotCandidateArray_GetSize(a);
             this.Capacity = count;
+            TotalCount = (ulong)CLIB.ppf_MatchmakingAdminSnapshotCandidateArray_GetTotalCount(a);
             for (int i = 0; i < count; i++)
             {
                 this.Add(new MatchmakingAdminSnapshotCandidate(CLIB.ppf_MatchmakingAdminSnapshotCandidateArray_GetElement(a, (UIntPtr) i)));
             }
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Matchmaking browse result. You will receive the result after calling \ref MatchmakingService.Browse2. </summary>
     public class MatchmakingBrowseResult
     {
-        /** @brief Matchmaking enqueue result. */
+        /// Matchmaking enqueue result. 
         public readonly MatchmakingEnqueueResult EnqueueResult;
-        /** @brief The list of matchmaking rooms. */
+        /// The list of matchmaking rooms. 
         public readonly MatchmakingRoomList MatchmakingRooms;
 
         public MatchmakingBrowseResult(IntPtr o)
@@ -81,23 +80,21 @@ namespace Pico.Platform.Models
             MatchmakingRooms = new MatchmakingRoomList(CLIB.ppf_MatchmakingBrowseResult_GetRooms(o));
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Matchmaking enqueue result.</summary>
     public class MatchmakingEnqueueResult
     {
-        /** @brief Matchmaking snapshot options. Used for debugging only. */
+        /// Matchmaking snapshot options. Used for debugging only. 
         public readonly MatchmakingAdminSnapshot AdminSnapshotOptional;
-        /** @brief The average waiting time. */
+        /// The average waiting time. 
         public readonly uint AverageWait; 
-        /** @brief The number of matches made in the last hour. */
+        /// The number of matches made in the last hour. 
         public readonly uint MatchesInLastHourCount;
-        /** @brief The expected longest waiting time. */
+        /// The expected longest waiting time. 
         public readonly uint MaxExpectedWait;
-        /** @brief Matchmaking pool name. */
+        /// Matchmaking pool name. 
         public readonly string Pool; 
-        /** @brief Match rate. */
+        /// Match rate. 
         public readonly uint RecentMatchPercentage;
 
 
@@ -122,15 +119,13 @@ namespace Pico.Platform.Models
             RecentMatchPercentage = CLIB.ppf_MatchmakingEnqueueResult_GetRecentMatchPercentage(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Matchmaking enqueue result and room info. You will receive this after calling \ref MatchmakingService.CreateAndEnqueueRoom2.</summary>
     public class MatchmakingEnqueueResultAndRoom
     {
-        /** @brief Matchmaking enqueue result. */
+        /// Matchmaking enqueue result. 
         public readonly MatchmakingEnqueueResult MatchmakingEnqueueResult;
-        /** @brief Matchmaking room info. */
+        /// Matchmaking room info. 
         public readonly Room Room;
 
         public MatchmakingEnqueueResultAndRoom(IntPtr o)
@@ -139,17 +134,15 @@ namespace Pico.Platform.Models
             Room = new Room(CLIB.ppf_MatchmakingEnqueueResultAndRoom_GetRoom(o));
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Matchmaking room.</summary>
     public class MatchmakingRoom
     {
-        /** @brief Room info. */
+        /// Room info. 
         public readonly Models.Room Room;
-        /** @brief Currently, always `0`. */
+        /// Currently, always `0`. 
         public readonly uint PingTime;
-        /** @brief Currently, always `false`. */
+        /// Currently, always `false`. 
         public readonly bool HasPingTime;
 
 
@@ -161,12 +154,15 @@ namespace Pico.Platform.Models
         }
     }
     /**
-     * \ingroup Models
+     * Each element is \ref MatchmakingRoom
      */
     public class MatchmakingRoomList : MessageArray<MatchmakingRoom>
     {
+        /// The total number. 
+        public readonly int TotalCount;
         public MatchmakingRoomList(IntPtr a)
         {
+            TotalCount = CLIB.ppf_MatchmakingRoomArray_GetTotalCount(a);
             int count = (int) CLIB.ppf_MatchmakingRoomArray_GetSize(a);
             this.Capacity = count;
             for (uint i = 0; i < count; i++)
@@ -175,23 +171,21 @@ namespace Pico.Platform.Models
             }
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Matchmaking statistics. Will receive this after calling \ref MatchmakingService.GetStats.</summary>
     public class MatchmakingStats
     {
-        /** @brief The current user's number of draws. */
+        /// The current user's number of draws. 
         public readonly uint DrawCount;
-        /** @brief The current user's number of losses. */
+        /// The current user's number of losses. 
         public readonly uint LossCount;
-        /** @brief The current user's skill level for the current matchmaking pool. */
+        /// The current user's skill level for the current matchmaking pool. 
         public readonly uint SkillLevel;
-        /** @brief The average of all skill levels for the current matchmaking pool. */
+        /// The average of all skill levels for the current matchmaking pool. 
         public readonly double SkillMean;
-        /** @brief The standard deviation of all skill levels for the current matchmaking pool */
+        /// The standard deviation of all skill levels for the current matchmaking pool 
         public readonly double SkillStandardDeviation;
-        /** @brief The current user's number of wins. */
+        /// The current user's number of wins. 
         public readonly uint WinCount;
 
 

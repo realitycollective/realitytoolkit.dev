@@ -13,6 +13,7 @@ PICO Technology Co., Ltd.
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
+using Pico.Platform.Framework;
 using Unity.XR.PXR;
 using UnityEngine;
 
@@ -22,7 +23,6 @@ namespace Pico.Platform
 {
     /**
      * \defgroup Platform Services
-     * \defgroup Models Structs & Enums
      */
     /**
      * \ingroup Platform
@@ -51,24 +51,22 @@ namespace Pico.Platform
         public static string GetAppID(string appId = null)
         {
             string configAppID = PXR_PlatformSetting.Instance.appID.Trim();
-            if (String.IsNullOrWhiteSpace(appId))
+            if (!string.IsNullOrWhiteSpace(appId) && !string.IsNullOrWhiteSpace(configAppID) && appId != configAppID)
             {
-                if (String.IsNullOrWhiteSpace(configAppID))
-                {
-                    throw new UnityException("Cannot find appId");
-                }
-
-                appId = configAppID;
-            }
-            else
-            {
-                if (!String.IsNullOrWhiteSpace(configAppID))
-                {
-                    Debug.LogWarning($"Using {appId} as appId rather than {configAppID} which is configured in Unity Editor");
-                }
+                throw new UnityException("The parameter appId is inconsistent with the configured appId");
             }
 
-            return appId;
+            if (!string.IsNullOrWhiteSpace(appId))
+            {
+                return appId;
+            }
+
+            if (!string.IsNullOrWhiteSpace(configAppID))
+            {
+                return configAppID;
+            }
+
+            throw new UnityException("Cannot find appId");
         }
 
         /// <summary>
@@ -89,15 +87,14 @@ namespace Pico.Platform
             Task<PlatformInitializeResult> task;
             if (Application.platform == RuntimePlatform.Android)
             {
-                var requestId = CLIB.ppf_UnityInitAsynchronousWrapper(appId);
+                AndroidJavaObject activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
+                var requestId = CLIB.ppf_InitializeAndroidAsynchronous(appId, activity.GetRawObject(), IntPtr.Zero);
                 if (requestId == 0)
                 {
                     throw new Exception("PICO PlatformSDK failed to initialize");
                 }
-                else
-                {
-                    task = new Task<PlatformInitializeResult>(requestId);
-                }
+
+                task = new Task<PlatformInitializeResult>(requestId);
             }
             else if ((Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor))
             {
@@ -155,7 +152,9 @@ namespace Pico.Platform
             PlatformInitializeResult initializeResult;
             if (Application.platform == RuntimePlatform.Android)
             {
-                initializeResult = CLIB.ppf_UnityInitWrapper(appId);
+                AndroidJavaObject activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
+
+                initializeResult = CLIB.ppf_InitializeAndroid(appId, activity.GetRawObject(), IntPtr.Zero);
 
                 if (initializeResult == PlatformInitializeResult.Success ||
                     initializeResult == PlatformInitializeResult.AlreadyInitialized)

@@ -95,6 +95,10 @@ namespace Pico.Platform
                     {
                         handler.DynamicInvoke(msg);
                     }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"dispatchMessage failed {e}");
+                    }
                     finally
                     {
                         TaskMap.TryRemove(msg.RequestID, out handler);

@@ -21,10 +21,22 @@ namespace Unity.XR.PXR
         HandRight = 1,
     }
 
+    /// <summary>
+    /// The current active input device.
+    /// </summary>
     public enum ActiveInputDevice
     {
+        /// <summary>
+        /// HMD
+        /// </summary>
         HeadActive = 0,
+        /// <summary>
+        /// Controllers
+        /// </summary>
         ControllerActive = 1,
+        /// <summary>
+        /// Hands
+        /// </summary>
         HandTrackingActive = 2,
     }
 
@@ -36,7 +48,7 @@ namespace Unity.XR.PXR
 
         public Vector3 ToVector3()
         {
-            return new Vector3() { x = x, y = y, z = z };
+            return new Vector3() { x = x, y = y, z = -z };
         }
     }
 
@@ -49,14 +61,22 @@ namespace Unity.XR.PXR
 
         public Quaternion ToQuat()
         {
-            return new Quaternion() { x = x, y = y, z = z, w = w };
+            return new Quaternion() { x = x, y = y, z = -z, w = -w };
         }
     }
-
-
+    
+    /// <summary>
+    /// The location of hand joint.
+    /// </summary>
     public struct Posef
     {
+        /// <summary>
+        /// The orientation of hand joint.
+        /// </summary>
         public Quatf Orientation;
+        /// <summary>
+        /// The position of hand joint.
+        /// </summary>
         public Vector3f Position;
         public override string ToString()
         {
@@ -64,83 +84,98 @@ namespace Unity.XR.PXR
                 Orientation.x, Orientation.y, Orientation.z, Orientation.w,
                 Position.x, Position.y, Position.z);
         }
-
-        public void ToHandPosef(HandType hand)
-        {
-            Vector3 pos = Position.ToVector3();
-            Quaternion rot = Orientation.ToQuat();
-
-            if (hand == HandType.HandLeft)
-            {
-                rot = new Quaternion(rot.x, rot.y, -rot.z, -rot.w) * new Quaternion(0.5f, -0.5f, 0.5f, -0.5f);
-            }
-            else
-            {
-                rot = new Quaternion(rot.x, rot.y, -rot.z, -rot.w) * new Quaternion(-0.5f, -0.5f, -0.5f, -0.5f);
-            }
-
-            Position.x = pos.x;
-            Position.y = pos.y;
-            Position.z = -pos.z;
-            Orientation.x = rot.x;
-            Orientation.y = rot.y;
-            Orientation.z = rot.z;
-            Orientation.w = rot.w;
-        }
-
-        public void ToJointPosef(HandType hand)
-        {
-            Vector3 pos = Position.ToVector3();
-            Quaternion rot = Orientation.ToQuat();
-
-            if (hand == HandType.HandLeft)
-            {
-                Orientation.x = -rot.y;
-                Orientation.y = rot.z;
-                Orientation.z = rot.x;
-                Orientation.w = -rot.w;
-            }
-            else
-            {
-                Orientation.x = rot.y;
-                Orientation.y = -rot.z;
-                Orientation.z = rot.x;
-                Orientation.w = -rot.w;
-            }
-
-            Position.x = pos.x;
-            Position.y = pos.y;
-            Position.z = -pos.z;
-        }
     }
-
+    
+    /// <summary>
+    /// The status of ray and fingers.
+    /// </summary>
     public enum HandAimStatus : ulong
     {
+        /// <summary>
+        /// Whether the data is valid.
+        /// </summary>
         AimComputed = 0x00000001,
+        /// <summary>
+        /// Whether the ray appears.
+        /// </summary>
         AimRayValid = 0x00000002,
+        /// <summary>
+        /// Whether the index finger pinches.
+        /// </summary>
         AimIndexPinching = 0x00000004,
+        /// <summary>
+        /// Whether the middle finger pinches.
+        /// </summary>
         AimMiddlePinching = 0x00000008,
+        /// <summary>
+        /// Whether the ring finger pinches.
+        /// </summary>
         AimRingPinching = 0x00000010,
+        /// <summary>
+        /// Whether the little finger pinches.
+        /// </summary>
         AimLittlePinching = 0x00000020,
+        /// <summary>
+        /// Whether the ray touches.
+        /// </summary>
         AimRayTouched = 0x00000200
     }
 
+    /// <summary>
+    /// The data about the poses of ray and fingers.
+    /// </summary>
     public struct HandAimState
     {
+        /// <summary>
+        /// The status of hand tracking. If it is not `tracked`, confidence will be `0`.
+        /// </summary>
         public HandAimStatus aimStatus;
+        /// <summary>
+        /// The pose of the ray.
+        /// </summary>
         public Posef aimRayPose;
-        public float pinchStrengthIndex;
-        public float pinchStrengthMiddle;
-        public float pinchStrengthRing;
-        public float pinchStrengthLittle;
+        /// <summary>
+        /// The strength of index finger's pinch.
+        /// </summary>
+        private float pinchStrengthIndex;
+        /// <summary>
+        /// The strength of middle finger's pinch.
+        /// </summary>
+        private float pinchStrengthMiddle;
+        /// <summary>
+        /// The strength of ring finger's pinch.
+        /// </summary>
+        private float pinchStrengthRing;
+        /// <summary>
+        /// The strength of little finger's pinch.
+        /// </summary>
+        private float pinchStrengthLittle;
+        /// <summary>
+        /// The strength of ray's touch.
+        /// </summary>
         public float touchStrengthRay;
     }
 
+    /// <summary>
+    /// The data about the status of hand joint location.
+    /// </summary>
     public enum HandLocationStatus : ulong
     {
+        /// <summary>
+        /// Whether the joint's orientation is valid.
+        /// </summary>
         OrientationValid = 0x00000001,
+        /// <summary>
+        /// Whether the joint's position is valid.
+        /// </summary>
         PositionValid = 0x00000002,
+        /// <summary>
+        /// Whether the joint's orientation is being tracked.
+        /// </summary>
         OrientationTracked = 0x00000004,
+        /// <summary>
+        /// Whether the joint's position is being tracked.
+        /// </summary>
         PositionTracked = 0x00000008
     }
 
@@ -181,19 +216,48 @@ namespace Unity.XR.PXR
         JointMax = 26
     }
 
+    /// <summary>
+    /// The data about the location of hand joint.
+    /// </summary>
     public struct HandJointLocation
     {
+        /// <summary>
+        /// The status of hand joint location.
+        /// </summary>
         public HandLocationStatus locationStatus;
+        /// <summary>
+        /// The orientation and position of hand joint.
+        /// </summary>
         public Posef pose;
+        /// <summary>
+        /// The radius of hand joint.
+        /// </summary>
         public float radius;
     }
 
+    /// <summary>
+    /// The data about hand tracking.
+    /// </summary>
     public struct HandJointLocations
     {
+        /// <summary>
+        /// The quality level of hand tracking:
+        /// `0`: low
+        /// `1`: high
+        /// </summary>
         public uint isActive;
+        /// <summary>
+        /// The number of hand joints that the SDK supports. Currenty returns `26`.
+        /// </summary>
         public uint jointCount;
+        /// <summary>
+        /// The scale of the hand.
+        /// </summary>
         public float handScale;
 
+        /// <summary>
+        /// The locations (orientation and position) of hand joints.
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)HandJoint.JointMax)]
         public HandJointLocation[] jointLocations;
     }
@@ -209,7 +273,7 @@ namespace Unity.XR.PXR
 
     public static class PXR_HandTracking
     {
-        /// <summary>Gets the status of hand tracking.</summary>
+        /// <summary>Gets whether hand tracking is enabled or disabled.</summary>
         /// <returns>
         /// * `true`: enabled
         /// * `false`: disabled
@@ -219,53 +283,43 @@ namespace Unity.XR.PXR
             return PXR_Plugin.HandTracking.UPxr_GetHandTrackerSettingState();
         }
 
-        /// <summary>Gets the current input control device.</summary>
-        /// <returns>
-        /// * `0`(`HeadActive`): HMD 
-        /// * `1`(`ControllerActive`): controller
-        /// * `2`(`HandTrackingActive`): hand
+        /// <summary>Gets the current active input device.</summary>
+        /// <returns>The current active input device:
+        /// * `HeadActive`: HMD 
+        /// * `ControllerActive`: controllers
+        /// * `HandTrackingActive`: hands
         /// </returns>
         public static ActiveInputDevice GetActiveInputDevice()
         {
             return PXR_Plugin.HandTracking.UPxr_GetHandTrackerActiveInputType();
         }
 
-        /// <summary>Gets the interaction status of a specified hand.</summary>
-        /// <param name="hand">The hand to get the interaction status for:
-        /// * `0`(`HandLeft`): left hand
-        /// * `1`(`HandRight`): right hand
+        /// <summary>Gets the data about the pose of a specified hand, including the status of the ray and fingers, the strength of finger pinch and ray touch.</summary>
+        /// <param name="hand">The hand to get data for:
+        /// * `HandLeft`: left hand
+        /// * `HandRight`: right hand
         /// </param>
-        /// <param name="aimState">Returns the data about the interaction status of the specified hand.</param>
-        /// <returns>The `HandAimState` struct that contains the following data about hand interaction status:
-        /// * `aimStatus`: HandAimStatus, the status of hand tracking, including:
-        ///   * `0x00000001`(`AimComputed`): whether the data is valid
-        ///   * `0x00000002`(`AimRayValid`): whether the ray was displayed
-        ///   * `0x00000004`(`AimIndexPinching`): whether the index finger pinched
-        ///   * `0x00000008`(`AimMiddlePinching`): whether the middle finger pinched
-        ///   * `0x00000010`(`AimRingPinching`): whether the ring finger pinched
-        ///   * `0x00000020`(`AimLittlePinching`): whether the little finger pinched
-        ///   * `0x00000200`(`AimRayTouched`): whether the ray touched
-        /// * `aimRayPose`: Posef, ray pose
-        /// * `pinchStrengthIndex`: float, the strength of index finger pinch
-        /// * `pinchStrengthMiddle`: float, the strength of middle finger pinch
-        /// * `pinchStrengthRing`: float, the strength of ring finger pinch
-        /// * `pinchStrengthLittle`: float, the strength of little finger pinch
-        /// * `touchStrengthRay`: float, the strength of ray touch
-        /// If you use the hand prefabs without changing any of their default settings, 
-        /// such as hand joints, you can get the following data:
-        /// * `Computed`: bool, whether the data is valid
-        /// * `RayPose`: Posef, ray pose
-        /// * `RayValid`: bool, whether the ray was displayed
-        /// * `RayTouched`: bool, whether the ray touched
-        /// * `TouchStrengthRay`: float, the strength of ray touch
-        /// * `IndexPinching`: bool, whether the index finger pinched
-        /// * `MiddlePinching`: bool, whether the middle finger pinched
-        /// * `RingPinching`: bool, whether the ring finger pinched
-        /// * `LittlePinching`: bool, whether the little finger pinched
-        /// * `PinchStrengthIndex`: float, the strength of index finger pinch
-        /// * `PinchStrengthMiddle`: float, the strength of middle finger pinch
-        /// * `PinchStrengthRing`: float, the strength of ring finger pinch
-        /// * `PinchStrengthLittle`: float, the strength of little finger pinch
+        /// <param name="aimState">`HandAimState` contains the data about the poses of ray and fingers.
+        /// If you use PICO hand prefabs without changing any of their default settings, you will get the following data:
+        /// ```csharp
+        /// public class PXR_Hand
+        /// {
+        ///     // Whether the data is valid.
+        ///     public bool Computed { get; private set; }
+        ///
+        ///     // The ray pose.
+        ///     public Posef RayPose { get; private set; }
+        ///     // Whether the ray was displayed.
+        ///     public bool RayValid { get; private set; }
+        ///     // Whether the ray touched.
+        ///     public bool RayTouched { get; private set; }
+        ///     // The strength of ray touch.
+        ///     public float TouchStrengthRay { get; private set; }
+        /// ```
+        /// </param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
         /// </returns>
         public static bool GetAimState(HandType hand, ref HandAimState aimState)
         {
@@ -273,26 +327,15 @@ namespace Unity.XR.PXR
             return PXR_Plugin.HandTracking.UPxr_GetHandTrackerAimState(hand, ref aimState);
         }
 
-        /// <summary>Gets the pose data for a hand.</summary>
-        /// <param name="hand">The hand to get pose data for:
-        /// * `0`(`HandLeft`): left hand
-        /// * `1`(`HandRight`): right hand
+        /// <summary>Gets the locations of joints for a specified hand.</summary>
+        /// <param name="hand">The hand to get joint locations for:
+        /// * `HandLeft`: left hand
+        /// * `HandRight`: right hand
         /// </param>
-        /// <param name="jointLocations">Returns the pose data of the specified hand.</param>
-        /// <returns>The `HandJointLocations` struct that contains the following pose data:
-        /// * `isActive`: uint, hand tracking quality (`0`: low; `1`: high)
-        /// * `jointCount`: uint, the number of joints
-        /// * `handScale`: float, the scale of the hand
-        /// * `jointLocations`: HandJointLocation[], the locations of joints, including:
-        ///   * `locationStatus`: the status of joints, including the following enumerations:
-        ///     * `0x00000001`(`OrientationValid`): whether the hand's orientation is valid
-        ///     * `0x00000002`(`PositionValid`): whether the hand's position is valid
-        ///     * `0x00000004`(`OrientationTracked`): whether the hand's orientation is tracked
-        ///     * `0x00000008`(`PositionTracked`): whether the hand's position is tracked
-        ///   * `pose`: the poses of joints, including:
-        ///     * `Orientation`: hand orientation
-        ///     * `Position`: hand position
-        ///   * `radius`: the radius of joints
+        /// <param name="jointLocations">Contains data about the locations of the joints in the specified hand.</param>
+        /// <returns>
+        /// * `true`: success
+        /// * `false`: failure
         /// </returns>
         public static bool GetJointLocations(HandType hand, ref HandJointLocations jointLocations)
         {

@@ -12,7 +12,7 @@ PICO Technology Co., Ltd.
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using AOT;
 using Pico.Platform.Models;
 using UnityEngine;
 using UnityEngine.Android;
@@ -44,7 +44,7 @@ namespace Pico.Platform
         }
 
         /// <summary>
-        /// Gets the token required by `JoinRoom`.
+        /// Gets the token required by \ref JoinRoom.
         ///
         /// </summary>
         /// <param name="roomId">The ID of the room that the token is for.</param>
@@ -80,7 +80,7 @@ namespace Pico.Platform
         /// Joins a user to a specified room.
         ///
         /// @note 
-        /// * If code `0` is returned, you should use \ref SetOnJoinRoomResult to handle the
+        /// * If code `0` is returned, you should use \ref SetOnJoinRoomResultCallback to handle the
         /// final join room result.
         /// * If a non-zero code is returned, you should call \ref LeaveRoom firstly to join the room in the next time.
         /// </summary>
@@ -232,6 +232,38 @@ namespace Pico.Platform
             CLIB.ppf_Rtc_RoomResumeAllSubscribedStream(roomId, RtcPauseResumeMediaType.Audio);
         }
 
+        public delegate int ProcessAudioFrameFunction(RtcAudioFrame frame);
+
+        static ProcessAudioFrameFunction audioProcessor = null;
+
+        [MonoPInvokeCallback(typeof(CLIB.RtcProcessAudioFrameFunction))]
+        static int InnerAudioProcessor(IntPtr ptr)
+        {
+            if (audioProcessor != null)
+            {
+                return audioProcessor(new RtcAudioFrame(ptr));
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Register local audio processor. You can use this function to modify the recorded audio.
+        /// </summary>
+        /// <param name="processor">The processor function.
+        /// If it returns 0,means the function didn't change the data.
+        /// If its return value is negative integer, means the function encounters error.
+        /// If its return value is positive integer, means the function handled successfully.
+        /// </param>
+        /// <param name="channel">The channel of the audio you want to process.</param>
+        /// <param name="sampleRate">The sample rate of the audio you want to process.</param>
+        public static void RegisterLocalAudioProcessor(ProcessAudioFrameFunction processor, RtcAudioChannel channel, RtcAudioSampleRate sampleRate)
+        {
+            // here should hold the processor to avoid GC delete the processor and `InnerAudioProcessor` will call this. 
+            audioProcessor = processor;
+            CLIB.ppf_Rtc_RegisterLocalAudioProcessor(InnerAudioProcessor, channel, sampleRate);
+        }
+
         /// <summary>
         /// Enables audio properties report. Once enabled, you will regularly receive audio report data.
         /// </summary>
@@ -350,8 +382,8 @@ namespace Pico.Platform
         /// Updates the token in a room.
         ///
         /// When a token's ttl is about to expire, you will receive a notification
-        /// through `SetOnTokenWillExpire`. If you still want to stay in the room,
-        /// you should call `GetToken` to get a new token and call `UpdateToken`
+        /// through \ref SetOnTokenWillExpire. If you still want to stay in the room,
+        /// you should call \ref GetToken to get a new token and call \ref UpdateToken
         /// with the new token. If you don't update token timely,you will be kicked
         /// out from the room. 
         /// </summary>
@@ -411,6 +443,8 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sends a binary message to a room. All in-room users will receive this message.
+        ///
+        /// The message's bytes size shouldn't be greater than 64kB.
         /// </summary>
         /// <param name="roomId">The ID of the room.</param>
         /// <param name="message">The binary message to be sent.</param>
@@ -425,6 +459,8 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sends a text message to a room. All in-room users will receive this message.
+        ///
+        /// The message's bytes size shouldn't be greater than 64kB.
         /// </summary>
         /// <param name="roomId">The ID of the room.</param>
         /// <param name="message">The message to be sent.</param>
@@ -436,6 +472,8 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sends a binary message to a user. Only the user can receive this message.
+        ///
+        /// The message's bytes size shouldn't be greater than 64kB.
         /// </summary>
         /// <param name="roomId">The ID of the room the user is in.</param>
         /// <param name="userId">The ID of the user the message is sent to.</param>
@@ -451,6 +489,7 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sends a text message to a user. Only the user can receive this message.
+        /// The message's bytes size shouldn't be greater than 64kB.
         /// </summary>
         /// <param name="roomId">The ID of the room the user is in.</param>
         /// <param name="userId">The ID of the user the message is sent to.</param>
@@ -493,7 +532,7 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sets the callback to get notified when the token is about to expire.
-        /// @note The token will expire 30 seconds after you recevive this notification.
+        /// @note The token will expire 30 seconds after you receive this notification.
         /// * If you still want to stay in the room, you can get a new token by calling `UpdateToken`.
         /// * If you do not update the token after receiving this notification, you will be kicked out of the room in 30 seconds.
         /// </summary>

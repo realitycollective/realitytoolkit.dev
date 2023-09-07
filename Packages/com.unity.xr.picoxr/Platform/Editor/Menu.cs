@@ -17,6 +17,15 @@ namespace Pico.Platform.Editor
 {
     public class Menu
     {
+        [MenuItem("PXR_SDK/Platform Settings")]
+        public static void ShowNewConfig()
+        {
+            PicoSettings window = ScriptableObject.CreateInstance(typeof(PicoSettings)) as PicoSettings;
+            window.minSize = new Vector2(400, 450);
+            window.maxSize = new Vector2(400, 450);
+            window.ShowUtility();
+        }
+
         [MenuItem("PXR_SDK/PC Debug Settings")]
         public static void EditPcConfig()
         {

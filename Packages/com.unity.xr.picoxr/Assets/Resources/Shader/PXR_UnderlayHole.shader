@@ -1,9 +1,17 @@
 ﻿Shader "PXR_SDK/PXR_UnderlayHole"
 {
-	SubShader
+	Properties
 	{
-		Tags {"Queue" = "Geometry+1" "RenderType" = "Transparent"}
-		LOD 200
+	   _MainTex("Texture(A)", 2D) = "black" {}
+	}
+
+		SubShader
+	{
+		Tags { "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
+		LOD 100
+				ZWrite Off
+				Blend Zero OneMinusSrcAlpha,Zero Zero
+				ColorMask RGBA
 
 		Pass
 		{
@@ -16,26 +24,33 @@
 			struct appdata
 			{
 				float4 vertex : POSITION;
+				float2 texcoord : TEXCOORD0;
 			};
 
 			struct v2f
 			{
 				float4 vertex : SV_POSITION;
+				float2 texcoord : TEXCOORD0;
 			};
 
-			fixed4 _Transparent = fixed4(1, 1, 1, 0);
+			sampler2D _MainTex;
 
 			v2f vert(appdata v)
 			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
+				o.texcoord = v.texcoord;
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-				fixed4 col = _Transparent;
-				return col;
+				fixed4 col = tex2D(_MainTex, i.texcoord);
+								col.r = 0;
+								col.g = 0;
+								col.b = 0;
+								col.a = col.a;
+								return col;
 			}
 			ENDCG
 		}

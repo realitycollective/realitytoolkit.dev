@@ -75,6 +75,7 @@ namespace Pico.Platform
 
         public bool IsError => Error != null && Error.Code != 0;
 
+        [Obsolete("Use Error instead")]
         public Error GetError()
         {
             return Error;

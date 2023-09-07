@@ -20,153 +20,93 @@ namespace Unity.XR.PXR
     public class PXR_HandPoseConfig : ScriptableObject
     {
         [DisplayOnly]
-        public bool visualize;
-        [DisplayOnly]
         public ShapesRecognizer shapesRecognizer;
         [DisplayOnly]
         public BonesRecognizer bonesRecognizer;
+        [DisplayOnly]
+        public TransRecognizer transRecognizer;
+    }
 
+    [Serializable]
+    public class ShapesRecognizer
+    {
+        public Finger thumb = new Finger(HandFinger.Thumb);
+        public Finger index = new Finger(HandFinger.Index);
+        public Finger middle = new Finger(HandFinger.Middle);
+        public Finger ring = new Finger(HandFinger.Ring);
+        public Finger pinky = new Finger(HandFinger.Pinky);
+        public float holdDuration = 0.09f;
         [Serializable]
-        public class ShapesRecognizer
+        public class Finger
         {
-            public Finger thumb = new Finger(HandFinger.Thumb);
-            public Finger index = new Finger(HandFinger.Index);
-            public Finger middle = new Finger(HandFinger.Middle);
-            public Finger ring = new Finger(HandFinger.Ring);
-            public Finger pinky = new Finger(HandFinger.Pinky);
+            [HideInInspector]
+            public HandFinger handFinger;
+            public Flexion flexion;
+            public Curl curl;
+            public Abduction abduction;
+            public FingerConfigs fingerConfigs;
 
-            [Serializable]
-            public class Finger
+            public Finger(HandFinger finger)
             {
-                [HideInInspector]
-                public HandFinger handFinger;
-                public Flexion flexion;
-                public Curl curl;
-                public Abduction abduction;
-                public FingerConfigs fingerConfigs;
+                handFinger = finger;
+                flexion = Flexion.Any;
+                curl = Curl.Any;
+                abduction = Abduction.Any;
+                fingerConfigs = new FingerConfigs(finger);
+            }
+        }
+        [Serializable]
+        public class FingerConfigs
+        {
+            public RangeConfigs flexionConfigs;
+            public RangeConfigs curlConfigs;
+            public RangeConfigsAbduction abductionConfigs;
 
-                public Finger(HandFinger finger)
+            public FingerConfigs(HandFinger finger)
+            {
+                flexionConfigs = new RangeConfigs(flexionMin, flexionMax, defaultFlexionWidth);
+                if (finger == HandFinger.Thumb)
                 {
-                    handFinger = finger;
-                    flexion = Flexion.Any;
-                    curl = Curl.Any;
-                    abduction = Abduction.Any;
-                    fingerConfigs = new FingerConfigs(finger);
+                    curlConfigs = new RangeConfigs(curlThumbMin, curlThumbMax, defaultCurlWidth);
+                    abductionConfigs = new RangeConfigsAbduction(abductionThumbMid, abductionThumbWidth);
+                }
+                else
+                {
+                    curlConfigs = new RangeConfigs(curlMin, curlMax, defaultCurlWidth);
+                    abductionConfigs = new RangeConfigsAbduction(abductionMid, abductionWidth);
                 }
             }
-
-            [Serializable]
-            public class FingerConfigs
-            {
-                public RangeConfigs flexionConfigs;
-                public RangeConfigs curlConfigs;
-                public RangeConfigs abductionConfigs;
-
-                public FingerConfigs(HandFinger finger)
-                {
-                    flexionConfigs = new RangeConfigs(flexionOpenMin, flexionOpenMax, defaultFlexionWidth);
-                    curlConfigs = new RangeConfigs(curlOpenMin, curlOpenMax, defaultCurlWidth);
-                    if (finger == HandFinger.Thumb)
-                    {
-                        abductionConfigs = new RangeConfigs(abductionCloseMin, abductionThumbCloseMax, defaultAbductionThumbWidth);
-                    }
-                    else
-                    {
-                        abductionConfigs = new RangeConfigs(abductionCloseMin, abductionCloseMax, defaultAbductionWidth);
-                    }
-                }
-            }
-
-            public enum Flexion
-            {
-                Any,
-                Open,
-                Close,
-                Custom
-            }
-
-            public enum Curl
-            {
-                Any,
-                Open,
-                Close,
-                Custom
-            }
-
-            public enum Abduction
-            {
-                Any,
-                Open,
-                Close,
-            }
-
-            public const float defaultFlexionWidth = 10f;
-            public const float defaultCurlWidth = 10f;
-            public const float defaultAbductionWidth = 2;
-            public const float defaultAbductionThumbWidth = 4;
-
-            public const float flexionOpenMin = 180f;
-            public const float flexionOpenMax = 220f;
-            public const float flexionCloseMin = 230f;
-            public const float flexionCloseMax = 260f;
-
-            public const float curlOpenMin = 180f;
-            public const float curlOpenMax = 220f;
-            public const float curlCloseMin = 230f;
-            public const float curlCloseMax = 270f;
-
-            public const float abductionThumbCloseMax = 19f;
-            public const float abductionOpenMax = 90f;
-            public const float abductionCloseMin = 0f;
-            public const float abductionCloseMax = 17.4f;
         }
 
-        [Serializable]
-        public class BonesRecognizer
+        public enum ShapeType
         {
-            public List<Bones> listBones;
-
-            [Serializable]
-            public class Bones
-            {
-                public HandJoint bone1;
-                public HandJoint bone2;
-                public Distance distance;
-                public RangeConfigs bonesConfigs;
-
-                public Bones(Distance distance)
-                {
-                    switch (distance)
-                    {
-                        case Distance.None:
-                            bonesConfigs = new RangeConfigs(0, 0, bonesWidth);
-                            break;
-                        case Distance.Near:
-                            bonesConfigs = new RangeConfigs(bonesNearMin, bonesNearMax, bonesWidth);
-                            break;
-                        case Distance.Touching:
-                            bonesConfigs = new RangeConfigs(bonesTouchingMin, bonesTouchingMax, bonesWidth);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            public enum Distance
-            {
-                None,
-                Near,
-                Touching
-            }
-
-            public const float bonesNearMin = 1.5f;
-            public const float bonesNearMax = 15f;
-            public const float bonesTouchingMin = 0f;
-            public const float bonesTouchingMax = 1.5f;
-            public const float bonesWidth = 0;
+            flexion,
+            curl,
+            abduction
         }
 
+        public enum Flexion
+        {
+            Any,
+            Open,
+            Close,
+            //Custom
+        }
+
+        public enum Curl
+        {
+            Any,
+            Open,
+            Close,
+            //Custom
+        }
+
+        public enum Abduction
+        {
+            Any,
+            Open,
+            Close,
+        }
         [Serializable]
         public class RangeConfigs
         {
@@ -180,9 +120,155 @@ namespace Unity.XR.PXR
                 width =w;
             }
         }
+        [Serializable]
+        public class RangeConfigsAbduction
+        {
+            public float mid;
+            public float width;
+            public RangeConfigsAbduction(float m, float w)
+            {
+                mid = m;
+                width = w;
+            }
+        }
+
+        public const float defaultFlexionWidth = 10f;
+
+        public const float flexionThumbOpenMin = 155f;
+        public const float flexionThumbOpenMax = 180f;
+        public const float flexionThumbCloseMin = 90f;
+        public const float flexionThumbCloseMax = 120f;
+
+        public const float flexionOpenMin = 144f;
+        public const float flexionOpenMax = 180f;
+        public const float flexionCloseMin = 90f;
+        public const float flexionCloseMax = 126f;
+        public const float flexionMin = 90f;
+        public const float flexionMax = 180f;
+
+        public const float defaultCurlWidth = 20f;
+
+        public const float curlThumbOpenMin = 90f;
+        public const float curlThumbOpenMax = 180f;
+        public const float curlThumbCloseMin = 45f;
+        public const float curlThumbCloseMax = 90f;
+        public const float curlThumbMin = 45f;
+        public const float curlThumbMax = 180f;
+
+        public const float curlOpenMin = 107f;
+        public const float curlOpenMax = 180f;
+        public const float curlCloseMin = 0f;
+        public const float curlCloseMax = 73f;
+        public const float curlMin = 0f;
+        public const float curlMax = 180f;
+
+        public const float abductionThumbMid = 13f;
+        public const float abductionThumbWidth = 6f;
+
+        public const float abductionMid = 10f;
+        public const float abductionWidth = 6f;
+        public const float abductionMin = 0f;
+        public const float abductionMax = 90f;
+    }
+
+    [Serializable]
+    public class BonesRecognizer
+    {
+        public List<BonesGroup> Bones = new List<BonesGroup>();
+
+        public float holdDuration = 0.022f;
+        [Serializable]
+        public class BonesGroup
+        {
+            [LabelAttribute("Joint 1")]
+            public HandBones bone1 = HandBones.Wrist;
+            [LabelAttribute("Joint 2")]
+            public HandBones bone2 = HandBones.Wrist;
+            public float distance = 0.025f;
+            [LabelAttribute("Margin")]
+            public float thresholdWidth = 0.003f;
+
+            [HideInInspector]
+            public bool activeState;
+        }
+        public enum HandBones
+        {
+            Palm = 0,
+            Wrist = 1,
+
+            Thumb_Metacarpal = 2,
+            Thumb_Proximal = 3,
+            Thumb_Distal = 4,
+            Thumb_Tip = 5,
+
+            Index_Metacarpal = 6,
+            Index_Proximal = 7,
+            Index_Intermediate = 8,
+            Index_Distal = 9,
+            Index_Tip = 10,
+
+            Middle_Metacarpal = 11,
+            Middle_Proximal = 12,
+            Middle_Intermediate = 13,
+            Middle_Distal = 14,
+            Middle_Tip = 15,
+
+            Ring_Metacarpal = 16,
+            Ring_Proximal = 17,
+            Ring_Intermediate = 18,
+            Ring_Distal = 19,
+            Ring_Tip = 20,
+
+            Little_Metacarpal = 21,
+            Little_Proximal = 22,
+            Little_Intermediate = 23,
+            Little_Distal = 24,
+            Little_Tip = 25
+        }
+    }
+
+    [Serializable]
+    public class TransRecognizer
+    {
+        public TrackAxis trackAxis;
+        public SpaceType spaceType;
+        public TrackTarget trackTarget;
+
+        public enum SpaceType
+        {
+            WorldSpace,
+            LocalXY,
+            LocalYZ,
+            LocalXZ
+        }
+
+        public enum TrackAxis
+        {
+            Fingers, Palm, Thumb
+        }
+
+        public enum TrackTarget
+        {
+            TowardsFace,
+            AwayFromFace,
+            WorldUp,
+            WorldDown,
+        }
+
+        public float angleThreshold = 35f;
+        public float thresholdWidth = 10f;
+        public float holdDuration = 0.022f;
     }
 
     public class DisplayOnly : PropertyAttribute { }
+    public class LabelAttribute : PropertyAttribute
+    {
+        public string name;
+        public LabelAttribute(string name)
+        {
+            this.name = name;
+        }
+    }
 }
 
 

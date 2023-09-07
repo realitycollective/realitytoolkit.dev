@@ -26,7 +26,7 @@ namespace Unity.XR.PXR
         public GameObject neo3R;
         public GameObject PICO_4L;
         public GameObject PICO_4R;
-        public GameObject Merline;
+        public GameObject G3;
 
         public Material legacyMaterial;
         private Texture2D modelTexture2D;
@@ -49,7 +49,7 @@ namespace Unity.XR.PXR
             None,
             Neo3,
             PICO4,
-            Merline
+            G3
         }
 #if UNITY_EDITOR
         [SerializeField]
@@ -75,9 +75,9 @@ namespace Unity.XR.PXR
                         Instantiate(hand == PXR_Input.Controller.LeftController ? PICO_4L : PICO_4R, transform, false);
                         break; ;
                     }
-                case ControllerSimulationType.Merline:
+                case ControllerSimulationType.G3:
                     {
-                        Instantiate(Merline, transform, false);
+                        Instantiate(G3, transform, false);
                         break; ;
                     }
             }
@@ -231,7 +231,7 @@ namespace Unity.XR.PXR
                     loadModelSuccess = true;
                     break;
                 case 7:
-                    Instantiate(Merline, transform, false);
+                    Instantiate(G3, transform, false);
                     loadModelSuccess = true;
                     break;
                 default:

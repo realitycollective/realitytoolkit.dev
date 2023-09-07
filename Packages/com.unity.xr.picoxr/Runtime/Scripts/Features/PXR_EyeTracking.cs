@@ -20,7 +20,7 @@ namespace Unity.XR.PXR
     {
         /// <summary>
         /// Gets the PosMatrix of the head. 
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="matrix">A Matrix4x4 value returned by the result.</param>
         /// <returns>
@@ -59,7 +59,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets the input device for eye tracking data. 
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="device">The input device returned by the result.</param>
         /// <returns>
@@ -98,7 +98,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets the position of the combined gaze point.
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="point">A vector3 value returned by the result.</param>
         /// <returns>
@@ -126,7 +126,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets the direction of the combined gaze point.
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="vector">A vector3 value returned by the result.</param>
         /// <returns>
@@ -154,7 +154,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets the openness/closeness of the left eye. 
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="openness">A float value returned by the result. The value ranges from `0.0` to `1.0`. `0.0` incicates completely closed, `1.0` indicates completely open.</param>
         /// <returns>
@@ -182,7 +182,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets the openness/closeness of the right eye. 
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="openness">A float value returned by the result. The value ranges from `0.0` to `1.0`. `0.0` indicates completely closed, `1.0` indicates completely open.</param>
         /// <returns>
@@ -210,7 +210,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets whether the data of the current left eye is available. 
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="status">An int value returned by the result: 
         /// * `0`: not available
@@ -239,7 +239,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets whether the data of the current right eye is available.
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="status">An int value returned by the result: 
         /// * `0`: not available
@@ -268,7 +268,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets whether the data of the combined eye is available.
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="status">An int value returned by the result: 
         /// `0`: not available
@@ -297,7 +297,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets the position of the left eye in a coordinate system. The upper-right point of the sensor is taken as the origin (0, 0) and the lower-left point is taken as (1, 1). 
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="position">A vector3 value returned by the result.</param>
         /// <returns>
@@ -323,7 +323,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets the position of the right eye in a coordinate system. The upper-right point of the sensor is taken as the origin (0, 0) and the lower-left point is taken as (1, 1). 
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="position">A vector3 value returned by the result.</param>
         /// <returns>
@@ -349,7 +349,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets the foveated gaze direction (i.e., the central point of fixed foveated rendering). 
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="direction">A vector3 value returned by the result.</param>
         /// <returns>
@@ -375,7 +375,7 @@ namespace Unity.XR.PXR
 
         /// <summary>
         /// Gets whether the current foveated gaze tracking data is available.
-        /// @note Available for Neo3 Pro Eye only.
+        /// @note Only supported by PICO Neo3 Pro Eye, PICO 4 Pro, and PICO 4 Enterprise.
         /// </summary>
         /// <param name="status">An int value returned by the result: 
         /// * `0`: not available 

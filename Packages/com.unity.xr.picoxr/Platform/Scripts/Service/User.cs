@@ -24,8 +24,9 @@ namespace Pico.Platform
     public static class UserService
     {
         /// <summary>
-        /// Returns an access token for this user.
-        /// @note  User's permission is required if the user uses this app firstly.
+        /// Returns an access token for this user. Starting from SDK V2.2.0,
+        /// the system caches the access token upon the first request, allowing subsequent requests to use the cached token information stored locally.
+        /// @note  User's permission is required if the user uses this app for the first time.
         /// </summary>
         /// <returns>The access token for the current user.</returns>
         public static Task<string> GetAccessToken()
@@ -37,6 +38,25 @@ namespace Pico.Platform
             }
 
             return new Task<string>(CLIB.ppf_User_GetAccessToken());
+        }
+
+        /// <summary>
+        /// Gets the organization ID for a specified user.
+        /// Different users have different organization IDs.
+        /// A user has only one fixed unique organization ID for all the apps created by the same organization.
+        ///
+        /// </summary>
+        /// <param name="userID">The ID of the user. It's the user's openID in the current app.</param>
+        /// <returns>The `OrgScopedID` structure that contains the user's organization ID.</returns>
+        public static Task<OrgScopedID> GetOrgScopedID(string userID)
+        {
+            if (!CoreService.Initialized)
+            {
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
+            }
+
+            return new Task<OrgScopedID>(CLIB.ppf_User_GetOrgScopedID(userID));
         }
 
         /// <summary>
@@ -86,11 +106,13 @@ namespace Pico.Platform
 
             return new Task<UserList>(CLIB.ppf_User_GetLoggedInUserFriends());
         }
-        
+
         /// <summary>
-        /// Get user relations to current user based on user ids passed as parameter.
+        /// Gets the relationship between the current user and other users.
         /// </summary>
-        /// <param name="userIds">An array of strings representing the user ids.</param>
+        /// <param name="userIds">The list of user IDs.
+        /// The request queries the current user's relationship with specified users.
+        /// A single request can pass no more than 20 user IDs.</param>
         /// <returns>`UserRelationResult` which is a dictionary of user relationships.</returns>
         public static Task<UserRelationResult> GetUserRelations(string[] userIds)
         {
@@ -210,14 +232,10 @@ namespace Pico.Platform
         /// <summary>
         /// Requests user permissions. The user will received a pop-up notification window.
         /// </summary>
-        /// <param name="permissionList">The list of permissions to request, including:
-        /// * `user_info`: the permission to get the user's basic information, such as the nickname and profile picture.
-        /// * `friend_relation`: the permission to get the user's friend list and invitable users.
-        /// * `sports_userinfo`: the permission to get the user's information set in the sport center.
-        /// * `sports_summarydata`: the permission to get a summary of the user's exercise data.
+        /// <param name="permissionList">The list of permissions to request. You can use constants in \ref Pico.Platform.Models.Permissions.
         /// </param>
         /// <returns>A struct containing the access token and permission list.</returns>
-        public static Task<PermissionResult> RequestUserPermissions(string[] permissionList)
+        public static Task<PermissionResult> RequestUserPermissions(params string[] permissionList)
         {
             if (!CoreService.Initialized)
             {
@@ -227,6 +245,46 @@ namespace Pico.Platform
 
             return new Task<PermissionResult>(CLIB.ppf_User_RequestUserPermissions(permissionList));
         }
-    }
 
+        /// <summary>
+        /// Checks whether the current user is entitled to use the current app.
+        ///
+        /// If the user is not entitled, the system will close the app and show a dialog box to remind the user to buy the app from the PICO Store.
+        /// For customizations, you can set param `killApp` to `false` and then customize the dialog.
+        /// </summary>
+        /// <param name="killApp">Determines whether the system closes the app if the user fails to pass the entitlement check.
+        /// The default value is `true`.
+        /// </param>
+        /// <returns>The entitlement check result.</returns>
+        public static Task<EntitlementCheckResult> EntitlementCheck(bool killApp = true)
+        {
+            if (!CoreService.Initialized)
+            {
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
+            }
+
+            return new Task<EntitlementCheckResult>(CLIB.ppf_User_EntitlementCheck(killApp));
+        }
+
+        /// <summary>
+        /// Gets the ID token for the current user. The ID token is used for OIDC login.
+        /// You can use \ref ApplicationService.GetSystemInfo to determine the region of user's device and then choose the proper OIDC identity provider.
+        /// Read the following articles for more information:
+        /// * [Unity Service signin with openID connect](https://docs.unity.com/authentication/en/manual/platform-signin-openid-connect)
+        /// * [PICO SDK guide](http://developer-global.pico-interactive.com/document/unity/accounts-and-friends/)
+        /// @note  User's permission is required if the user uses this app for the first time. Call \ref UserService.RequestUserPermissions to request desired permissions in a batch.
+        /// </summary>
+        /// <returns>The ID token for the current user.</returns>
+        public static Task<string> GetIdToken()
+        {
+            if (!CoreService.Initialized)
+            {
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
+            }
+
+            return new Task<string>(CLIB.ppf_User_GetIdToken());
+        }
+    }
 }

@@ -11,24 +11,22 @@ PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace Pico.Platform.Models
 {
-    /**
-     * \ingroup Models
-     */
     /// <summary>
     /// The binary message received in a RTC room.
     /// </summary>
     public class RtcBinaryMessageReceived
     {
-        /** @brief The message sender's user ID. */
+        /// The message sender's user ID. 
         public readonly string UserId;
 
-        /** @brief The binary data of the message. */
+        /// The binary data of the message. 
         public readonly byte[] Data;
 
-        /** @brief The ID of the room that the message is sent to. */
+        /// The ID of the room that the message is sent to. 
         public readonly string RoomId;
 
         public RtcBinaryMessageReceived(IntPtr o)
@@ -40,21 +38,61 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcBinaryMessageReceived_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
+    /// <summary>
+    /// The audio frame is several frames of RTC recorded audio.
+    /// </summary>
+    public class RtcAudioFrame
+    {
+        /// The type of the audio channel for this audio frame.
+        public readonly RtcAudioChannel Channel;
+
+        /// The data pointer of the audio frame.
+        public readonly IntPtr Data;
+
+        /// The size of the data.
+        public readonly long DataSize;
+
+        /// The sample rate of the data.
+        public readonly RtcAudioSampleRate SampleRate;
+
+        /// The timestamp.Its value is always 0. So don't use it.
+        public readonly long TimeStampInUs;
+
+        public RtcAudioFrame(IntPtr o)
+        {
+            Channel = CLIB.ppf_RtcAudioFrame_GetChannel(o);
+            DataSize = CLIB.ppf_RtcAudioFrame_GetDataSize(o);
+            SampleRate = CLIB.ppf_RtcAudioFrame_GetSampleRate(o);
+            TimeStampInUs = CLIB.ppf_RtcAudioFrame_GetTimeStampInUs(o);
+            Data = CLIB.ppf_RtcAudioFrame_GetData(o);
+        }
+
+        public byte[] GetData()
+        {
+            return MarshalUtil.ByteArrayFromNative(this.Data, (uint) this.DataSize);
+        }
+
+        public void SetData(byte[] data)
+        {
+            Marshal.Copy(data, 0, this.Data, (int) this.DataSize);
+        }
+    }
+
+
     /// <summary>
     /// The message sending result that indicates whether the message is successfully sent.
     /// </summary>
     public class RtcMessageSendResult
     {
-        /**@brief The message ID. */
+        /// The message ID. 
         public readonly long MessageId;
 
-        /**@brief The error code returned in the result. `200` means success.*/
+        /// The error code returned in the result. `200` means success.
         public readonly int Error;
 
-        /**@brief The ID of the room that the message is sent to. */
+        /// The ID of the room that the message is sent to. 
         public readonly string RoomId;
 
         public RtcMessageSendResult(IntPtr o)
@@ -64,24 +102,23 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcMessageSendResult_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// When the remote user canceled publshing stream to the room, you will receive a notification.
     /// </summary>
     public class RtcUserUnPublishInfo
     {
-        /** @brief The ID of the remote user.*/
+        /// The ID of the remote user.
         public readonly string UserId;
 
-        /** @brief The stream type.*/
+        /// The stream type.
         public readonly RtcMediaStreamType MediaStreamType;
 
-        /** @brief The reason why the remote user canceled publishing stream.*/
+        /// The reason why the remote user canceled publishing stream.
         public readonly RtcStreamRemoveReason Reason;
 
-        /** @brief The ID of the room that the remote user is in.*/
+        /// The ID of the room that the remote user is in.
         public readonly string RoomId;
 
         public RtcUserUnPublishInfo(IntPtr o)
@@ -92,22 +129,21 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcUserUnPublishInfo_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// The publish stream info.
     /// If the remote user publishes stream, you will receive a notification.
     /// </summary>
     public class RtcUserPublishInfo
     {
-        /** @brief The ID of the remote user.*/
+        /// The ID of the remote user.
         public readonly string UserId;
 
-        /** @brief The stream type.*/
+        /// The stream type.
         public readonly RtcMediaStreamType MediaStreamType;
 
-        /**@brief The ID of the room that the remote user is in.*/
+        /// The ID of the room that the remote user is in.
         public readonly string RoomId;
 
         public RtcUserPublishInfo(IntPtr o)
@@ -117,22 +153,21 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcUserPublishInfo_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// The message received by a certain room.
     /// The remote users can send messages to the room and you will receive this message.
     /// </summary>
     public class RtcRoomMessageReceived
     {
-        /**@brief The ID of the message sender.*/
+        /// The ID of the message sender.
         public readonly string UserId;
 
-        /**@brief The message.*/
+        /// The message.
         public readonly string Message;
 
-        /**@brief The ID of the room that the message was sent to. */
+        /// The ID of the room that the message was sent to. 
         public readonly string RoomId;
 
         public RtcRoomMessageReceived(IntPtr o)
@@ -142,19 +177,20 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcRoomMessageReceived_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// The message sent to you by a certain user. You will receive a notification.
     /// </summary>
     public class RtcUserMessageReceived
     {
-        /**@brief The ID of the message sender.*/
+        /// The ID of the message sender.
         public readonly string UserId;
-        /**@brief The message.*/
+
+        /// The message.
         public readonly string Message;
-        /**@brief The ID of the room that the message sender and recipient are in. */
+
+        /// The ID of the room that the message sender and recipient are in. 
         public readonly string RoomId;
 
         public RtcUserMessageReceived(IntPtr o)
@@ -164,19 +200,20 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcUserMessageReceived_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// The stream sync info sent to your room. You will receive a notification,
     /// </summary>
     public class RtcStreamSyncInfo
     {
-        /** @brief The key of the stream. */
+        /// The key of the stream. 
         public readonly RtcRemoteStreamKey StreamKey;
-        /** @brief The type of the stream. */
+
+        /// The type of the stream. 
         public readonly RtcSyncInfoStreamType StreamType;
-        /** @brief The stream sync info */
+
+        /// The stream sync info 
         public readonly byte[] Data;
 
         public RtcStreamSyncInfo(IntPtr o)
@@ -188,15 +225,14 @@ namespace Pico.Platform.Models
             Data = MarshalUtil.ByteArrayFromNative(ptr, (uint) sz);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// If you enable audio properties report, you will periodically receive audio property info.
     /// </summary>
     public class RtcAudioPropertyInfo
     {
-        /** @brief The volume detected. It's a value between `0` and `255`.*/
+        /// The volume detected. It's a value between `0` and `255`.
         public readonly int Volume;
 
         public RtcAudioPropertyInfo(IntPtr o)
@@ -204,27 +240,26 @@ namespace Pico.Platform.Models
             Volume = CLIB.ppf_RtcAudioPropertyInfo_GetVolume(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// You will receive this message after you call \ref RtcService.JoinRoom.
     /// </summary>
     public class RtcJoinRoomResult
     {
-        /** @brief The ID of the room that the user joined.*/
+        /// The ID of the room that the user joined.
         public readonly string RoomId;
-        
-        /** @brief The ID of the user.*/
+
+        /// The ID of the user.
         public readonly string UserId;
 
-        /** @brief The error code. `0` indicates success.*/
+        /// The error code. `0` indicates success.
         public readonly int ErrorCode;
 
-        /** @brief The time from calling \ref RtcService.JoinRoom to receiving the result. */
+        /// The time from calling \ref RtcService.JoinRoom to receiving the result. 
         public readonly int Elapsed;
 
-        /**@brief Whether it is the first that the user has joined the room or if the user is reconnected to the room.*/
+        /// Whether it is the first time that the user has joined the room or if the user is reconnected to the room.
         public readonly RtcJoinRoomType JoinType;
 
         public RtcJoinRoomResult(IntPtr o)
@@ -236,15 +271,14 @@ namespace Pico.Platform.Models
             JoinType = CLIB.ppf_RtcJoinRoomResult_GetJoinType(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// You will receive this message after you call \ref RtcService.LeaveRoom.
     /// </summary>
     public class RtcLeaveRoomResult
     {
-        /** @brief The ID of the room that the user left. */
+        /// The ID of the room that the user left. 
         public readonly string RoomId;
 
         public RtcLeaveRoomResult(IntPtr o)
@@ -252,9 +286,8 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcLeaveRoomResult_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// The local audio properties info.
     /// You will periodically receive this message after you
@@ -262,9 +295,10 @@ namespace Pico.Platform.Models
     /// </summary>
     public class RtcLocalAudioPropertiesInfo
     {
-        /**@brief The stream index info.*/
+        /// The stream index info.
         public readonly RtcStreamIndex StreamIndex;
-        /**@brief The audio property details.*/
+
+        /// The audio property details.
         public readonly RtcAudioPropertyInfo AudioPropertyInfo;
 
         public RtcLocalAudioPropertiesInfo(IntPtr o)
@@ -273,9 +307,8 @@ namespace Pico.Platform.Models
             AudioPropertyInfo = new RtcAudioPropertyInfo(CLIB.ppf_RtcLocalAudioPropertiesInfo_GetAudioPropertyInfo(o));
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// The local audio properties report.
     /// You will periodically receive this message after you
@@ -295,18 +328,29 @@ namespace Pico.Platform.Models
             }
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// The media device change info.
     /// RTC engine will send this message if media device change is detected.
     /// </summary>
     public class RtcMediaDeviceChangeInfo
     {
+        /// <summary>
+        /// Device ID.
+        /// </summary>
         public readonly string DeviceId;
+        /// <summary>
+        /// Device type.
+        /// </summary>
         public readonly RtcMediaDeviceType DeviceType;
+        /// <summary>
+        /// Device state.
+        /// </summary>
         public readonly RtcMediaDeviceState DeviceState;
+        /// <summary>
+        /// Device error.
+        /// </summary>
         public readonly RtcMediaDeviceError DeviceError;
 
         public RtcMediaDeviceChangeInfo(IntPtr o)
@@ -317,17 +361,17 @@ namespace Pico.Platform.Models
             DeviceError = CLIB.ppf_RtcMediaDeviceChangeInfo_GetDeviceError(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
-    /// You will receive this notification if the remote user call \ref Rtc.MuteLocalAudio.
+    /// You will receive this notification if the remote user call \ref RtcService.MuteLocalAudio.
     /// </summary>
     public class RtcMuteInfo
     {
-        /** @brief The ID of the remote user who muted audio. */
+        /// The ID of the remote user who muted audio. 
         public readonly string UserId;
-        /** @brief The state of audio muting: muted or canceled. */
+
+        /// The state of audio muting: muted or canceled. 
         public readonly RtcMuteState MuteState;
 
         public RtcMuteInfo(IntPtr o)
@@ -336,9 +380,8 @@ namespace Pico.Platform.Models
             MuteState = CLIB.ppf_RtcMuteInfo_GetMuteState(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// The remote audio properties info.
     /// You can check who is speaking by this method.
@@ -354,16 +397,16 @@ namespace Pico.Platform.Models
             AudioPropertiesInfo = new RtcAudioPropertyInfo(CLIB.ppf_RtcRemoteAudioPropertiesInfo_GetAudioPropertiesInfo(o));
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// You will receive remote user's audio info if you call \ref RtcService.EnableAudioPropertiesReport.
     /// </summary>
     public class RtcRemoteAudioPropertiesReport
     {
         public readonly RtcRemoteAudioPropertiesInfo[] AudioPropertiesInfos;
-        /** @brief The total volume of remote users in the room. */
+
+        /// The total volume of remote users in the room. 
         public readonly int TotalRemoteVolume;
 
         public RtcRemoteAudioPropertiesReport(IntPtr o)
@@ -377,19 +420,20 @@ namespace Pico.Platform.Models
             TotalRemoteVolume = CLIB.ppf_RtcRemoteAudioPropertiesReport_GetTotalRemoteVolume(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// RtcRemoteStreamKey indicates the stream index of a remote user.
     /// </summary>
     public class RtcRemoteStreamKey
     {
-        /** @brief The ID of the room that the remote user is in. */
+        /// The ID of the room that the remote user is in. 
         public readonly string RoomId;
-        /** @brief The ID of the remote user. */
+
+        /// The ID of the remote user. 
         public readonly string UserId;
-        /** @brief Indicates whether the stream is main stream or screen stream. */
+
+        /// Indicates whether the stream is main stream or screen stream. 
         public readonly RtcStreamIndex RtcStreamIndex;
 
         public RtcRemoteStreamKey(IntPtr o)
@@ -399,17 +443,17 @@ namespace Pico.Platform.Models
             RtcStreamIndex = CLIB.ppf_RtcRemoteStreamKey_GetStreamIndex(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// You will receive an error code when an error occurred in the room.
     /// </summary>
     public class RtcRoomError
     {
-        /** @brief The error code. */
+        /// The error code. 
         public readonly int Code;
-        /** @brief The ID of the room where the error occurred. */
+
+        /// The ID of the room where the error occurred. 
         public readonly string RoomId;
 
         public RtcRoomError(IntPtr o)
@@ -418,19 +462,20 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcRoomError_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// You will periodically receive this message after you successfully join a room.
     /// </summary>
     public class RtcRoomStats
     {
-        /** @brief The time elapsed since you joined the room .*/
+        /// The time elapsed since you joined the room .
         public readonly int TotalDuration;
-        /**@brief The number of users in the room. */
+
+        /// The number of users in the room. 
         public readonly int UserCount;
-        /**@brief The ID of the room you joined. */
+
+        /// The ID of the room you joined. 
         public readonly string RoomId;
 
         public RtcRoomStats(IntPtr o)
@@ -440,17 +485,17 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcRoomStats_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// The warning info of the room.
     /// </summary>
     public class RtcRoomWarn
     {
-        /**@brief The error code. */
+        /// The error code. 
         public readonly int Code;
-        /**@brief The ID of the room that the warning info comes from. */
+
+        /// The ID of the room that the warning info comes from. 
         public readonly string RoomId;
 
         public RtcRoomWarn(IntPtr o)
@@ -459,24 +504,23 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcRoomWarn_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// You will receive this message after a remote user joins the room.
     /// </summary>
     public class RtcUserJoinInfo
     {
-        /**@brief The ID of the user. */
+        /// The ID of the user. 
         public readonly string UserId;
 
-        /**@brief If the remote user set the `UserExtra` field when calling \ref RtcService.JoinRoom with extra info.*/
+        /// If the remote user set the `UserExtra` field when calling \ref RtcService.JoinRoom with extra info.
         public readonly string UserExtra;
 
-        /** @brief The time used for the remote user to join the room.*/
+        /// The time used for the remote user to join the room.
         public readonly int Elapsed;
 
-        /**@brief The ID of the room that the remote user joined. */
+        /// The ID of the room that the remote user joined. 
         public readonly string RoomId;
 
         public RtcUserJoinInfo(IntPtr o)
@@ -487,21 +531,20 @@ namespace Pico.Platform.Models
             RoomId = CLIB.ppf_RtcUserJoinInfo_GetRoomId(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
+
     /// <summary>
     /// You will receive this message when the remote user leaves the room.
     /// </summary>
     public class RtcUserLeaveInfo
     {
-        /**@brief The ID of the user. */
+        /// The ID of the user. 
         public readonly string UserId;
 
-        /**@brief The reason why the user left the room, which can be network error or proactive quit. */
+        /// The reason why the user left the room, which can be network error or proactive quit. 
         public readonly RtcUserLeaveReasonType OfflineReason;
 
-        /**@brief The ID of the room that the user left. */
+        /// The ID of the room that the user left. 
         public readonly string RoomId;
 
         public RtcUserLeaveInfo(IntPtr o)

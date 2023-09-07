@@ -27,7 +27,7 @@ namespace Pico.Platform
         /// @note Currently, only invitable friends will be returned.
         /// </summary>
         /// <param name="options">Restricts the scope of friends returned. If no user ID is passed, all friends will
-        /// be retured. If specific user IDs are paased, the information about specified friends will be returned.
+        /// be returned. If specific user IDs are passed, the information about specified friends will be returned.
         /// </param>
         /// <returns>
         /// A list of friends that can be invited to the current destination.
@@ -127,6 +127,7 @@ namespace Pico.Platform
             return new Task(CLIB.ppf_Presence_Set((IntPtr) options));
         }
 
+        /// @deprecated SetDestination can be replaced by \ref Set()
         /// <summary>
         /// Replaces the current logged-in user's destination with the provided one.
         /// @note Other presence parameter settings will remain the same.
@@ -144,6 +145,7 @@ namespace Pico.Platform
             return new Task(CLIB.ppf_Presence_SetDestination(apiName));
         }
 
+        /// @deprecated SetIsJoinable can be replaced by \ref Set()
         /// <summary>Sets whether the current logged-in user is joinable.
         /// @note Other presence parameter settings will remain the same. If the user's destination or session
         /// ID has not been set, the user cannot be set as joinable.</summary>
@@ -163,6 +165,7 @@ namespace Pico.Platform
             return new Task(CLIB.ppf_Presence_SetIsJoinable(joinable));
         }
 
+        /// @deprecated SetLobbySession can be replaced by \ref Set()
         /// <summary>
         /// Replaces the current logged-in user's lobby session ID with the provided one.
         /// @note Other presence parameter settings will remain the same.
@@ -180,6 +183,7 @@ namespace Pico.Platform
             return new Task(CLIB.ppf_Presence_SetLobbySession(lobbySessionId));
         }
 
+        /// @deprecated SetMatchSession can be replaced by \ref Set()
         /// <summary>
         /// Replaces the current logged-in user's match session ID with the provided one.
         /// @note  Other presence parameter settings will remain the same.
@@ -197,6 +201,7 @@ namespace Pico.Platform
             return new Task(CLIB.ppf_Presence_SetMatchSession(matchSessionId));
         }
 
+        /// @deprecated SetExtra can be replaced by \ref Set()
         /// <summary>
         /// Sets extra presence data for the current logged-in user.
         /// </summary>
@@ -323,12 +328,11 @@ namespace Pico.Platform
             return new Task(CLIB.ppf_Presence_ShareMedia((IntPtr) options));
         }
 
-        /// When user click the invite message,system will launch your app and
-        /// the callback will be triggered. Read the fields of \ref PresenceJoinIntent
+        /// When the user clicks on the invitation message, the system will launch your app and
+        /// the callback will be triggered. Read the fields of \ref Pico.Platform.Models.PresenceJoinIntent
         /// to figure out where the user wants to go. If the user is unable to go there,
-        /// show infos to the user on why they cannot go there. 
-        public static void SetJoinIntentReceivedNotificationCallback(
-            Message<PresenceJoinIntent>.Handler callback)
+        /// show the user the info about why they cannot go there. 
+        public static void SetJoinIntentReceivedNotificationCallback(Message<PresenceJoinIntent>.Handler callback)
         {
             Looper.RegisterNotifyHandler(
                 MessageType.Notification_Presence_JoinIntentReceived,

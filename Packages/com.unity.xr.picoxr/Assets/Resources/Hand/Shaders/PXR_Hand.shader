@@ -17,6 +17,7 @@ Shader "PXR/Hand"
 
         [Header(Wrist)][Space(10)]
         _WristFadeRange("腕部渐变范围",Range(0,1)) = 1
+        _MainAlpha("总透明度",Range(0,1)) = 1
 
         _FadeIn("透明消隐",Range(0,1))=0
     }
@@ -39,6 +40,7 @@ Shader "PXR/Hand"
 
     float _WristFadeRange;
     float _FadeIn;
+    float _MainAlpha;
 
     //-----------------描边参数----------------
     struct OutlineVertexInput
@@ -132,6 +134,7 @@ Shader "PXR/Hand"
 
         fixed4 finalCol = lerp(baseColor, clickColor, r.a);
         finalCol.a *= saturate(GetAlpha(v.uv));
+        finalCol.a *= _MainAlpha;
         return finalCol;
     }
 

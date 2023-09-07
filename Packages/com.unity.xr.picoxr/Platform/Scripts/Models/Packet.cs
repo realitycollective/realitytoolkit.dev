@@ -15,11 +15,14 @@ namespace Pico.Platform.Models
     using System;
     using System.Runtime.InteropServices;
 
+    /// <summary>
+    /// The information about the message packet.
+    /// </summary>
     public sealed class Packet : IDisposable
     {
-        /** @brief The size of the message packet. */
+        /// The size of the message packet. 
         private readonly ulong size;
-        /** @brief The handler of the message packet. */
+        /// The handler of the message packet. 
         private readonly IntPtr handler;
 
         public Packet(IntPtr handler)

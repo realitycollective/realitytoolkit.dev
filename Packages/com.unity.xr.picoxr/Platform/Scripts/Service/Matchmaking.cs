@@ -129,6 +129,37 @@ namespace Pico.Platform
                 return new Task<MatchmakingBrowseResult>(CLIB.ppf_Matchmaking_Browse2(pool, matchmakingOptions.GetHandle()));
             }
         }
+        
+        /// <summary>Gets rooms by matchmakinging pool name and specify the page number and the number of pages per page.</summary>
+        ///
+        /// <param name="pool">The matchmaking pool name you want to browse.</param>
+        /// <param name="matchmakingOptions">(Optional) The matchmaking configuration of the browse request.</param>
+        /// <param name="pageIndex">(Optional)Start page index.</param>
+        /// <param name="pageSize">(Optional)the number of pages per page.</param>
+        /// <returns>Request information of type `Task`, including the request ID, and its response message will contain data of type `MatchmakingBrowseResult`.
+        ///
+        /// A message of type `MessageType.Matchmaking_Browse2CustomPage` will be generated in response.
+        /// First call `Message.IsError()` to check if any error has occurred.
+        /// If no error has occurred, the message will contain a payload of type `MatchmakingBrowseResult`.
+        /// Extract the payload from the message handle with `message.Data`.
+        /// </returns>
+        public static Task<MatchmakingBrowseResult> Browse2ForCustomPage(string pool, MatchmakingOptions matchmakingOptions = null, int pageIndex = 0, int pageSize = 5)
+        {
+            if (!CoreService.Initialized)
+            {
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
+            }
+            
+            if (matchmakingOptions == null)
+            {
+                return new Task<MatchmakingBrowseResult>(CLIB.ppf_Matchmaking_Browse2CustomPage(pool, IntPtr.Zero, pageIndex, pageSize));
+            }
+            else
+            {
+                return new Task<MatchmakingBrowseResult>(CLIB.ppf_Matchmaking_Browse2CustomPage(pool, matchmakingOptions.GetHandle(), pageIndex, pageSize));
+            }
+        }
 
         /// <summary>Cancels a matchmaking request. Call this function
         /// to cancel an enqueue request before a match
@@ -306,9 +337,10 @@ namespace Pico.Platform
             Looper.RegisterNotifyHandler(MessageType.Notification_Matchmaking_MatchFound, handler);
         }
 
-        /// <summary>Sets the callback to get notified when a matchmaking has been canceled. Listen to the event to receive a message.</summary> 
+        /// <summary>A notification will be sent to the player after they have been kicked out of the matchmaking pool.
+        /// Listen to the event to receive a message.</summary> 
         /// 
-        /// <param name="callback">The callback function will be called when receiving the `Matchmaking_Cancel2` message and the value of `requestID` is `0`.</param>
+        /// <param name="handler">The callback function will be called when receiving the `Matchmaking_Cancel2` message and the value of `requestID` is `0`.</param>
         public static void SetCancel2NotificationCallback(Message.Handler handler)
         {
             Looper.RegisterNotifyHandler(MessageType.Matchmaking_Cancel2, handler);
