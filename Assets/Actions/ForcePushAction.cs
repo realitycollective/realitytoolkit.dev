@@ -18,7 +18,7 @@ public class ForcePushAction : BaseInteractionAction
     }
 
     /// <inheritdoc/>
-    public override void OnLastGrabExited(InteractionExitEventArgs eventArgs)
+    protected override void OnLastGrabExited(InteractionExitEventArgs eventArgs)
     {
         base.OnLastGrabExited(eventArgs);
 
