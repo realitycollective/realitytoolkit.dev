@@ -155,3 +155,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
+  poseLocalPositionOffset: {x: 0.05, y: 0.01, z: 0.01}
+  poseLocalRotationOffset: {x: 0, y: 194.14, z: 180}
