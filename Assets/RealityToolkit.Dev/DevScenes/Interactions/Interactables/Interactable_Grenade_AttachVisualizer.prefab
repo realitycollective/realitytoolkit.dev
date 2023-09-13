@@ -67,7 +67,13 @@ PrefabInstance:
       addedObject: {fileID: 7859174834708237138}
     - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 5785972260344522876}
+    - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 892730778519582722}
+    - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4728249566589058213}
   m_SourcePrefab: {fileID: 100100000, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
 --- !u!1 &7727277803835345303 stripped
 GameObject:
@@ -141,7 +147,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
+  targetHandedness: 1
   grabPose: {fileID: 11400000, guid: 54afb48037828e342ae86f05e9066cde, type: 2}
+--- !u!114 &5785972260344522876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727277803835345303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0e3ce2fd8a2854c9b9d196ed7ec74c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
+  targetHandedness: 2
+  grabPose: {fileID: 0}
 --- !u!114 &892730778519582722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,5 +177,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
-  poseLocalPositionOffset: {x: 0.05, y: 0.01, z: 0.01}
-  poseLocalRotationOffset: {x: 0, y: 194.14, z: 180}
+  targetHandedness: 1
+  poseLocalPositionOffset: {x: -0.09, y: 0.06, z: -0.01}
+  poseLocalRotationOffset: {x: 9.99, y: -128.5, z: 11.63}
+--- !u!114 &4728249566589058213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727277803835345303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef2a4f1896625b644b94936ced130a5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
+  targetHandedness: 2
+  poseLocalPositionOffset: {x: 0.09, y: 0.03, z: 0}
+  poseLocalRotationOffset: {x: 173.1, y: -110.1, z: -28.55}
