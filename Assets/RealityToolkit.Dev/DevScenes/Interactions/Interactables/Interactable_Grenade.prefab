@@ -57,7 +57,7 @@ PrefabInstance:
       value: Interactable_Grenade
       objectReference: {fileID: 0}
     - target: {fileID: 8184087670540911155, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5fa7304d129844689554c3745d0a796f, type: 2}
     m_RemovedComponents: []
@@ -73,9 +73,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6551646081562290545}
-    - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1537024953096894109}
     - targetCorrespondingSourceObject: {fileID: 7679556626106377190, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5970569748243194955}
@@ -169,20 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
---- !u!114 &1537024953096894109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4126629076436202885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a0e3ce2fd8a2854c9b9d196ed7ec74c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 0
-  grabPose: {fileID: 11400000, guid: 54afb48037828e342ae86f05e9066cde, type: 2}
+  targetHandedness: -1
 --- !u!114 &5970569748243194955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,6 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
+  targetHandedness: -1
   normalMaterial: {fileID: 2100000, guid: 5fa7304d129844689554c3745d0a796f, type: 2}
   focusedMaterial: {fileID: 2100000, guid: cff739f75e6f4d2aa27638b66200ef95, type: 2}
   selectedMaterial: {fileID: 2100000, guid: 86884506517247c991a07caf162eeba4, type: 2}
@@ -213,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
+  targetHandedness: -1
   normalMaterial: {fileID: 2100000, guid: 5fa7304d129844689554c3745d0a796f, type: 2}
   focusedMaterial: {fileID: 2100000, guid: cff739f75e6f4d2aa27638b66200ef95, type: 2}
   selectedMaterial: {fileID: 2100000, guid: 86884506517247c991a07caf162eeba4, type: 2}
@@ -230,6 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
+  targetHandedness: -1
 --- !u!114 &7191964310130758036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
+  targetHandedness: -1
   rotationMode: 0
   distanceScale: 1
   positionLerpSpeed: 0.2
@@ -261,8 +249,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
-  grabPoseLocalOffset: {x: 0.05, y: 0.01, z: 0.01}
-  grabPoseLocalRotationOffset: {x: 0, y: 194.14, z: 180}
+  targetHandedness: -1
+  poseLocalPositionOffset: {x: 0, y: 0, z: 0}
+  poseLocalRotationOffset: {x: 0, y: 0, z: 0}
 --- !u!23 &8588153496933821688 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2664089520144824987, guid: 1898140b5043fc6428f9477e25bf0652, type: 3}

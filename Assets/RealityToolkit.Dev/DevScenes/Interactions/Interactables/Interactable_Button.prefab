@@ -148,7 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sortingOrder: 0
   targetHandedness: 1
-  focusPose: {fileID: 11400000, guid: 025e908589c76fc418aabefc73dc5d9f, type: 2}
+  focusPose: {fileID: 11400000, guid: 10bd65046f61be4469061109e29f72fb, type: 2}
 --- !u!114 &3274564563046134467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sortingOrder: 0
   targetHandedness: 2
-  focusPose: {fileID: 11400000, guid: 44a380d74b3d76d449a69362093bf2dc, type: 2}
+  focusPose: {fileID: 11400000, guid: 5462810b3f5572648bbb056a199aa477, type: 2}
 --- !u!114 &7689008779855787800
 MonoBehaviour:
   m_ObjectHideFlags: 0

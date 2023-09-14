@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4126629076436202885, guid: c8bab1bcd9ed89b489b07cef0b01cba4, type: 3}
       propertyPath: m_Name
-      value: Interactable_Grenade Variant
+      value: Interactable_Grenade_DirectOnly
       objectReference: {fileID: 0}
     - target: {fileID: 6488782811078892086, guid: c8bab1bcd9ed89b489b07cef0b01cba4, type: 3}
       propertyPath: activationMode
@@ -63,6 +63,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6551646081562290545, guid: c8bab1bcd9ed89b489b07cef0b01cba4, type: 3}
     - {fileID: 7191964310130758036, guid: c8bab1bcd9ed89b489b07cef0b01cba4, type: 3}
+    - {fileID: 1537024953096894109, guid: c8bab1bcd9ed89b489b07cef0b01cba4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
