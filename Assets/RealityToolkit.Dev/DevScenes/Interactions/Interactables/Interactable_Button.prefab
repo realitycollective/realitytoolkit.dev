@@ -202,6 +202,9 @@ MonoBehaviour:
   targetHandedness: -1
   target: {fileID: 1005643863388967613}
   pokeAxis: 2
+  responseLimits:
+    Min: {x: 0, y: 0.02793, z: 0}
+    Max: {x: 0, y: 0.05812167, z: 0}
 --- !u!114 &8601878131999232834
 MonoBehaviour:
   m_ObjectHideFlags: 0

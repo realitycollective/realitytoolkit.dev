@@ -194,9 +194,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
-  targetHandedness: 7
+  targetHandedness: -1
   target: {fileID: 8122383175140652182}
   pokeAxis: 1
+  responseLimits:
+    Min: {x: -0.0146, y: 0, z: 0}
+    Max: {x: 0.0146, y: 0, z: 0}
 --- !u!114 &4206698017466586294
 MonoBehaviour:
   m_ObjectHideFlags: 0
