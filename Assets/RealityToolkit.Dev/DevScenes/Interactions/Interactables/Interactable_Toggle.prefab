@@ -73,6 +73,9 @@ PrefabInstance:
       addedObject: {fileID: 1482730695435351356}
     - targetCorrespondingSourceObject: {fileID: 4843117751504430187, guid: 4f6155a5514cbc248954edad6985974c, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 6504480500279499241}
+    - targetCorrespondingSourceObject: {fileID: 4843117751504430187, guid: 4f6155a5514cbc248954edad6985974c, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4206698017466586294}
   m_SourcePrefab: {fileID: 100100000, guid: 4f6155a5514cbc248954edad6985974c, type: 3}
 --- !u!1 &2012120183122741513 stripped
@@ -178,6 +181,22 @@ MonoBehaviour:
   sortingOrder: 0
   targetHandedness: 2
   focusPose: {fileID: 11400000, guid: 5462810b3f5572648bbb056a199aa477, type: 2}
+--- !u!114 &6504480500279499241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012120183122741513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c97b2ccf61184040b236eba594d43e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
+  targetHandedness: 7
+  target: {fileID: 8122383175140652182}
+  pokeAxis: 1
 --- !u!114 &4206698017466586294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,3 +214,8 @@ MonoBehaviour:
   valueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!4 &8122383175140652182 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2910109571663895028, guid: 4f6155a5514cbc248954edad6985974c, type: 3}
+  m_PrefabInstance: {fileID: 6402510402565156194}
+  m_PrefabAsset: {fileID: 0}

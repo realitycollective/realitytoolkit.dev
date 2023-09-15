@@ -73,8 +73,16 @@ PrefabInstance:
       addedObject: {fileID: 7689008779855787800}
     - targetCorrespondingSourceObject: {fileID: 7000837480271443740, guid: 6074a946e3747b3449c6a30662601a5a, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 7182543872271254254}
+    - targetCorrespondingSourceObject: {fileID: 7000837480271443740, guid: 6074a946e3747b3449c6a30662601a5a, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 8601878131999232834}
   m_SourcePrefab: {fileID: 100100000, guid: 6074a946e3747b3449c6a30662601a5a, type: 3}
+--- !u!4 &1005643863388967613 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7131597224390595559, guid: 6074a946e3747b3449c6a30662601a5a, type: 3}
+  m_PrefabInstance: {fileID: 8001847775395266906}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1021119469470004806 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7000837480271443740, guid: 6074a946e3747b3449c6a30662601a5a, type: 3}
@@ -178,6 +186,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sortingOrder: 0
   targetHandedness: -1
+--- !u!114 &7182543872271254254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021119469470004806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c97b2ccf61184040b236eba594d43e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
+  targetHandedness: -1
+  target: {fileID: 1005643863388967613}
+  pokeAxis: 2
 --- !u!114 &8601878131999232834
 MonoBehaviour:
   m_ObjectHideFlags: 0
