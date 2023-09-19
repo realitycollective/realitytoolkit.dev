@@ -1,9 +1,9 @@
 using RealityToolkit.Input.Events;
-using RealityToolkit.Input.InteractionActions;
+using RealityToolkit.Input.InteractionBehaviours;
 using RealityToolkit.Input.Interactors;
 using UnityEngine;
 
-public class ForcePushAction : BaseInteractionAction
+public class ForcePushAction : BaseInteractionBehaviour
 {
     [SerializeField, Tooltip("The power of the force push executed on the object.")]
     private float forcePower = 10f;
