@@ -37,6 +37,3 @@
 [submodule "Packages/com.realitycollective.prototyping"]
 	path = Packages/com.realitycollective.prototyping
 	url = https://github.com/realitycollective/com.realitycollective.prototyping
-[submodule "Packages/com.realitytoolkit.spatial-persistence.asa"]
-	path = Packages/com.realitytoolkit.spatial-persistence.asa
-	url = https://github.com/realitycollective/com.realitytoolkit.spatial-persistence.asa.git
