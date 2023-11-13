@@ -37,6 +37,3 @@
 [submodule "Packages/com.realitycollective.prototyping"]
 	path = Packages/com.realitycollective.prototyping
 	url = https://github.com/realitycollective/com.realitycollective.prototyping
-[submodule "Packages/com.realitycollective.boundary"]
-	path = Packages/com.realitycollective.boundary
-	url = https://github.com/realitycollective/com.realitycollective.boundary.git
