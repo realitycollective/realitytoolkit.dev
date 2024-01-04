@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Gold
-    second: {fileID: 2100000, guid: 441e54d6b26aa5449aabe59151c05f72, type: 2}
+    second: {fileID: 2100000, guid: 53a9a89f3e914bc2865a2317dbc2ed17, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Main
-    second: {fileID: 2100000, guid: 60d4f4870bef1b549986c0fbca0ca9ab, type: 2}
+    second: {fileID: 2100000, guid: 5fa7304d129844689554c3745d0a796f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -26,8 +26,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 

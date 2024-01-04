@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3e34b43b095a7e47858fda3d8354b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  label: button
+  label: 
   directInteraction: 1
   farInteraction: 1
   selectAction:
