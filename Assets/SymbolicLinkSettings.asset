@@ -37,11 +37,11 @@ MonoBehaviour:
   - sourceRelativePath: /Packages/com.realitytoolkit.devicesimulation/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/DeviceSimulation/Profiles
     isActive: 1
-  - sourceRelativePath: /Packages/com.realitytoolkit.camera/Assets~/StandardAssets
-    targetRelativePath: /Assets/RealityToolkit.Generated/Camera/StandardAssets
+  - sourceRelativePath: /Packages/com.realitytoolkit.player/Assets~/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit.Generated/Player/StandardAssets
     isActive: 1
-  - sourceRelativePath: /Packages/com.realitytoolkit.camera/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/Camera/Profiles
+  - sourceRelativePath: /Packages/com.realitytoolkit.player/Assets~/Profiles
+    targetRelativePath: /Assets/RealityToolkit.Generated/Player/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.locomotion/Assets~/StandardAssets
     targetRelativePath: /Assets/RealityToolkit.Generated/Locomotion/StandardAssets
