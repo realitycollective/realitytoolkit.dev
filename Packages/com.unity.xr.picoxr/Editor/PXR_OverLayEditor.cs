@@ -37,63 +37,82 @@ namespace Unity.XR.PXR.Editor
 
                 EditorGUILayout.EndVertical();
 
-                EditorGUILayout.Separator();
-                EditorGUILayout.LabelField("Overlay Textures", EditorStyles.boldLabel);
-                guiContent.text = "Texture Type";
-                overlayTarget.textureType = (PXR_OverLay.TextureType)EditorGUILayout.EnumPopup(guiContent, overlayTarget.textureType);
-                EditorGUILayout.Separator();
+                guiContent.text = "Clones";
+                overlayTarget.isClones = EditorGUILayout.Toggle(guiContent, overlayTarget.isClones);
+                if (overlayTarget.isClones)
+                {
+                    overlayTarget.originalOverLay = EditorGUILayout.ObjectField("Original OverLay", overlayTarget.originalOverLay, typeof(PXR_OverLay), true) as PXR_OverLay;
 
-                if (overlayTarget.textureType == PXR_OverLay.TextureType.ExternalSurface)
-                {
-                    overlayTarget.isExternalAndroidSurface = true;
-                    overlayTarget.isDynamic = false;
-                }
-                else if (overlayTarget.textureType == PXR_OverLay.TextureType.DynamicTexture)
-                {
-                    overlayTarget.isExternalAndroidSurface = false;
-                    overlayTarget.isDynamic = true;
-                }
-                else
-                {
-                    overlayTarget.isExternalAndroidSurface = false;
-                    overlayTarget.isDynamic = false;
-                }
-
-                if (overlayTarget.isExternalAndroidSurface)
-                {
-                    EditorGUILayout.BeginVertical("frameBox");
-                    guiContent.text = "DRM";
-                    overlayTarget.isExternalAndroidSurfaceDRM = EditorGUILayout.Toggle(guiContent, overlayTarget.isExternalAndroidSurfaceDRM);
-
-                    guiContent.text = "3D Surface Type";
-                    overlayTarget.externalAndroidSurface3DType = (PXR_OverLay.Surface3DType)EditorGUILayout.EnumPopup(guiContent, overlayTarget.externalAndroidSurface3DType);
+                    GUIStyle firstLevelStyle = new GUIStyle(GUI.skin.label);
+                    firstLevelStyle.alignment = TextAnchor.UpperLeft;
+                    firstLevelStyle.fontStyle = FontStyle.Bold;
+                    firstLevelStyle.fontSize = 12;
+                    firstLevelStyle.wordWrap = true;
+                    EditorGUILayout.BeginVertical("box");
+                    EditorGUILayout.LabelField("Note:", firstLevelStyle);
+                    EditorGUILayout.LabelField("Original OverLay cannot be empty or itself!");
                     EditorGUILayout.EndVertical();
                 }
                 else
                 {
-                    EditorGUILayout.LabelField("Texture");
-                    EditorGUILayout.BeginVertical("frameBox");
+                    EditorGUILayout.Separator();
+                    EditorGUILayout.LabelField("Overlay Textures", EditorStyles.boldLabel);
+                    guiContent.text = "Texture Type";
+                    overlayTarget.textureType = (PXR_OverLay.TextureType)EditorGUILayout.EnumPopup(guiContent, overlayTarget.textureType);
+                    EditorGUILayout.Separator();
 
-                    var labelControlRect = EditorGUILayout.GetControlRect();
-                    EditorGUI.LabelField(new Rect(labelControlRect.x, labelControlRect.y, labelControlRect.width / 2, labelControlRect.height), new GUIContent("Left", "Texture used for the left eye"));
-                    EditorGUI.LabelField(new Rect(labelControlRect.x + labelControlRect.width / 2, labelControlRect.y, labelControlRect.width / 2, labelControlRect.height), new GUIContent("Right", "Texture used for the right eye"));
+                    if (overlayTarget.textureType == PXR_OverLay.TextureType.ExternalSurface)
+                    {
+                        overlayTarget.isExternalAndroidSurface = true;
+                        overlayTarget.isDynamic = false;
+                    }
+                    else if (overlayTarget.textureType == PXR_OverLay.TextureType.DynamicTexture)
+                    {
+                        overlayTarget.isExternalAndroidSurface = false;
+                        overlayTarget.isDynamic = true;
+                    }
+                    else
+                    {
+                        overlayTarget.isExternalAndroidSurface = false;
+                        overlayTarget.isDynamic = false;
+                    }
 
-                    var textureControlRect = EditorGUILayout.GetControlRect(GUILayout.Height(64));
-                    overlayTarget.layerTextures[0] = (Texture)EditorGUI.ObjectField(new Rect(textureControlRect.x, textureControlRect.y, 64, textureControlRect.height), overlayTarget.layerTextures[0], typeof(Texture), false);
-                    overlayTarget.layerTextures[1] = (Texture)EditorGUI.ObjectField(new Rect(textureControlRect.x + textureControlRect.width / 2, textureControlRect.y, 64, textureControlRect.height), overlayTarget.layerTextures[1] != null ? overlayTarget.layerTextures[1] : overlayTarget.layerTextures[0], typeof(Texture), false);
+                    if (overlayTarget.isExternalAndroidSurface)
+                    {
+                        EditorGUILayout.BeginVertical("frameBox");
+                        guiContent.text = "DRM";
+                        overlayTarget.isExternalAndroidSurfaceDRM = EditorGUILayout.Toggle(guiContent, overlayTarget.isExternalAndroidSurfaceDRM);
 
-                    EditorGUILayout.EndVertical();
+                        guiContent.text = "3D Surface Type";
+                        overlayTarget.externalAndroidSurface3DType = (PXR_OverLay.Surface3DType)EditorGUILayout.EnumPopup(guiContent, overlayTarget.externalAndroidSurface3DType);
+                        EditorGUILayout.EndVertical();
+                    }
+                    else
+                    {
+                        EditorGUILayout.LabelField("Texture");
+                        EditorGUILayout.BeginVertical("frameBox");
+
+                        var labelControlRect = EditorGUILayout.GetControlRect();
+                        EditorGUI.LabelField(new Rect(labelControlRect.x, labelControlRect.y, labelControlRect.width / 2, labelControlRect.height), new GUIContent("Left", "Texture used for the left eye"));
+                        EditorGUI.LabelField(new Rect(labelControlRect.x + labelControlRect.width / 2, labelControlRect.y, labelControlRect.width / 2, labelControlRect.height), new GUIContent("Right", "Texture used for the right eye"));
+
+                        var textureControlRect = EditorGUILayout.GetControlRect(GUILayout.Height(64));
+                        overlayTarget.layerTextures[0] = (Texture)EditorGUI.ObjectField(new Rect(textureControlRect.x, textureControlRect.y, 64, textureControlRect.height), overlayTarget.layerTextures[0], typeof(Texture), false);
+                        overlayTarget.layerTextures[1] = (Texture)EditorGUI.ObjectField(new Rect(textureControlRect.x + textureControlRect.width / 2, textureControlRect.y, 64, textureControlRect.height), overlayTarget.layerTextures[1] != null ? overlayTarget.layerTextures[1] : overlayTarget.layerTextures[0], typeof(Texture), false);
+
+                        EditorGUILayout.EndVertical();
+                    }
+                    EditorGUILayout.Separator();
+
+                    if (overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Equirect)
+                    {
+                        guiContent.text = "Radius";
+                        overlayTarget.radius = EditorGUILayout.FloatField(guiContent, Mathf.Abs(overlayTarget.radius));
+                    }
 
                 }
-                EditorGUILayout.Separator();
 
-                if (overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Equirect)
-                {
-                    guiContent.text = "Radius";
-                    overlayTarget.radius = EditorGUILayout.FloatField(guiContent, Mathf.Abs(overlayTarget.radius));
-                }
-
-                if (overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Quad || overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Cylinder || overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Equirect)
+                if (overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Quad || overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Cylinder || overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Equirect || overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Eac)
                 {
                     guiContent.text = "Texture Rects";
                     overlayTarget.useImageRect = EditorGUILayout.Toggle(guiContent, overlayTarget.useImageRect);
@@ -180,6 +199,36 @@ namespace Unity.XR.PXR.Editor
                     overlayTarget.dstAlpha = (PxrBlendFactor)EditorGUILayout.EnumPopup(guiContent, overlayTarget.dstAlpha);
 
                     EditorGUILayout.EndVertical();
+                }
+
+                EditorGUILayout.Separator();
+                if (overlayTarget.overlayShape == PXR_OverLay.OverlayShape.Eac)
+                {
+                    guiContent.text = "Offset Pos Left";
+                    Vector3 offsetPosLeft = EditorGUILayout.Vector3Field(guiContent, overlayTarget.offsetPosLeft);
+
+
+                    guiContent.text = "Offset Pos Right";
+                    Vector3 offsetPosRight = EditorGUILayout.Vector3Field(guiContent, overlayTarget.offsetPosRight);
+
+
+                    guiContent.text = "Offset Rot Left";
+                    Vector4 offsetRotLeft = EditorGUILayout.Vector4Field(guiContent, overlayTarget.offsetRotLeft);
+
+
+                    guiContent.text = "Offset Rot Right";
+                    Vector4 offsetRotRight = EditorGUILayout.Vector4Field(guiContent, overlayTarget.offsetRotRight);
+
+
+
+                    guiContent.text = "No View Port";
+                    overlayTarget.degreeType = (PXR_OverLay.DegreeType)EditorGUILayout.EnumPopup(guiContent, overlayTarget.degreeType);
+
+
+                    guiContent.text = "Overlap Factor";
+                    float overlapFactor = EditorGUILayout.FloatField(guiContent, overlayTarget.overlapFactor);
+
+                    overlayTarget.SetEACOffsetPosAndRot(offsetPosLeft, offsetPosRight, offsetRotLeft, offsetRotRight, overlapFactor);
                 }
 
                 guiContent.text = "Override Color Scale";

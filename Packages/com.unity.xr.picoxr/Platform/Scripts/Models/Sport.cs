@@ -14,31 +14,29 @@ using System;
 
 namespace Pico.Platform.Models
 {
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>
     /// The summary of daily sport info.
     /// Users' daily sports info is recorded in the local database. This structure indicates the sports info generated someday.
     /// </summary>
     public class SportDailySummary
     {
-        /** @brief The ID of the summary.*/
+        /// The ID of the summary.
         public readonly long Id;
 
-        /** @brief The date when the summary was generated.*/
+        /// The date when the summary was generated.
         public readonly DateTime Date;
 
-        /** @brief The sport duration (in seconds).*/
+        /// The sport duration (in seconds).
         public readonly int DurationInSeconds;
 
-        /** @brief The planned sport duration (in seconds).*/
+        /// The planned sport duration (in seconds).
         public readonly int PlanDurationInMinutes;
 
-        /** @brief The actual calorie burnt (in kilo calorie).*/
+        /// The actual calorie burnt (in kilo calorie).
         public readonly double Calorie;
 
-        /** @brief The planned calorie to burn. */
+        /// The planned calorie to burn. 
         public readonly double PlanCalorie;
 
         public SportDailySummary(IntPtr o)
@@ -52,7 +50,9 @@ namespace Pico.Platform.Models
         }
     }
 
-
+    /// <summary>
+    /// Each element is \ref SportDailySummary
+    /// </summary>
     public class SportDailySummaryList : MessageArray<SportDailySummary>
     {
         public SportDailySummaryList(IntPtr a)
@@ -65,24 +65,22 @@ namespace Pico.Platform.Models
             }
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>
     /// User's sport summary of today.
     /// </summary>
     public class SportSummary
     {
-        /** @brief The sport duration (in seconds).*/
+        /// The sport duration (in seconds).
         public readonly int DurationInSeconds;
 
-        /** @brief The calorie burnt (in kilo calorie).*/
+        /// The calorie burnt (in kilo calorie).
         public readonly double Calorie;
 
-        /** @brief The time when the user started playing sport.*/
+        /// The time when the user started playing sport.
         public readonly DateTime StartTime;
 
-        /** @brief The time when the user stopped playing sport.*/
+        /// The time when the user stopped playing sport.
         public readonly DateTime EndTime;
 
         public SportSummary(IntPtr o)
@@ -93,9 +91,7 @@ namespace Pico.Platform.Models
             EndTime = TimeUtil.MilliSecondsToDateTime(CLIB.ppf_SportSummary_GetEndTime(o));
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>
     /// The user's sport info.
     /// User can set sport goal in the Sport Center app.
@@ -105,22 +101,22 @@ namespace Pico.Platform.Models
         public readonly Gender Gender;
         public readonly DateTime Birthday;
 
-        /**@brief The height of the user (in cm). */
+        /// The height of the user (in cm). 
         public readonly int Stature;
 
-        /**@brief The weight of the user (in kg). */
+        /// The weight of the user (in kg). 
         public readonly int Weight;
 
-        /** @brief The sport level that indicates the intensity of the sport.*/
+        /// The sport level that indicates the intensity of the sport.
         public readonly int SportLevel;
 
-        /** @brief The planned daily sport duration (in minutes).*/
+        /// The planned daily sport duration (in minutes).
         public readonly int DailyDurationInMinutes;
 
-        /** @brief The planned weekly sport days.*/
+        /// The planned weekly sport days.
         public readonly int DaysPerWeek;
 
-        /** @brief The sport purpose, such as `keep fit` and `lose weight`. */
+        /// The sport purpose, such as `keep fit` and `lose weight`. 
         public readonly SportTarget SportTarget;
 
         public SportUserInfo(IntPtr o)

@@ -54,8 +54,27 @@ namespace Unity.XR.PXR.Editor
                     }
                 }
             }
+
             //ffr
-            manager.foveationLevel = (FoveationLevel)EditorGUILayout.EnumPopup("Foveation Level", manager.foveationLevel);
+            manager.foveatedRenderingMode = (FoveatedRenderingMode)EditorGUILayout.EnumPopup("Foveated Rendering Mode", manager.foveatedRenderingMode);
+            if (FoveatedRenderingMode.FixedFoveatedRendering == manager.foveatedRenderingMode)
+            {
+                projectConfig.enableETFR = false;
+                manager.foveationLevel = (FoveationLevel)EditorGUILayout.EnumPopup("Foveated Rendering Level", manager.foveationLevel);
+                if (FoveationLevel.None != manager.foveationLevel)
+                {
+                    projectConfig.enableSubsampled = EditorGUILayout.Toggle("  Subsampling", projectConfig.enableSubsampled);
+                }
+            }
+            else if (FoveatedRenderingMode.EyeTrackedFoveatedRendering == manager.foveatedRenderingMode) //etfr
+            {
+                projectConfig.enableETFR = true;
+                manager.eyeFoveationLevel = (FoveationLevel)EditorGUILayout.EnumPopup("Foveated Rendering Level", manager.eyeFoveationLevel);
+                if (FoveationLevel.None != manager.eyeFoveationLevel)
+                {
+                    projectConfig.enableSubsampled = EditorGUILayout.Toggle("  Subsampling", projectConfig.enableSubsampled);
+                }
+            }
 
             //eye tracking
             GUIStyle firstLevelStyle = new GUIStyle(GUI.skin.label);
@@ -68,8 +87,9 @@ namespace Unity.XR.PXR.Editor
             guiContent.tooltip = "Before calling EyeTracking API, enable this option first, only for Neo3 Pro Eye , PICO 4 Pro device.";
             projectConfig.eyeTracking = EditorGUILayout.Toggle(guiContent, projectConfig.eyeTracking);
             manager.eyeTracking = projectConfig.eyeTracking;
-            if (manager.eyeTracking)
+            if (manager.eyeTracking || FoveatedRenderingMode.EyeTrackedFoveatedRendering == manager.foveatedRenderingMode)
             {
+                projectConfig.eyetrackingCalibration = EditorGUILayout.Toggle(new GUIContent("Eye Tracking Calibration"), projectConfig.eyetrackingCalibration);
                 EditorGUILayout.BeginVertical("box");
                 EditorGUILayout.LabelField("Note:", firstLevelStyle);
                 EditorGUILayout.LabelField("Eye Tracking is supported only on Neo 3 Pro Eye , PICO 4 Pro");
@@ -80,18 +100,22 @@ namespace Unity.XR.PXR.Editor
             var FaceContent = new GUIContent();
             FaceContent.text = "Face Tracking Mode";
             manager.trackingMode = (FaceTrackingMode)EditorGUILayout.EnumPopup(FaceContent, manager.trackingMode);
-            if (manager.trackingMode == FaceTrackingMode.None) {
+            if (manager.trackingMode == FaceTrackingMode.None)
+            {
                 projectConfig.faceTracking = false;
                 projectConfig.lipsyncTracking = false;
-            }else if (manager.trackingMode == FaceTrackingMode.Hybrid)
+            }
+            else if (manager.trackingMode == FaceTrackingMode.Hybrid)
             {
                 projectConfig.faceTracking = true;
                 projectConfig.lipsyncTracking = true;
             }
-            else if(manager.trackingMode == FaceTrackingMode.FaceOnly) {
+            else if (manager.trackingMode == FaceTrackingMode.FaceOnly)
+            {
                 projectConfig.faceTracking = true;
                 projectConfig.lipsyncTracking = false;
-            }else if (manager.trackingMode == FaceTrackingMode.LipsyncOnly)
+            }
+            else if (manager.trackingMode == FaceTrackingMode.LipsyncOnly)
             {
                 projectConfig.faceTracking = false;
                 projectConfig.lipsyncTracking = true;
@@ -103,6 +127,12 @@ namespace Unity.XR.PXR.Editor
             var handContent = new GUIContent();
             handContent.text = "Hand Tracking";
             projectConfig.handTracking = EditorGUILayout.Toggle(handContent, projectConfig.handTracking);
+
+            //body tracking
+            var bodyContent = new GUIContent();
+            bodyContent.text = "Body Tracking";
+            projectConfig.bodyTracking = EditorGUILayout.Toggle(bodyContent, projectConfig.bodyTracking);
+            manager.bodyTracking = projectConfig.bodyTracking;
 
             // content protect
             projectConfig.useContentProtect = EditorGUILayout.Toggle("Use Content Protect", projectConfig.useContentProtect);
@@ -131,6 +161,12 @@ namespace Unity.XR.PXR.Editor
             //Late Latching
             projectConfig.latelatching = EditorGUILayout.Toggle("Use Late Latching", projectConfig.latelatching);
             manager.lateLatching = projectConfig.latelatching;
+            if (manager.lateLatching)
+            {
+                projectConfig.latelatchingDebug = EditorGUILayout.Toggle("  Late Latching Debug", projectConfig.latelatchingDebug);
+                manager.latelatchingDebug = projectConfig.latelatchingDebug;
+            }
+
             if (Camera.main != null)
             {
                 var head = Camera.main.transform;
@@ -158,12 +194,45 @@ namespace Unity.XR.PXR.Editor
                 EditorGUI.BeginDisabledGroup(true);
                 manager.useRecommendedAntiAliasingLevel = EditorGUILayout.Toggle("Use Recommended MSAA", manager.useRecommendedAntiAliasingLevel);
                 EditorGUI.EndDisabledGroup();
-                EditorGUILayout.HelpBox("A Scriptable Render Pipeline is in use,the 'Use Recommended MSAA' will not be used. ", MessageType.Info,true);
+                EditorGUILayout.HelpBox("A Scriptable Render Pipeline is in use,the 'Use Recommended MSAA' will not be used. ", MessageType.Info, true);
             }
             else
             {
                 manager.useRecommendedAntiAliasingLevel = EditorGUILayout.Toggle("Use Recommended MSAA", manager.useRecommendedAntiAliasingLevel);
             }
+
+            //Adaptive Resolution
+            guiContent = new GUIContent();
+            guiContent.text = "Adaptive Resolution";
+            guiContent.tooltip = "Adaptively change resolution based on GPU performance using renderViewportScale. Render buffer will be allocated to max adaptive resolution scale size. Currently, FFR should be disabled with this feature.";
+            projectConfig.adaptiveResolution = EditorGUILayout.Toggle(guiContent, projectConfig.adaptiveResolution);
+            manager.adaptiveResolution = projectConfig.adaptiveResolution;
+            if (manager.adaptiveResolution)
+            {
+                EditorGUILayout.LabelField("Min Adaptive Resolution Scale:");
+                manager.minEyeTextureScale = EditorGUILayout.Slider(manager.minEyeTextureScale, 0.7f, 1.3f);
+                EditorGUILayout.LabelField("Max Adaptive Resolution Scale:");
+                manager.maxEyeTextureScale = EditorGUILayout.Slider(manager.maxEyeTextureScale, 0.7f, 1.3f);
+                manager.adaptiveResolutionPowerSetting = (AdaptiveResolutionPowerSetting)EditorGUILayout.EnumPopup(" Power Setting", manager.adaptiveResolutionPowerSetting);
+
+            }
+
+            projectConfig.stageMode = EditorGUILayout.Toggle("Stage Mode", projectConfig.stageMode);
+
+            //mr
+            if (projectConfig.spatialAnchor)
+            {
+                using (new EditorGUI.DisabledGroupScope(true))
+                {
+                    projectConfig.videoSeeThrough = true;
+                    EditorGUILayout.Toggle("Video Seethrough", projectConfig.videoSeeThrough);
+                }
+            }
+            else
+            {
+                projectConfig.videoSeeThrough = EditorGUILayout.Toggle("Video Seethrough", projectConfig.videoSeeThrough);
+            }
+            projectConfig.spatialAnchor = EditorGUILayout.Toggle("Anchor", projectConfig.spatialAnchor);
 
             if (GUI.changed)
             {
@@ -172,8 +241,6 @@ namespace Unity.XR.PXR.Editor
             }
             serializedObject.ApplyModifiedProperties();
         }
-        
+
     }
 }
-
-

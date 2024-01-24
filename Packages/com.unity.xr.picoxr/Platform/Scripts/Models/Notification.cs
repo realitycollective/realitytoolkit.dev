@@ -20,13 +20,13 @@ namespace Pico.Platform.Models
     /// </summary>
     public class RoomInviteNotification
     {
-        /** @brief Invitation ID. */
+        /// Invitation ID. 
         public readonly UInt64 ID;
-        /** @brief Room ID. */
+        /// Room ID. 
         public readonly UInt64 RoomID;
-        /** @brief Inviter's user ID. */
+        /// Inviter's user ID. 
         public readonly string SenderID;
-        /** @brief The time when the invitation is sent. */
+        /// The time when the invitation is sent. 
         public readonly DateTime SentTime;
 
 
@@ -42,16 +42,21 @@ namespace Pico.Platform.Models
             }
             catch (UnityException ex)
             {
-                Debug.LogWarning("RoomInviteNotification get SentTime fail");
+                Debug.LogWarning($"RoomInviteNotification get SentTime fail {ex}");
                 throw;
             }
         }
     }
-
+    /// <summary>
+    /// Each element is \ref RoomInviteNotification
+    /// </summary>
     public class RoomInviteNotificationList : MessageArray<RoomInviteNotification>
     {
+        /// The total number. 
+        public readonly int TotalCount;
         public RoomInviteNotificationList(IntPtr a)
         {
+            TotalCount = CLIB.ppf_RoomInviteNotificationArray_GetTotalCount(a);
             NextPageParam = CLIB.ppf_RoomInviteNotificationArray_HasNextPage(a) ? "true" : string.Empty;
             int count = (int) CLIB.ppf_RoomInviteNotificationArray_GetSize(a);
             this.Capacity = count;

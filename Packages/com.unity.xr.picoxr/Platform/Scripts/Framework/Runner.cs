@@ -12,7 +12,7 @@ PICO Technology Co., Ltd.
 
 using UnityEngine;
 
-namespace Pico.Platform
+namespace Pico.Platform.Framework
 {
     public class Runner : MonoBehaviour
     {
@@ -44,6 +44,10 @@ namespace Pico.Platform
         void OnApplicationQuit()
         {
             Looper.Clear();
+            if (Application.isEditor || Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                CLIB.ppf_PcUnInitialize();
+            }
         }
     }
 }

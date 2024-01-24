@@ -22,11 +22,91 @@ namespace Pico.Platform
      */
     public static class RoomService
     {
+        /// <summary>Gets the room options for create a private room. You can use it when you use \ref RoomService.CreateAndJoinPrivate2.</summary>
+        /// <param name="dataStore">The key/value pairs to add.</param>
+        /// <returns>The room options for create a private room.</returns>
+        public static RoomOptions GetCreatePrivateRoomOptions(Dictionary<string, string> dataStore)
+        {
+            RoomOptions options = new RoomOptions();
+            foreach (var data in dataStore)
+            {
+                options.SetDataStore(data.Key, data.Value);
+            }
+
+            return options;
+        }
+
+        /// <summary>Gets the room options for joining or creating a named room. You can use it when you use \ref RoomService.JoinOrCreateNamedRoom.</summary>
+        /// <param name="dataStore">The key/value pairs to add.</param>
+        /// <param name="name">The name of the named room.</param>
+        /// <param name="password">The password of the named room.</param>
+        /// <returns>The room options for joining or creating a named room.</returns>
+        public static RoomOptions GetJoinOrCreateNamedRoomOptions(Dictionary<string, string> dataStore, string name, string password)
+        {
+            RoomOptions options = new RoomOptions();
+            foreach (var data in dataStore)
+            {
+                options.SetDataStore(data.Key, data.Value);
+            }
+
+            options.SetRoomName(name);
+            options.SetPassword(password);
+
+            return options;
+        }
+
+        /// <summary>Gets the list of named rooms created for the app.</summary>
+        /// <param name="pageIndex">Defines which page of entries to return. The index for the first page is `0`.</param>
+        /// <param name="pageSize">The number of entries returned on each page. Value range: [5,20].</param>
+        /// <returns>The request ID of this async function.
+        ///
+        /// A message of type `MessageType.Room_GetNamedRooms` will be generated in response.
+        /// First call `Message.IsError()` to check if any error has occurred.
+        /// If no error has occurred, the message will contain a payload of type `RoomList`.
+        /// Extract the payload from the message handle with `Message.Data`.
+        /// </returns>
+        public static Task<RoomList> GetNamedRooms(int pageIndex, int pageSize)
+        {
+            if (!CoreService.Initialized)
+            {
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
+            }
+
+            return new Task<RoomList>(CLIB.ppf_Room_GetNamedRooms(pageIndex, pageSize));
+        }
+
+        /// <summary>Join or create a named room.</summary>
+        /// <param name="joinPolicy">The join policy of the room. Currently only support 'RoomJoinPolicy Everyone'.</param>
+        /// <param name="createIfNotExist">Determines whether to create a new room if the named room does not exist:
+        /// * `true`: create
+        /// * `false`: do not create
+        /// </param>
+        /// <param name="maxUsers">The maximum number of users allowed in the room, including the creator.</param>
+        /// <param name="options">Additional room configuration for this request.</param>
+        /// <returns>The request ID of this async function.
+        ///
+        /// A message of type `MessageType.Room_JoinNamed` will be generated in response.
+        /// First call `Message.IsError()` to check if any error has occurred.
+        /// If no error has occurred, the message will contain a payload of type `Room`.
+        /// Extract the payload from the message handle with `Message.Data`.
+        /// </returns>
+        public static Task<Room> JoinOrCreateNamedRoom(RoomJoinPolicy joinPolicy, bool createIfNotExist, uint maxUsers, RoomOptions options)
+        {
+            if (!CoreService.Initialized)
+            {
+                Debug.LogError(CoreService.NotInitializedError);
+                return null;
+            }
+
+            return new Task<Room>(CLIB.ppf_Room_JoinNamed(joinPolicy, createIfNotExist, maxUsers, options.GetHandle()));
+        }
+
         /// <summary>Launches the invitation flow to let the current user invite friends to a specified room.
         /// This launches the system default invite UI where all of the user's friends are displayed.
         /// This is intended to be a shortcut for developers not wanting to build their own invite-friends UI.
         /// </summary>
-        /// <param name="roomId">The ID of the room.</param>
+        /// <param name="roomID">The ID of the room.</param>
         /// <returns>The request ID of this async function.
         /// A message of type `MessageType.Room_LaunchInvitableUserFlow` will be generated in response.
         /// Call `message.IsError()` to check if any error has occurred.
@@ -184,7 +264,9 @@ namespace Pico.Platform
 
         /// <summary>Gets a list of members the user can invite to the room.
         /// These members are drawn from the user's friends list and recently
-        /// encountered list, and filtered based on relevance and interests.</summary>
+        /// encountered list, and filtered based on relevance and interests.
+        /// @note: Only applicable to private rooms and named rooms.
+        /// </summary>
         ///
         /// <param name="roomOptions">Additional configuration for this request.
         /// If you pass `null`, the response will return code `0`.</param>
@@ -224,7 +306,7 @@ namespace Pico.Platform
         ///
         /// A message of type `MessageType.Room_GetModeratedRooms` will be generated in response.
         /// First call `message.IsError()` to check if any error has occurred.
-        /// If no error has occurred, the message will contain a payload of type `RoomList`.
+        /// If no error has occurred, the message will contain a payload of type `RoomList`, the room info does not contain the `UserList` info.
         /// Extract the payload from the message handle with `message.Data`.
         /// </returns>
         public static Task<RoomList> GetModeratedRooms(int index, int size)
@@ -504,8 +586,9 @@ namespace Pico.Platform
             Looper.RegisterNotifyHandler(MessageType.Room_UpdateDataStore, handler);
         }
 
-        /// <summary>Sets the callback to get notified when someone has left the room.
-        /// Listen to this event to receive a relevant message. Use `Message.Data` to extract the room.</summary>
+        /// <summary>If a player is passively removed from a room (for example, if they initiate another match within the room and are subsequently removed by the system or if they are kicked out of the room), they will receive a notification.
+        /// Listen to this event to receive a relevant message.
+        /// Use `Message.Data` to extract the room.</summary>
         ///
         /// <param name="handler">The callback function will be called when receiving the `Room_Leave` message and the value of `requestID` is `0`.</param>
         public static void SetLeaveNotificationCallback(Message<Room>.Handler handler)
@@ -513,7 +596,8 @@ namespace Pico.Platform
             Looper.RegisterNotifyHandler(MessageType.Room_Leave, handler);
         }
 
-        /// <summary>Sets the callback to get notified when someone has entered the room.
+        /// <summary>If a player comes across network or disaster recovery problems after joining a room, they may not receive a notification confirming that they've successfully entered the room.
+        /// In such cases, the server will resend the notification to ensure that the user receives it.
         /// Use `Message.Data` to extract the room.</summary>
         ///
         /// <param name="handler">The callback function will be called when receiving the `Room_Join2` message and the value of `requestID` is `0`.</param>
@@ -522,8 +606,9 @@ namespace Pico.Platform
             Looper.RegisterNotifyHandler(MessageType.Room_Join2, handler);
         }
 
-        /// <summary>Sets the callback to get notified when the room owner has changed.
-        /// Listen to this event to receive a relevant message. Use `Message.Data` to extract the room.</summary>
+        /// <summary>When there is a change in the room owner, the new owner will receive a notification.
+        /// Listen to this event to receive a relevant message.
+        /// Use `Message.Data` to extract the room.</summary>
         ///
         /// <param name="handler">The callback function will be called when receiving the `Room_UpdateOwner` message and the value of `requestID` is `0`.</param>
         public static void SetUpdateOwnerNotificationCallback(Message.Handler handler)
@@ -589,12 +674,32 @@ namespace Pico.Platform
 
         /// <summary>
         /// Sets a room ID.
-        /// @note Only available to `GetInvitableUsers2`.
+        /// @note Only available to \ref RoomService.GetInvitableUsers2.
         /// </summary>
         /// <param name="value">The room ID.</param>
         public void SetRoomId(UInt64 value)
         {
             CLIB.ppf_RoomOptions_SetRoomId(Handle, value);
+        }
+
+        /// <summary>
+        /// Sets a name for the room.
+        /// @note Only available to \ref RoomService.JoinOrCreateNamedRoom and \ref RoomService.GetNamedRooms.
+        /// </summary>
+        /// <param name="roomName">The room's name. The maximum length is 64 characters.</param>
+        public void SetRoomName(string roomName)
+        {
+            CLIB.ppf_RoomOptions_SetName(Handle, roomName);
+        }
+
+        /// <summary>
+        /// Sets a password for the room.
+        /// @note Only available to \ref RoomService.JoinOrCreateNamedRoom and \ref RoomService.GetNamedRooms.
+        /// </summary>
+        /// <param name="password">The room's password. The maximum length is 64 characters.</param>
+        public void SetPassword(string password)
+        {
+            CLIB.ppf_RoomOptions_SetPassword(Handle, password);
         }
 
         /// <summary>

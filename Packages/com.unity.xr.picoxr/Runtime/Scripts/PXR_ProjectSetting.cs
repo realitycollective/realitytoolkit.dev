@@ -16,7 +16,7 @@ using UnityEngine;
 namespace Unity.XR.PXR
 {
     [System.Serializable]
-    public class PXR_ProjectSetting: ScriptableObject
+    public class PXR_ProjectSetting : ScriptableObject
     {
         public bool useContentProtect;
         public bool handTracking;
@@ -24,7 +24,16 @@ namespace Unity.XR.PXR
         public bool faceTracking;
         public bool lipsyncTracking;
         public bool eyeTracking;
+        public bool eyetrackingCalibration;
+        public bool enableETFR;
         public bool latelatching;
+        public bool latelatchingDebug;
+        public bool enableSubsampled;
+        public bool bodyTracking;
+        public bool adaptiveResolution;
+        public bool stageMode;
+        public bool videoSeeThrough;
+        public bool spatialAnchor;
 
         public static PXR_ProjectSetting GetProjectConfig()
         {
@@ -39,7 +48,16 @@ namespace Unity.XR.PXR
                 projectConfig.faceTracking = false;
                 projectConfig.lipsyncTracking = false;
                 projectConfig.eyeTracking = false;
+                projectConfig.eyetrackingCalibration = false;
+                projectConfig.enableETFR = false;
                 projectConfig.latelatching = false;
+                projectConfig.latelatchingDebug = false;
+                projectConfig.enableSubsampled = false;
+                projectConfig.bodyTracking = false;
+                projectConfig.adaptiveResolution = false;
+                projectConfig.stageMode = false;
+                projectConfig.videoSeeThrough = false;
+                projectConfig.spatialAnchor = false;
                 string path = Application.dataPath + "/Resources";
                 if (!Directory.Exists(path))
                 {

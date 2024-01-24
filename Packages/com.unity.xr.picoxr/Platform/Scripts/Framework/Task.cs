@@ -80,7 +80,7 @@ namespace Pico.Platform
             return this;
         }
 
-        public System.Threading.Tasks.Task<Message<T>> Async()
+        public new System.Threading.Tasks.Task<Message<T>> Async()
         {
             if (HasSetCallback)
             {

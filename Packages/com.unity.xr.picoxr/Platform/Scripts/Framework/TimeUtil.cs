@@ -48,9 +48,4 @@ namespace Pico.Platform
             return UnixEpoch.AddSeconds(seconds).ToLocalTime();
         }
     }
-
-    [Obsolete("Util is deprecated,please use TimeUtil instead.")]
-    public class Util : TimeUtil
-    {
-    }
 }

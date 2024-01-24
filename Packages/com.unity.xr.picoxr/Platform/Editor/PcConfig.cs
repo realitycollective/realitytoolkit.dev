@@ -34,28 +34,6 @@ namespace Pico.Platform.Editor
         internal bool hasError = false;
     }
 
-    class Gs
-    {
-        public static string packageName
-        {
-            get { return PlayerSettings.GetApplicationIdentifier(EditorUserBuildSettings.selectedBuildTargetGroup); }
-            set { PlayerSettings.SetApplicationIdentifier(EditorUserBuildSettings.selectedBuildTargetGroup, value); }
-        }
-
-
-        public static string bundleVersion
-        {
-            get { return PlayerSettings.bundleVersion; }
-            set { PlayerSettings.bundleVersion = value; }
-        }
-
-        public static int bundleVersionCode
-        {
-            get { return PlayerSettings.Android.bundleVersionCode; }
-            set { PlayerSettings.Android.bundleVersionCode = value; }
-        }
-    }
-
     [CustomEditor(typeof(PcConfig))]
     public class PcConfigEditor : UnityEditor.Editor
     {

@@ -137,7 +137,7 @@ namespace Pico.Platform
         /// and top 10 will be displayed on the second page)
         /// * `3`: Unknown (returns an empty list)
         /// </param>
-        /// <param name="userIds">Defines a list of user IDs to get entries for.</param>
+        /// <param name="userIDs">Defines a list of user IDs to get entries for.</param>
         /// <param name="pageIdx">Defines which page of entries to return. The first page index is `0`.
         /// For example, if you want to get the first page of entries, pass `0`; if you want to get the second page of entries, pass `1`.
         /// </param>

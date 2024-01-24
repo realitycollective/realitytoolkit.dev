@@ -29,6 +29,94 @@ namespace Pico.Platform
                     break;
                 }
 
+
+                #region speech
+
+                case MessageType.Notification_Speech_OnAsrResult:
+                {
+                    msg = new Message<AsrResult>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetAsrResult(ptr);
+                        return new AsrResult(obj);
+                    });
+                    break;
+                }
+                case MessageType.Notification_Speech_OnSpeechError:
+                {
+                    msg = new Message<SpeechError>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetSpeechError(ptr);
+                        return new SpeechError(obj);
+                    });
+                    break;
+                }
+
+                #endregion
+
+                #region Highlight
+
+                case MessageType.Highlight_StartSession:
+                {
+                    msg = new Message<string>(msgPointer, ptr => { return CLIB.ppf_Message_GetString(ptr); });
+                    break;
+                }
+                case MessageType.Highlight_CaptureScreen:
+                {
+                    msg = new Message<CaptureInfo>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetCaptureInfo(ptr);
+                        if (obj == IntPtr.Zero) return null;
+                        return new CaptureInfo(obj);
+                    });
+                    break;
+                }
+                case MessageType.Highlight_ListMedia:
+                {
+                    msg = new Message<SessionMedia>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetSessionMedia(ptr);
+                        if (obj == IntPtr.Zero) return null;
+                        return new SessionMedia(obj);
+                    });
+                    break;
+                }
+                case MessageType.Highlight_SaveMedia:
+                case MessageType.Highlight_ShareMedia:
+                case MessageType.Highlight_StartRecord:
+
+                {
+                    msg = new Message(msgPointer);
+                    break;
+                }
+                case MessageType.Highlight_StopRecord:
+                case MessageType.Notification_Highlight_OnRecordStop:
+                {
+                    msg = new Message<RecordInfo>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetRecordInfo(ptr);
+                        if (obj == IntPtr.Zero) return null;
+                        return new RecordInfo(obj);
+                    });
+                    break;
+                }
+
+                #endregion
+
+                #region compliance
+
+                case MessageType.Compliance_DetectSensitive:
+                {
+                    msg = new Message<DetectSensitiveResult>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetDetectSensitiveResult(ptr);
+                        if (obj == IntPtr.Zero) return null;
+                        return new DetectSensitiveResult(obj);
+                    });
+                    break;
+                }
+
+                #endregion
+
                 #region Sport
 
                 case MessageType.Sport_GetSummary:
@@ -66,6 +154,16 @@ namespace Pico.Platform
 
                 #region User
 
+                case MessageType.User_EntitlementCheck:
+                {
+                    msg = new Message<EntitlementCheckResult>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetEntitlementCheckResult(ptr);
+                        if (obj == IntPtr.Zero) return null;
+                        return new EntitlementCheckResult(obj);
+                    });
+                    break;
+                }
                 case MessageType.User_GetAuthorizedPermissions:
                 case MessageType.User_RequestUserPermissions:
                 {
@@ -124,6 +222,7 @@ namespace Pico.Platform
                     break;
                 }
                 case MessageType.User_GetAccessToken:
+                case MessageType.User_GetIdToken:
                 case MessageType.Rtc_GetToken:
                 case MessageType.Notification_Rtc_OnTokenWillExpire:
                 case MessageType.Notification_Rtc_OnUserStartAudioCapture:
@@ -166,6 +265,16 @@ namespace Pico.Platform
                         var obj = CLIB.ppf_Message_GetUser(ptr);
                         if (obj == IntPtr.Zero) return null;
                         return new User(obj);
+                    });
+                    break;
+                }
+                case MessageType.User_GetOrgScopedID:
+                {
+                    msg = new Message<OrgScopedID>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetOrgScopedID(ptr);
+                        if (obj == IntPtr.Zero) return null;
+                        return new OrgScopedID(obj);
                     });
                     break;
                 }
@@ -438,6 +547,16 @@ namespace Pico.Platform
                     });
                     break;
                 }
+                case MessageType.IAP_GetSubscriptionStatus:
+                {
+                    msg = new Message<SubscriptionStatus>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetSubscriptionStatus(ptr);
+                        if (obj == IntPtr.Zero) return null;
+                        return new SubscriptionStatus(obj);
+                    });
+                    break;
+                }
                 case MessageType.IAP_LaunchCheckoutFlow:
                 {
                     msg = new Message<Purchase>(msgPointer, ptr =>
@@ -578,6 +697,15 @@ namespace Pico.Platform
                     });
                     break;
                 }
+                case MessageType.Matchmaking_Browse2CustomPage:
+                {
+                    msg = new Message<MatchmakingBrowseResult>(msgPointer, ptr =>
+                    {
+                        var obj = CLIB.ppf_Message_GetMatchmakingBrowseCustomPageResult(ptr);
+                        return new MatchmakingBrowseResult(obj);
+                    });
+                    break;
+                }
                 case MessageType.Matchmaking_Enqueue2:
                 case MessageType.Matchmaking_EnqueueRoom2:
                 {
@@ -615,6 +743,7 @@ namespace Pico.Platform
                 case MessageType.Room_InviteUser:
                 case MessageType.Room_Join:
                 case MessageType.Room_Join2:
+                case MessageType.Room_JoinNamed:
                 case MessageType.Room_KickUser:
                 case MessageType.Room_Leave:
                 case MessageType.Room_SetDescription:
@@ -632,6 +761,7 @@ namespace Pico.Platform
                     break;
                 }
                 case MessageType.Room_GetModeratedRooms:
+                case MessageType.Room_GetNamedRooms:
                 case MessageType.Room_GetNextRoomArrayPage:
                 {
                     msg = new Message<RoomList>(msgPointer, ptr =>
@@ -647,7 +777,7 @@ namespace Pico.Platform
                     {
                         var objHandle = CLIB.ppf_Message_GetPlatformGameInitialize(ptr);
                         var obj = CLIB.ppf_PlatformGameInitialize_GetResult(objHandle);
-                        return (GameInitializeResult) obj;
+                        return obj;
                     });
                     break;
                 }
@@ -656,7 +786,7 @@ namespace Pico.Platform
                     msg = new Message<GameConnectionEvent>(msgPointer, ptr =>
                     {
                         var obj = CLIB.ppf_Message_GetGameConnectionEvent(ptr);
-                        return (GameConnectionEvent) obj;
+                        return obj;
                     });
                     break;
                 }
@@ -665,16 +795,16 @@ namespace Pico.Platform
                     msg = new Message<GameRequestFailedReason>(msgPointer, ptr =>
                     {
                         var obj = CLIB.ppf_Message_GetGameRequestFailedReason(ptr);
-                        return (GameRequestFailedReason) obj;
+                        return obj;
                     });
                     break;
                 }
                 case MessageType.Leaderboard_Get:
                 case MessageType.Leaderboard_GetNextLeaderboardArrayPage:
                 {
-                    msg = new Message<LeaderboardList>(msgPointer, c_message =>
+                    msg = new Message<LeaderboardList>(msgPointer, ptr =>
                     {
-                        var obj = CLIB.ppf_Message_GetLeaderboardArray(c_message);
+                        var obj = CLIB.ppf_Message_GetLeaderboardArray(ptr);
                         return new LeaderboardList(obj);
                     });
                     break;
@@ -686,9 +816,9 @@ namespace Pico.Platform
                 case MessageType.Leaderboard_GetNextEntries:
                 case MessageType.Leaderboard_GetPreviousEntries:
                 {
-                    msg = new Message<LeaderboardEntryList>(msgPointer, c_message =>
+                    msg = new Message<LeaderboardEntryList>(msgPointer, ptr =>
                     {
-                        var obj = CLIB.ppf_Message_GetLeaderboardEntryArray(c_message);
+                        var obj = CLIB.ppf_Message_GetLeaderboardEntryArray(ptr);
                         return new LeaderboardEntryList(obj);
                     });
                     break;
@@ -696,9 +826,9 @@ namespace Pico.Platform
                 case MessageType.Leaderboard_WriteEntry:
                 case MessageType.Leaderboard_WriteEntryWithSupplementaryMetric:
                 {
-                    msg = new Message<bool>(msgPointer, c_message =>
+                    msg = new Message<bool>(msgPointer, ptr =>
                     {
-                        var obj = CLIB.ppf_Message_GetLeaderboardUpdateStatus(c_message);
+                        var obj = CLIB.ppf_Message_GetLeaderboardUpdateStatus(ptr);
                         return CLIB.ppf_LeaderboardUpdateStatus_GetDidUpdate(obj);
                     });
                     break;
@@ -707,9 +837,9 @@ namespace Pico.Platform
                 case MessageType.Achievements_GetAllDefinitions:
                 case MessageType.Achievements_GetDefinitionsByName:
                 case MessageType.Achievements_GetNextAchievementDefinitionArrayPage:
-                    msg = new Message<AchievementDefinitionList>(msgPointer, c_message =>
+                    msg = new Message<AchievementDefinitionList>(msgPointer, ptr =>
                     {
-                        var obj = CLIB.ppf_Message_GetAchievementDefinitionArray(c_message);
+                        var obj = CLIB.ppf_Message_GetAchievementDefinitionArray(ptr);
                         return new AchievementDefinitionList(obj);
                     });
                     break;
@@ -717,9 +847,9 @@ namespace Pico.Platform
                 case MessageType.Achievements_GetAllProgress:
                 case MessageType.Achievements_GetNextAchievementProgressArrayPage:
                 case MessageType.Achievements_GetProgressByName:
-                    msg = new Message<AchievementProgressList>(msgPointer, c_message =>
+                    msg = new Message<AchievementProgressList>(msgPointer, ptr =>
                     {
-                        var obj = CLIB.ppf_Message_GetAchievementProgressArray(c_message);
+                        var obj = CLIB.ppf_Message_GetAchievementProgressArray(ptr);
                         return new AchievementProgressList(obj);
                     });
                     break;
@@ -727,9 +857,9 @@ namespace Pico.Platform
                 case MessageType.Achievements_AddCount:
                 case MessageType.Achievements_AddFields:
                 case MessageType.Achievements_Unlock:
-                    msg = new Message<AchievementUpdate>(msgPointer, c_message =>
+                    msg = new Message<AchievementUpdate>(msgPointer, ptr =>
                     {
-                        var obj = CLIB.ppf_Message_GetAchievementUpdate(c_message);
+                        var obj = CLIB.ppf_Message_GetAchievementUpdate(ptr);
                         return new AchievementUpdate(obj);
                     });
                     break;

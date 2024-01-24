@@ -32,10 +32,6 @@ namespace Unity.XR.PXR.Editor
 
         public bool toggleBuildTarget = true;
         public bool toggleOrientation = true;
-        public bool toggleSetAppID = true;
-        public static bool appIDCheck = false;
-        private bool appIdShowError = false;
-        public static string AppID = "";
         GUIStyle styleApply;
 
         static string[] strWindowName = { "PXR SDK Setting", "PXR SDK 设置" };
@@ -48,28 +44,17 @@ namespace Unity.XR.PXR.Editor
 
         string[] strInfo1Text =
         {
-        "1 Support Unity Version: Unity2020.3.19 and above",
-        "1 支持Unity版本：Unity2020.3.19及以上版本"
+        "1 Support Unity Version: Unity2020.3.21 and above",
+        "1 支持Unity版本：Unity2020.3.21及以上版本"
     };
         string[] strInfo2Text =
         {
         "2 Player Setting: " + "  Default Orientation setting Landscape Left",
         "2 Player Setting: " + "  Default Orientation setting Landscape Left"
     };
-        private string[] strInfo3Text =
-        {
-        "3 EntitlementCheck is highly recommended in order to protect the copyright of an app. To enable it upon app start-up,  \n" +
-          "    go to \"Menu/PXR_SDK/Platform Settings\" and enter your APPID." ,
-        "3 强烈推荐启用应用版权保护，可在\"Menu/PXR_SDK/PlatformSettings\" 配置面板中，勾选“Start-time Entitlement Check”并填入正确的APPID进行开启。\n"
-    };
-        private string[] strInfo4Text =
-    {
-        "4 If you need to use the relevant functions of the Platform SDK, APPID is required,  \n" +
-          "    go to \"Menu/PXR_SDK/Platform Settings\" and enter your APPID." ,
-        "4 如需使用PlatformSDK相关功能，需填写APPID，可在\"Menu/PXR_SDK/PlatformSettings\" 配置面板中，填写APPID。\n"
-    };
-        string[] strInfo5Text = { "5 Get the lastest version of SDK:", "5 获取最新版本的SDK:" };
-        string[] strInfoURL = { "http://us-dev.picovr.com/sdk", "http://dev.picovr.com/sdk" };
+    
+        string[] strInfo5Text = { "3 Get the lastest version of SDK:", "3 获取最新版本的SDK:" };
+        string[] strInfoURL = { "https://developer-global.pico-interactive.com/", "https://developer-global.pico-interactive.com/" };
 
 
         string[] strConfigurationText = { "Configuration:", "配置" };
@@ -81,29 +66,6 @@ namespace Unity.XR.PXR.Editor
         "1 当前:             Build Target = {0}\n" +
         "   推荐:             Build Target = {1}\n"
     };
-        private string[] quizHova =
-        {
-        "If selected, you will need to enter the APPID that is obtained from PICO Developer Platform after uploading the app for an entitlement check upon the app launch.",
-        "如果勾选版权保护选项，并且填入正确的APPID，应用启动时会进行版权验证。可通过开发者平台获取APPID。"
-    };
-
-        private string[] strConfiguration2Text =
-        {
-        "\n2 User Entitlement Check [?]\n",
-        "\n2 启动应用程序时进行授权检查[?]\n"
-    };
-
-        string strConfiguration2TextAppID = "   App ID ";
-
-        private string[] quizYes =
-        {
-        "The APPID is required to run an Entitlement Check. Create / Find your APPID Here:",
-        "应用版权保护要求填入正确的APPID，可通过网址创建或查看你的APPID：",
-        "If you do not need user Entitlement Check, please uncheck it.",
-        "如果不需要应用版权保护，请勿勾选"
-    };
-
-        private string getAppIDWebSite = "https://developer.pico-interactive.com/developer/overview";
 
         string[] strConfiguration3Text =
         {
@@ -124,26 +86,17 @@ namespace Unity.XR.PXR.Editor
         static void Init()
         {
             IsIgnoreWindow();
-            appIDCheck = IsAppIDChecked();
-            if (appIDCheck)
-            {
-                AppID = PXR_PlatformSetting.Instance.appID;
-            }
+
             ShowSettingWindow();
         }
 
         static void Update()
         {
-            appIDCheck = IsAppIDChecked();
-            if (appIDCheck)
-            {
-                AppID = PXR_PlatformSetting.Instance.appID;
-            }
-
             bool allApplied = IsAllApplied();
             bool showWindow = !allApplied;
 
-            if (IsIgnoreWindow())
+            bool isIgnoreWindow = IsIgnoreWindow();
+            if (isIgnoreWindow)
             {
                 showWindow = false;
             }
@@ -182,17 +135,6 @@ namespace Unity.XR.PXR.Editor
             PXR_ProjectSetting.GetProjectConfig();
         }
 
-        public static bool IsAppIDChecked()
-        {
-            string path = PXR_SDKSettingEditor.assetPath + typeof(PXR_SDKSettingAsset).ToString() + ".asset";
-            if (File.Exists(path))
-            {
-                PXR_SDKSettingAsset asset = AssetDatabase.LoadAssetAtPath<PXR_SDKSettingAsset>(path);
-                return asset.appIDChecked && PXR_PlatformSetting.Instance.startTimeEntitlementCheck && PXR_PlatformSetting.Instance.appID != null;
-            }
-            return false;
-        }
-
         static void ShowSettingWindow()
         {
             if (window != null)
@@ -226,8 +168,6 @@ namespace Unity.XR.PXR.Editor
             GUILayout.Label(strInformationText[(int)language]);
             GUILayout.Label(strInfo1Text[(int)language]);
             GUILayout.Label(strInfo2Text[(int)language]);
-            GUILayout.Label(strInfo3Text[(int)language]);
-            GUILayout.Label(strInfo4Text[(int)language]);
             GUILayout.Label(strInfo5Text[(int)language]);
             string strURL = strInfoURL[(int)language];
             GUIStyle style = new GUIStyle();
@@ -243,10 +183,7 @@ namespace Unity.XR.PXR.Editor
 
             string strinfo1 = string.Format(strConfiguration1Text[(int)language], EditorUserBuildSettings.activeBuildTarget, recommendedBuildTarget);
             EditorConfigurations(strinfo1, EditorUserBuildSettings.activeBuildTarget == recommendedBuildTarget, ref toggleBuildTarget);
-
-            string strinfo2 = strConfiguration2Text[(int)language];
-            ConfigEntitlementCheck(strinfo2, appIDCheck && AppID != "", ref toggleSetAppID);
-
+            
             string strinfo3 = string.Format(strConfiguration3Text[(int)language],
                 PlayerSettings.defaultInterfaceOrientation, recommendedOrientation);
             EditorConfigurations(strinfo3, PlayerSettings.defaultInterfaceOrientation == recommendedOrientation,
@@ -268,11 +205,6 @@ namespace Unity.XR.PXR.Editor
             }
             if (GUILayout.Button(strBtnApply[(int)language], styleApply, GUILayout.Width(100), GUILayout.Height(30)))
             {
-                appIdShowError = false;
-                if (AppID == "")
-                {
-                    appIdShowError = true;
-                }
                 EditorApplication.delayCall += OnClickApply;
             }
             styleApply = null;
@@ -287,24 +219,6 @@ namespace Unity.XR.PXR.Editor
 
         public void OnClickApply()
         {
-            if (toggleSetAppID && AppID != "")
-            {
-                PXR_PlatformSetting.Instance.appID = AppID;
-                PXR_PlatformSetting.Instance.startTimeEntitlementCheck = true;
-                appIDCheck = true;
-                appIdShowError = !appIDCheck;
-                SaveAssetAppIDChecked();
-            }
-            if (toggleSetAppID && AppID == "")
-            {
-                PXR_PlatformSetting.Instance.startTimeEntitlementCheck = false;
-            }
-            if (!toggleSetAppID)
-            {
-                PXR_PlatformSetting.Instance.appID = AppID;
-                PXR_PlatformSetting.Instance.startTimeEntitlementCheck = toggleSetAppID;
-            }
-
             if (toggleOrientation && PlayerSettings.defaultInterfaceOrientation != recommendedOrientation)
             {
                 PlayerSettings.defaultInterfaceOrientation = recommendedOrientation;
@@ -339,10 +253,6 @@ namespace Unity.XR.PXR.Editor
             }
             else
             {
-                if (AppID == "")
-                {
-                    PXR_PlatformSetting.Instance.startTimeEntitlementCheck = false;
-                }
                 PXR_SettingMessageBoxEditor.Init(language);
             }
             PXR_ProjectSetting.GetProjectConfig();
@@ -350,7 +260,7 @@ namespace Unity.XR.PXR.Editor
 
         public static bool IsAllApplied()
         {
-            bool notApplied = (EditorUserBuildSettings.activeBuildTarget != recommendedBuildTarget) || !appIDCheck ||
+            bool notApplied = (EditorUserBuildSettings.activeBuildTarget != recommendedBuildTarget) ||
                             (PlayerSettings.defaultInterfaceOrientation != recommendedOrientation);
 
             if (!notApplied)
@@ -376,92 +286,6 @@ namespace Unity.XR.PXR.Editor
                 toggle = EditorGUILayout.Toggle(toggle);
             }
 
-            EditorGUILayout.EndHorizontal();
-        }
-
-        void ConfigEntitlementCheck(string strConfiguration, bool enable, ref bool toggle)
-        {
-            EditorGUILayout.BeginHorizontal();
-            var startEntitleCheckLabel = new GUIContent(strConfiguration, quizHova[(int)language]);
-            EditorGUILayout.LabelField(startEntitleCheckLabel, GUILayout.Width(500));
-
-            GUIStyle styleApplied = new GUIStyle();
-            styleApplied.normal.textColor = Color.green;
-            if (enable)
-            {
-                GUILayout.Label(strApplied[(int)language], styleApplied);
-            }
-            else
-            {
-                toggle = EditorGUILayout.Toggle(toggle);
-            }
-
-            EditorGUILayout.EndHorizontal();
-            if (toggle != PXR_PlatformSetting.Instance.startTimeEntitlementCheck)
-            {
-                PXR_PlatformSetting.Instance.startTimeEntitlementCheck = toggle;
-            }
-            if (toggle)
-            {
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(strConfiguration2TextAppID, GUILayout.Width(100));
-                if (!appIDCheck)
-                {
-                    APPIDFiledEditorConfigurations();
-                }
-
-                if (AppID != "" && AppID != PXR_PlatformSetting.Instance.appID)
-                {
-                    PXR_PlatformSetting.Instance.appID = AppID;
-                }
-
-                if (toggle != PXR_PlatformSetting.Instance.startTimeEntitlementCheck)
-                {
-                    toggle = true;
-                    PXR_PlatformSetting.Instance.startTimeEntitlementCheck = true;
-                }
-                if (AppID != "" && appIDCheck)
-                {
-                    GUILayout.Label(AppID);
-                }
-                EditorGUILayout.EndHorizontal();
-
-                if (appIdShowError)
-                {
-
-                    EditorGUILayout.BeginHorizontal(GUILayout.Width(500));
-                    EditorGUILayout.HelpBox("APPID is required for Entitlement Check", MessageType.Error, true);
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Label(quizYes[(int)language], GUILayout.Width(500));
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-                    GUIStyle style = new GUIStyle();
-                    style.normal.textColor = new Color(0, 122f / 255f, 204f / 255f);
-                    if (GUILayout.Button("    " + getAppIDWebSite, style, GUILayout.Width(300)))
-                    {
-                        Application.OpenURL(getAppIDWebSite);
-                    }
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Label(quizYes[(int)language + 2], GUILayout.Width(500));
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-
-                    EditorGUILayout.EndHorizontal();
-                }
-                else
-                {
-
-                    Repaint();
-                }
-            }
-        }
-
-        void APPIDFiledEditorConfigurations()
-        {
-            EditorGUILayout.BeginHorizontal();
-            AppID = EditorGUILayout.TextField(AppID, GUILayout.Width(350.0f));
             EditorGUILayout.EndHorizontal();
         }
 
@@ -518,14 +342,6 @@ namespace Unity.XR.PXR.Editor
             EditorUtility.SetDirty(asset);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();//must Refresh
-        }
-
-        void OnDestroy()
-        {
-            if (AppID == "")
-            {
-                PXR_PlatformSetting.Instance.startTimeEntitlementCheck = false;
-            }
         }
     }
 
@@ -597,10 +413,6 @@ namespace Unity.XR.PXR.Editor
 
         void OnClickIgnore()
         {
-            if (PXR_SDKSettingEditor.AppID == "")
-            {
-                PXR_PlatformSetting.Instance.startTimeEntitlementCheck = false;
-            }
             SaveAssetDataBase();
             PXR_SDKSettingEditor.window.Close();
             Close();
@@ -628,46 +440,10 @@ namespace Unity.XR.PXR.Editor
 
         void OnClickCancel()
         {
-            if (PXR_SDKSettingEditor.AppID == "")
-            {
-                PXR_PlatformSetting.Instance.startTimeEntitlementCheck = false;
-            }
             Close();
         }
     }
 
-    [InitializeOnLoad]
-    public class PXR_SDKQualitySetting
-    {
-        [InitializeOnLoadMethod]
-        static void UnitySDKQualitySettings()
-        {
-            PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
-        }
-    }
-
-    [InitializeOnLoad]
-    public class PXR_SDKBuildSetting : IActiveBuildTargetChanged
-    {
-        void Start()
-        {
-            PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
-        }
-        public int callbackOrder { get { return 0; } }
-        public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
-        {
-            OnChangePlatform();
-        }
-
-        static void OnChangePlatform()
-        {
-            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
-            {
-
-            }
-        }
-
-    }
     public static class ScriptableObjectUtility
     {
         public static void CreateAsset<T>(T classdata, string path) where T : ScriptableObject

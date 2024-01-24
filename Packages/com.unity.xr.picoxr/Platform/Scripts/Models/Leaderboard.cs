@@ -14,19 +14,17 @@ using System;
 
 namespace Pico.Platform.Models
 {
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Leaderboard info.</summary>
     public class Leaderboard
     {
-        /** @brief The unique identifier of the leaderboard, which is configured on the PICO Developer Platform. */
+        /// The unique identifier of the leaderboard, which is configured on the PICO Developer Platform. 
         public readonly string ApiName;
 
-        /** @brief Leaderboard ID. */
+        /// Leaderboard ID. 
         public readonly ulong ID;
 
-        /** @brief Associate a destination to the leaderboard so that users can be directed to a specific location in the app.
+        /** Associate a destination to the leaderboard so that users can be directed to a specific location in the app.
          * If the leaderboard for that challenge is associated with a destination, the app will be launched, and the user will be directed to the destination.
          * If the leaderboard for that challenge is not associated with any destination, the app will be launched, and the user will be directed to the Home page.
          */
@@ -44,11 +42,15 @@ namespace Pico.Platform.Models
         }
     }
 
-    /// <summary>Leaderboard list.</summary>
+    /// <summary>Leaderboard list. Each element is \ref Leaderboard.</summary>
     public class LeaderboardList : MessageArray<Leaderboard>
     {
+        /// The total number of leaderboards in the list. 
+        public readonly ulong TotalCount;
         public LeaderboardList(IntPtr a)
+        
         {
+            TotalCount = CLIB.ppf_LeaderboardArray_GetTotalCount(a);
             NextPageParam = CLIB.ppf_LeaderboardArray_HasNextPage(a) ? "true" : string.Empty;
             var count = (int) CLIB.ppf_LeaderboardArray_GetSize(a);
             this.Capacity = count;
@@ -58,15 +60,13 @@ namespace Pico.Platform.Models
             }
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Supplementary metric.</summary>
     public class SupplementaryMetric
     {
-        /** @brief The ID of the supplementary metric. */
+        /// The ID of the supplementary metric. 
         public readonly UInt64 ID;
-        /** @brief The value of the supplementary metric. */
+        /// The value of the supplementary metric. 
         public readonly long Metric;
 
 
@@ -76,27 +76,25 @@ namespace Pico.Platform.Models
             Metric = CLIB.ppf_SupplementaryMetric_GetMetric(o);
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Leaderboard entry info.</summary> 
     public class LeaderboardEntry
     {
-        /** @brief The entry's display score. */
+        /// The entry's display score. 
         public readonly string DisplayScore;
-        /** @brief Additional info, no more than 2KB. */
+        /// Additional info, no more than 2KB. 
         public readonly byte[] ExtraData;
-        /** @brief Entry ID. */
+        /// Entry ID. 
         public readonly UInt64 ID;
-        /** @brief The entry's ranking on the leaderboard. For example, returns `1` for top1.*/
+        /// The entry's ranking on the leaderboard. For example, returns `1` for top1.
         public readonly int Rank;
-        /** @brief The score used to rank the entry. */
+        /// The score used to rank the entry. 
         public readonly long Score;
-        /** @brief The supplementary metric used for tiebreakers. This field can be null. Need to check whether it is null before use. */
+        /// The supplementary metric used for tiebreakers. This field can be null. Need to check whether it is null before use. 
         public readonly SupplementaryMetric SupplementaryMetricOptional;
-        /** @brief The time when the entry was written to the leaderboard. */
+        /// The time when the entry was written to the leaderboard. 
         public readonly DateTime Timestamp;
-        /** @brief The user the entry belongs to. */
+        /// The user the entry belongs to. 
         public readonly User User;
 
 
@@ -125,15 +123,16 @@ namespace Pico.Platform.Models
         }
     }
 
-    /// <summary>Leaderboard entry list.</summary>
+    /// <summary>Leaderboard entry list. Each element is \ref LeaderboardEntry.</summary>
     public class LeaderboardEntryList : MessageArray<LeaderboardEntry>
     {
-        /** @brief The total number of entries on the leaderboard. */
+        /// The total number of entries on the leaderboard. 
         public readonly ulong TotalCount;
 
         public LeaderboardEntryList(IntPtr a)
         {
             NextPageParam = CLIB.ppf_LeaderboardEntryArray_HasNextPage(a) ? "true" : string.Empty;
+            PreviousPageParam = CLIB.ppf_LeaderboardEntryArray_HasPreviousPage(a) ? "true" : string.Empty;
             var count = (int) CLIB.ppf_LeaderboardEntryArray_GetSize(a); 
             this.Capacity = count;
             for (uint i = 0; i < count; i++)

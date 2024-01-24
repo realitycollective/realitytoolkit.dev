@@ -30,6 +30,10 @@ using Unity.XR.PXR.Input;
 using UnityEditor;
 #endif
 
+#if XR_HANDS
+using UnityEngine.XR.Hands;
+#endif
+
 
 namespace Unity.XR.PXR
 {
@@ -59,7 +63,9 @@ namespace Unity.XR.PXR
     {
         private static List<XRDisplaySubsystemDescriptor> displaySubsystemDescriptors = new List<XRDisplaySubsystemDescriptor>();
         private static List<XRInputSubsystemDescriptor> inputSubsystemDescriptors = new List<XRInputSubsystemDescriptor>();
-
+#if XR_HANDS
+        private static List<XRHandSubsystemDescriptor> handSubsystemDescriptors = new List<XRHandSubsystemDescriptor>();
+#endif
         public delegate Quaternion ConvertRotationWith2VectorDelegate(Vector3 from, Vector3 to);
 
         public XRDisplaySubsystem displaySubsystem
@@ -94,18 +100,30 @@ namespace Unity.XR.PXR
                     useContentProtect = Convert.ToUInt16(PXR_ProjectSetting.GetProjectConfig().useContentProtect),
                     systemDisplayFrequency = settings.GetSystemDisplayFrequency(),
                     optimizeBufferDiscards = settings.GetOptimizeBufferDiscards(),
-                    enableAppSpaceWarp = Convert.ToUInt16(settings.enableAppSpaceWarp)
+                    enableAppSpaceWarp = Convert.ToUInt16(settings.enableAppSpaceWarp),                    
+                    enableSubsampled = Convert.ToUInt16(PXR_ProjectSetting.GetProjectConfig().enableSubsampled),
+                    lateLatchingDebug = Convert.ToUInt16(PXR_ProjectSetting.GetProjectConfig().latelatchingDebug),
+                    enableStageMode = Convert.ToUInt16(PXR_ProjectSetting.GetProjectConfig().stageMode)
                 };
 
                 PXR_Plugin.System.UPxr_Construct(ConvertRotationWith2Vector);
                 PXR_Plugin.System.UPxr_SetInputDeviceChangedCallBack(InputDeviceChangedFunction);
                 PXR_Plugin.System.UPxr_SetSeethroughStateChangedCallBack(SeethroughStateChangedFunction);
+                PXR_Plugin.System.UPxr_SetFitnessBandNumberOfConnectionsCallBack(FitnessBandNumberOfConnectionsFunction);
+                PXR_Plugin.System.UPxr_SetFitnessBandElectricQuantityCallBack(FitnessBandElectricQuantityFunction);
+                PXR_Plugin.System.UPxr_SetFitnessBandAbnormalCalibrationDataCallBack(FitnessBandAbnormalCalibrationDataFunction);
+                PXR_Plugin.System.UPxr_SetLoglevelChangedCallBack(LoglevelChangedFunction);
                 PXR_Plugin.System.UPxr_SetUserDefinedSettings(userDefinedSettings);
+
             }
 #endif
 
             CreateSubsystem<XRDisplaySubsystemDescriptor, XRDisplaySubsystem>(displaySubsystemDescriptors, "PICO Display");
             CreateSubsystem<XRInputSubsystemDescriptor, XRInputSubsystem>(inputSubsystemDescriptors, "PICO Input");
+
+#if XR_HANDS
+            CreateSubsystem<XRHandSubsystemDescriptor, XRHandSubsystem>(handSubsystemDescriptors, "PICO Hands");
+#endif
 
             if (displaySubsystem == null && inputSubsystem == null)
             {
@@ -123,7 +141,15 @@ namespace Unity.XR.PXR
             {
                 PXR_Plugin.System.UPxr_InitializeFocusCallback();
             }
- 
+
+#if XR_HANDS
+            var handSubSystem = GetLoadedSubsystem<XRHandSubsystem>();
+            if (handSubSystem == null)
+            {
+                Debug.LogError("PXRLog Failed to load XRHandSubsystem.");
+            }
+#endif
+
             return displaySubsystem != null;
         }
 
@@ -131,6 +157,10 @@ namespace Unity.XR.PXR
         {
             StartSubsystem<XRDisplaySubsystem>();
             StartSubsystem<XRInputSubsystem>();
+
+#if XR_HANDS
+            StartSubsystem<XRHandSubsystem>();
+#endif
 
             return true;
         }
@@ -140,6 +170,10 @@ namespace Unity.XR.PXR
             StopSubsystem<XRDisplaySubsystem>();
             StopSubsystem<XRInputSubsystem>();
 
+#if XR_HANDS
+            StopSubsystem<XRHandSubsystem>();
+#endif
+
             return true;
         }
 
@@ -147,6 +181,10 @@ namespace Unity.XR.PXR
         {
             DestroySubsystem<XRDisplaySubsystem>();
             DestroySubsystem<XRInputSubsystem>();
+
+#if XR_HANDS
+            DestroySubsystem<XRHandSubsystem>();
+#endif
 
             PXR_Plugin.System.UPxr_DeinitializeFocusCallback();
             return true;
@@ -176,6 +214,42 @@ namespace Unity.XR.PXR
             }
         }
 
+        [MonoPInvokeCallback(typeof(FitnessBandNumberOfConnectionsCallBack))]
+        static void FitnessBandNumberOfConnectionsFunction(int state, int value)
+        {
+            if (PXR_Plugin.System.FitnessBandNumberOfConnections != null)
+            {
+                PXR_Plugin.System.FitnessBandNumberOfConnections(state, value);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(FitnessBandElectricQuantityCallBack))]
+        static void FitnessBandElectricQuantityFunction(int trackerID, int battery)
+        {
+            if (PXR_Plugin.System.FitnessBandElectricQuantity != null)
+            {
+                PXR_Plugin.System.FitnessBandElectricQuantity(trackerID, battery);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(FitnessBandAbnormalCalibrationDataCallBack))]
+        static void FitnessBandAbnormalCalibrationDataFunction(int state, int value)
+        {
+            if (PXR_Plugin.System.FitnessBandAbnormalCalibrationData != null)
+            {
+                PXR_Plugin.System.FitnessBandAbnormalCalibrationData(state, value);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(LoglevelChangedCallBack))]
+        static void LoglevelChangedFunction(int value)
+        {
+            if (PXR_Plugin.System.LoglevelChangedChanged != null)
+            {
+                PXR_Plugin.System.LoglevelChangedChanged(value);
+            }
+        }
+
         public PXR_Settings GetSettings()
         {
             PXR_Settings settings = null;
@@ -200,7 +274,7 @@ namespace Unity.XR.PXR
         static void RuntimeLoadPicoPlugin()
         {
             PXR_Plugin.System.UPxr_LoadPICOPlugin();
-            string version = "UnityXR_" + PXR_Plugin.System.UPxr_GetSDKVersion();
+            string version = "UnityXR_" + PXR_Plugin.System.UPxr_GetSDKVersion() + "_" + Application.unityVersion;
             PXR_Plugin.System.UPxr_SetConfigString( ConfigType.EngineVersion, version );
         }
 #endif

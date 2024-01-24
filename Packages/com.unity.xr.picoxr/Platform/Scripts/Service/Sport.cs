@@ -19,7 +19,7 @@ namespace Pico.Platform
     /**
      * \ingroup Platform
      *
-     * Exercise Data Authorization provides multiple APIs for you to access
+     * SportService provides multiple APIs for you to access
      * users' exercise data from the built-in PICO app — PICO Fitness.
 
      * When users are working out with PICO VR headsets, the app records
@@ -35,7 +35,7 @@ namespace Pico.Platform
         /// <summary>
         /// Gets a user's basic information and exercise plan.
         /// </summary>
-        /// <returns>The `SportUserInfo` class containing the following:
+        /// <returns>The \ref Pico.Platform.Models.SportUserInfo class containing the following:
         /// * `Gender`
         /// * `Birthday`
         /// * `Stature`: The natural height in centimeters.
@@ -62,7 +62,7 @@ namespace Pico.Platform
         /// </summary>
         /// <param name="beginTime">A DateTime struct defining the begin time of the period. The begin time should be no earlier than 90 days before the current time.</param>
         /// <param name="endTime">A DateTime struct defining the end time of the period, .</param>
-        /// <returns>The `SportDailySummaryList` class containing the exercise data generated on each day within the specified period, including:
+        /// <returns>The \ref Pico.Platform.Models.SportDailySummaryList class containing the exercise data generated on each day within the specified period, including:
         /// * `Id`: Summary ID.
         /// * `Date`: The date when the data was generated.
         /// * `DurationInSeconds`: The actual daily exercise duration in seconds.
@@ -82,11 +82,12 @@ namespace Pico.Platform
         }
 
         /// <summary>
-        /// Get a summary of the user's exercise data for a specified period within the recent 24 hours. The period should not exceed 24 hours.
+        /// Get a summary of the user's exercise data for a specified period within
+        /// the recent 24 hours. The period should not exceed 24 hours.
         /// </summary>
         /// <param name="beginTime">A DateTime struct defining the begin time of the period. The begin time should be no earlier than 24 hours before the current time.</param>
         /// <param name="endTime">A DateTime struct defining the end time of the period.</param>
-        /// <returns>The `SportSummary` class containing the following:
+        /// <returns>The \ref Pico.Platform.Models.SportSummary class containing the following:
         /// * `DurationInSeconds`: The actual exercise duration.
         /// * `Calorie`: The actual calorie burned.
         /// * `StartTime`: The start time you defined.

@@ -15,37 +15,40 @@ using System.Collections.Generic;
 
 namespace Pico.Platform.Models
 {
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>
     /// Room info.
     /// </summary>
     public class Room
     {
-        /** @brief The datastore that stores a room's metadata. The maximum datastore key length is 32 bytes and the maximum datastore value length is 64 bytes. */
+        /// The datastore that stores a room's metadata. The maximum datastore key length is 32 bytes and the maximum datastore value length is 64 bytes. 
         public readonly Dictionary<string, string> DataStore;
-        /** @brief Room description. The maximum length is 128 bytes. */
+        /// Room description. The maximum length is 128 bytes. 
         public readonly string Description;
-        /** @brief Room ID. */
+        /// Room ID. 
         public readonly UInt64 RoomId;
-        /** @brief Whether the room is locked. */
+        /// Whether the room is locked. 
         public readonly bool IsMembershipLocked;
-        /** @brief Room's join policy. */
+        /// Room's join policy. 
         public readonly RoomJoinPolicy RoomJoinPolicy;
-        /** @brief Room's joinability. */
+        /// Room's joinability. 
         public readonly RoomJoinability RoomJoinability;
-        /** @brief The maximum number of users allowed to join a room, which is `100`. */
+        /// The maximum number of users allowed to join a room, which is `100`. 
         public readonly uint MaxUsers;
-        /** @brief Room owner. This field can be null. Need to check whether it is null before use. */
+        /// Room owner. This field can be null. Need to check whether it is null before use. 
         public readonly User OwnerOptional;
-        /** @brief Room type. */
+        /// Room type. 
         public readonly RoomType RoomType;
-        /** @brief Room members. This field can be null. Need to check whether it is null before use. */
+        /// Room members. This field can be null. Need to check whether it is null before use. 
         public readonly UserList UsersOptional;
+        /// Room name. 
+        public readonly string Name;
+        /// The Num of the users in room.
+        public readonly uint PlayerNumber;
 
         public Room(IntPtr o)
         {
+            PlayerNumber = CLIB.ppf_Room_GetPlayerNumber(o);
             DataStore = CLIB.DataStoreFromNative(CLIB.ppf_Room_GetDataStore(o));
             Description = CLIB.ppf_Room_GetDescription(o);
             RoomId = CLIB.ppf_Room_GetID(o);
@@ -53,6 +56,7 @@ namespace Pico.Platform.Models
             RoomJoinPolicy = (RoomJoinPolicy) CLIB.ppf_Room_GetJoinPolicy(o);
             RoomJoinability = (RoomJoinability) CLIB.ppf_Room_GetJoinability(o);
             MaxUsers = CLIB.ppf_Room_GetMaxUsers(o);
+            Name = CLIB.ppf_Room_GetName(o);
             RoomType = (RoomType) CLIB.ppf_Room_GetType(o);
             {
                 var ptr = CLIB.ppf_Room_GetOwner(o);
@@ -80,16 +84,19 @@ namespace Pico.Platform.Models
         }
     }
 
-    /// <summary>Room list info.</summary>
+    /// <summary>Room list info. Each element is \ref Room.</summary>
     public class RoomList : MessageArray<Room>
     {
-        /** @brief The current page idex from which the list begins. */
+        /// The total number of rooms. 
+        public readonly int TotalCount;
+        /// The current page idex from which the list begins. 
         public int CurIndex;
-        /** @brief The number of rooms given on each page. */
+        /// The number of rooms given on each page. 
         public int PageSize;
 
         public RoomList(IntPtr a)
         {
+            TotalCount = CLIB.ppf_RoomArray_GetTotalCount(a);
             CurIndex = CLIB.ppf_RoomArray_GetPageIndex(a);
             PageSize = CLIB.ppf_RoomArray_GetPageSize(a);
             NextPageParam = CLIB.ppf_RoomArray_HasNextPage(a) ? "true" : string.Empty;

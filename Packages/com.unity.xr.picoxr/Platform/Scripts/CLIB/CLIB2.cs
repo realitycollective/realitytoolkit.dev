@@ -103,26 +103,16 @@ namespace Pico.Platform
             return map;
         }
 
-        [DllImport("pxrplatformloader", EntryPoint = "ppf_PcInitWrapper", CallingConvention = CallingConvention.Cdecl)]
-        public static extern PlatformInitializeResult ppf_PcInitWrapper([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string appId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string configJson, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string logDirectory);
-
-        [DllImport("pxrplatformloader", EntryPoint = "ppf_PcInitAsynchronousWrapper", CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong ppf_PcInitAsynchronousWrapper([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string appId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string configJson, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string logDirectory);
-
-
-        [DllImport("pxrplatformloader", EntryPoint = "ppf_AdbLoaderInit", CallingConvention = CallingConvention.Cdecl)]
-        public static extern PlatformInitializeResult ppf_AdbLoaderInit([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string appId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string configJson);
-
-        [DllImport("pxrplatformloader", EntryPoint = "ppf_AdbLoaderInitAsynchronous", CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong ppf_AdbLoaderInitAsynchronous([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string appId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string configJson);
-
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void LogFunction(string logText, int level);
+        public delegate int RtcProcessAudioFrameFunction(IntPtr audioFrameHandle);
 
-        [DllImport("pxrplatformloader", EntryPoint = "ppf_SetUnityLog", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ppf_SetUnityLog(LogFunction logFun);
+        [DllImport("pxrplatformloader", EntryPoint = "ppf_Rtc_RegisterLocalAudioProcessor", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ppf_Rtc_RegisterLocalAudioProcessor(RtcProcessAudioFrameFunction rtcProcessAudioFrameFunction, RtcAudioChannel channel, RtcAudioSampleRate sampleRate);
 
-        [DllImport("pxrplatformloader", EntryPoint = "ppf_GetLoaderVersion", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ppf_GetLoaderVersion();
+        [DllImport("pxrplatformloader", EntryPoint = "ppf_InitializeAndroid", CallingConvention = CallingConvention.Cdecl)]
+        public static extern PlatformInitializeResult ppf_InitializeAndroid(string appId, IntPtr activityObj, IntPtr env);
+
+        [DllImport("pxrplatformloader", EntryPoint = "ppf_InitializeAndroidAsynchronous", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong ppf_InitializeAndroidAsynchronous(string appId, IntPtr activityObj, IntPtr env);
     }
 }

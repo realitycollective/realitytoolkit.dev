@@ -14,22 +14,20 @@ using System;
 
 namespace Pico.Platform.Models
 {
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>
     /// Destination is a location in the app.
     /// You can configure destinations for your app on the PICO Developer Platform.
     /// </summary>
     public class Destination
     {
-        /** @brief The destination's API name. */
+        /// The destination's API name. 
         public readonly string ApiName;
 
-        /** @brief The destination's deeplink message. */
+        /// The destination's deeplink message. 
         public readonly string DeeplinkMessage;
 
-        /** @brief The destination's display name.*/
+        /// The destination's display name.
         public readonly string DisplayName;
 
         public Destination(IntPtr o)
@@ -40,7 +38,9 @@ namespace Pico.Platform.Models
         }
     }
 
-
+    /// <summary>
+    /// Each element is \ref Destination
+    /// </summary>
     public class DestinationList : MessageArray<Destination>
     {
         public DestinationList(IntPtr a)
@@ -56,30 +56,28 @@ namespace Pico.Platform.Models
         }
     }
 
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>
     /// App's invitation info.
     /// </summary>
     public class ApplicationInvite
     {
-        /** @brief The destination where the user is directed to after accepting the invitation. */
+        /// The destination where the user is directed to after accepting the invitation. 
         public readonly Destination Destination;
 
-        /** @brief Invited users. */
+        /// Invited users. 
         public readonly User Recipient;
 
-        /** @brief Invitation ID. */
+        /// Invitation ID. 
         public readonly UInt64 ID;
 
-        /** @brief If the user clicks the invitation message, this field will be `true`. */
+        /// If the user clicks the invitation message, this field will be `true`. 
         public readonly bool IsActive;
 
-        /** @brief The lobby session ID that identifies a group or team. */
+        /// The lobby session ID that identifies a group or team. 
         public readonly string LobbySessionId;
 
-        /** @brief The match session ID that identifies a competition. */
+        /// The match session ID that identifies a competition. 
         public readonly string MatchSessionId;
 
         public ApplicationInvite(IntPtr o)
@@ -93,7 +91,9 @@ namespace Pico.Platform.Models
         }
     }
 
-
+    /// <summary>
+    /// Each element is \ref ApplicationInvite.
+    /// </summary>
     public class ApplicationInviteList : MessageArray<ApplicationInvite>
     {
         public ApplicationInviteList(IntPtr a)
@@ -109,11 +109,9 @@ namespace Pico.Platform.Models
         }
     }
 
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>
-    /// The result returned after calling /ref SendInvites.
+    /// The result returned after calling \ref PresenceService.SendInvites.
     /// </summary>
     public class SendInvitesResult
     {
@@ -125,26 +123,25 @@ namespace Pico.Platform.Models
         }
     }
 
-    /// \ingroup Models
+
     /// <summary>
-    /// When user click the invitation message, the app will be launched and you
-    /// will receive a message with presence infos.
+    /// When user click the invitation message, the app will be launched and you will receive a message with presence info.
     /// </summary>
     public class PresenceJoinIntent
     {
-        /** @brief The deeplink message of the destination.*/
+        /// The deeplink message of the destination.
         public readonly string DeeplinkMessage;
 
-        /** @brief The destination api name of the destination.*/
+        /// The destination api name of the destination.
         public readonly string DestinationApiName;
 
-        /** @brief The lobby session id which is configured by the sender.*/
+        /// The lobby session id which is configured by the sender.
         public readonly string LobbySessionId;
 
-        /** @brief The match session id which is configured by the sender.*/
+        /// The match session id which is configured by the sender.
         public readonly string MatchSessionId;
 
-        /** @brief The extra info of the presence.*/
+        /// The extra info of the presence.
         public readonly string Extra;
 
         public PresenceJoinIntent(IntPtr o)

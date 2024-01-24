@@ -18,61 +18,61 @@ namespace Pico.Platform.Models
     /// <summary>Challenge setting options.</summary>
     public class ChallengeOptions
     {
-        /** @brief For creating challenge options */
+        /// For creating challenge options 
         public ChallengeOptions()
         {
             Handle = CLIB.ppf_ChallengeOptions_Create();
         }
 
-        /** @brief Set the end date. Currently, not used. */
+        /// Set the end date. Currently, not used. 
         public void SetEndDate(DateTime value)
         {
             CLIB.ppf_ChallengeOptions_SetEndDate(Handle, Convert.ToUInt64(TimeUtil.DateTimeToSeconds(value)));
         }
 
-        /** @brief Set whether to get active challenges. */
+        /// Set whether to get active challenges. 
         public void SetIncludeActiveChallenges(bool value)
         {
             CLIB.ppf_ChallengeOptions_SetIncludeActiveChallenges(Handle, value);
         }
 
-        /** @brief Set whether to get future challenges whose start dates are latter than the current time. */
+        /// Set whether to get future challenges whose start dates are latter than the current time. 
         public void SetIncludeFutureChallenges(bool value)
         {
             CLIB.ppf_ChallengeOptions_SetIncludeFutureChallenges(Handle, value);
         }
 
-        /** @brief Set whether to get past challenges whose end dates are earlier than the current time. */
+        /// Set whether to get past challenges whose end dates are earlier than the current time. 
         public void SetIncludePastChallenges(bool value)
         {
             CLIB.ppf_ChallengeOptions_SetIncludePastChallenges(Handle, value);
         }
 
-        /** @brief (Optional) Set the name of the leaderboard that the challenges associated with. */
+        /// (Optional) Set the name of the leaderboard that the challenges associated with. 
         public void SetLeaderboardName(string value)
         {
             CLIB.ppf_ChallengeOptions_SetLeaderboardName(Handle, value);
         }
 
-        /** @brief Set the start date. Currently, not used. */
+        /// Set the start date. Currently, not used. 
         public void SetStartDate(DateTime value)
         {
             CLIB.ppf_ChallengeOptions_SetStartDate(Handle, Convert.ToUInt64(TimeUtil.DateTimeToSeconds(value)));
         }
 
-        /** @brief Set the challenge title. Currently, not used. */
+        /// Set the challenge title. Currently, not used. 
         public void SetTitle(string value)
         {
             CLIB.ppf_ChallengeOptions_SetTitle(Handle, value);
         }
 
-        /** @brief Set the filter for quering specified challenges. */
+        /// Set the filter for quering specified challenges. 
         public void SetViewerFilter(ChallengeViewerFilter value)
         {
             CLIB.ppf_ChallengeOptions_SetViewerFilter(Handle, value);
         }
 
-        /** @brief Set to get the challenges of a specific visibility type. */
+        /// Set to get the challenges of a specific visibility type. 
         public void SetVisibility(ChallengeVisibility value)
         {
             CLIB.ppf_ChallengeOptions_SetVisibility(Handle, value);
@@ -95,37 +95,35 @@ namespace Pico.Platform.Models
             return Handle;
         }
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Challenge info.</summary>
     public class Challenge
     {
-        /** @brief The creator of the challenge. */
+        /// The creator of the challenge. 
         public readonly ChallengeCreationType CreationType;
 
-        /** @brief Challenge ID */
+        /// Challenge ID 
         public readonly UInt64 ID;
 
-        /** @brief Challenge's start date. */
+        /// Challenge's start date. 
         public readonly DateTime StartDate;
 
-        /** @brief Challenge's end date. */
+        /// Challenge's end date. 
         public readonly DateTime EndDate;
 
-        /** @brief Participants of the challenge, which might be null. Should check if it is null before use. */
+        /// Participants of the challenge, which might be null. Should check if it is null before use. 
         public readonly UserList ParticipantsOptional;
 
-        /** @brief Users invited to the challenge, which might be null. Should check if it is null before use. */
+        /// Users invited to the challenge, which might be null. Should check if it is null before use. 
         public readonly UserList InvitedUsersOptional;
 
-        /** @brief The info about the leaderboard that the challenge associated with. */
+        /// The info about the leaderboard that the challenge associated with. 
         public readonly Leaderboard Leaderboard;
 
-        /** @brief Challenge's title. */
+        /// Challenge's title. 
         public readonly string Title;
 
-        /** @brief Challenge's visibility. */
+        /// Challenge's visibility. 
         public readonly ChallengeVisibility Visibility;
 
 
@@ -180,13 +178,14 @@ namespace Pico.Platform.Models
         }
     }
 
-    /// <summary>Challenge list.</summary>
+    /// <summary>Challenge list. Each Element is \ref Challenge.</summary>
     public class ChallengeList : MessageArray<Challenge>
     {
         public ChallengeList(IntPtr a)
         {
             TotalCount = CLIB.ppf_ChallengeArray_GetTotalCount(a);
             NextPageParam = CLIB.ppf_ChallengeArray_HasNextPage(a) ? "true" : string.Empty;
+            PreviousPageParam = CLIB.ppf_ChallengeArray_HasPreviousPage(a) ? "true" : String.Empty;
             int count = (int) CLIB.ppf_ChallengeArray_GetSize(a);
             this.Capacity = count;
             for (uint i = 0; i < count; i++)
@@ -195,34 +194,32 @@ namespace Pico.Platform.Models
             }
         }
 
-        /** @brief The total number of challenges in the list. */
+        /// The total number of challenges in the list. 
         public readonly ulong TotalCount;
     }
-    /**
-     * \ingroup Models
-     */
+
     /// <summary>Challenge entry info.</summary>
     public class ChallengeEntry
     {
-        /** @brief The entry's display score. */
+        /// The entry's display score. 
         public readonly string DisplayScore;
 
-        /** @brief The entry's additional info, no more than 2KB. */
+        /// The entry's additional info, no more than 2KB. 
         public readonly byte[] ExtraData;
 
-        /** @brief The ID of the challenge that the entry belongs to. */
+        /// The ID of the challenge that the entry belongs to. 
         public readonly UInt64 ID;
 
-        /** @brief The rank of the entry. */
+        /// The rank of the entry. 
         public readonly int Rank;
 
-        /** @brief The score of the entry. */
+        /// The score of the entry. 
         public readonly long Score;
 
-        /** @brief The time when the entry was written. */
+        /// The time when the entry was written. 
         public readonly DateTime Timestamp;
 
-        /** @brief The user the entry belongs to. */
+        /// The user the entry belongs to. 
         public readonly User User;
 
 
@@ -248,16 +245,15 @@ namespace Pico.Platform.Models
             User = new User(CLIB.ppf_ChallengeEntry_GetUser(o));
         }
     }
-    /**
-     * \ingroup Models
-     */
-    /// <summary>Challenge entry list.</summary>
+
+    /// <summary>Challenge entry list. Each element is \ref ChallengeEntry.</summary>
     public class ChallengeEntryList : MessageArray<ChallengeEntry>
     {
         public ChallengeEntryList(IntPtr a)
         {
             TotalCount = CLIB.ppf_ChallengeEntryArray_GetTotalCount(a);
             NextPageParam = CLIB.ppf_ChallengeEntryArray_HasNextPage(a) ? "true" : string.Empty;
+            PreviousPageParam = CLIB.ppf_ChallengeEntryArray_HasPreviousPage(a) ? "true" : string.Empty;
             int count = (int) CLIB.ppf_ChallengeEntryArray_GetSize(a);
             this.Capacity = count;
             for (uint i = 0; i < count; i++)
@@ -266,7 +262,7 @@ namespace Pico.Platform.Models
             }
         }
 
-        /** @brief The total number of entries in the list. */
+        /// The total number of entries in the list. 
         public readonly ulong TotalCount;
     }
 }
