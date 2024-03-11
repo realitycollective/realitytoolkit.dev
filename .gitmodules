@@ -37,3 +37,9 @@
 [submodule "Packages/com.realitytoolkit.player"]
 	path = Packages/com.realitytoolkit.player
 	url = https://github.com/realitycollective/com.realitytoolkit.player.git
+[submodule "Packages/com.realitytoolkit.visionos"]
+	path = Packages/com.realitytoolkit.visionos
+	url = https://github.com/realitycollective/com.realitytoolkit.visionos.git
+[submodule "Packages/com.realitytoolkit.openxr"]
+	path = Packages/com.realitytoolkit.openxr
+	url = https://github.com/realitycollective/com.realitytoolkit.openxr.git

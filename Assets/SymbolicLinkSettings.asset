@@ -61,12 +61,15 @@ MonoBehaviour:
   - sourceRelativePath: /Packages/com.realitytoolkit.spatial-persistence/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/SpatialPersistence/Profiles
     isActive: 1
-  - sourceRelativePath: /Packages/com.realitycollective.prototyping/Assets~/StandardAssets
-    targetRelativePath: /Assets/RealityCollective.Generated/Prototyping/StandardAssets
-    isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.boundary/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit.Generated/Boundary/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitycollective.boundary/Assets~/StandardAssets
     targetRelativePath: /Assets/RealityCollective.Generated/Boundary/StandardAssets
+    isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.visionos/Assets~/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit.Generated/VisionOS/StandardAssets
+    isActive: 1
+  - sourceRelativePath: /Packages/com.realitytoolkit.visionos/Assets~/Profiles
+    targetRelativePath: /Assets/RealityToolkit.Generated/VisionOS/Profiles
     isActive: 1
