@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Actions.meta
-guid: 081de0d4379335b49a0b8537dda3e04b
-========
-guid: c17bcadfa97269d47927cbe51e621a99
->>>>>>>> development:Assets/XR/Resources.meta
+guid: 279da0c443fbeba4781f66dfb0d2aec3
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
