@@ -21,6 +21,14 @@ MonoBehaviour:
     platformEntries:
       runtimePlatforms:
       - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
+  - instancedType:
+      reference: 18c9caf0-8d36-4add-bb49-cdf7561cf793
+    name: Input Service
+    priority: 0
+    profile: {fileID: 11400000, guid: efeffc04a85ad0e459f1df8b586f0c69, type: 2}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
   initializeOnPlay: 0
   doNotDestroyServiceManagerOnLoad: 1
   sceneServiceConfiguration: []

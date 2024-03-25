@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96a16673d92d4e8fa24750357b3cf906, type: 3}
+  m_Name: InputServiceProfile_InteractionsSample
+  m_EditorClassIdentifier: 
+  configurations:
+  - instancedType:
+      reference: 249d4d78-cadd-45ba-9438-db9fc2509213
+    name: Focus Provider
+    priority: 0
+    profile: {fileID: 0}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
+  directInteraction: 1
+  farInteraction: 1
+  gazeProviderBehaviour: 0
+  gazeProviderType:
+    reference: bed2c9a4-48c5-49d2-bca4-3d351153ba75
+  gazeCursorPrefab: {fileID: 0}
+  pointersProfile: {fileID: 11400000, guid: 3c5db97663ea9314f96d7a0e1f92ec22, type: 2}
+  handControllerSettings: {fileID: 11400000, guid: 588bb26eea0aa5544bf9370abb522339, type: 2}
+  inputActionsProfile: {fileID: 11400000, guid: 399335ccc89c4d12b79f3539ca7771db, type: 2}
+  speechCommandsProfile: {fileID: 11400000, guid: 89759c8b9c98420794a5d650ce3b2f90, type: 2}
+  gesturesProfile: {fileID: 11400000, guid: 47280a6380eb40d5952dc5a5da00a89e, type: 2}
