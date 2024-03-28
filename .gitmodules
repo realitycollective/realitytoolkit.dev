@@ -40,3 +40,6 @@
 [submodule "Packages/com.realitytoolkit.openxr"]
 	path = Packages/com.realitytoolkit.openxr
 	url = https://github.com/realitycollective/com.realitytoolkit.openxr.git
+[submodule "Packages/com.realitytoolkit.samples"]
+	path = Packages/com.realitytoolkit.samples
+	url = https://github.com/realitycollective/com.realitytoolkit.samples.git
