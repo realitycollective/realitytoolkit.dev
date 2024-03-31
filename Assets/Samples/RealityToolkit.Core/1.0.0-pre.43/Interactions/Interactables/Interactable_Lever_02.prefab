@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9157445574898011095, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
       propertyPath: m_Name
-      value: Interactable_Lever
+      value: Interactable_Lever_02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -77,9 +77,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6176456503166183563, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8209542706265813156}
-    - targetCorrespondingSourceObject: {fileID: 6176456503166183563, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5989727770464869689}
   m_SourcePrefab: {fileID: 100100000, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
 --- !u!1 &8755349086156771803 stripped
 GameObject:
@@ -229,19 +226,3 @@ MonoBehaviour:
   snapToInteractable: 0
   syncPositionSpeed: 2
   syncRotationSpeed: 360
---- !u!114 &5989727770464869689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8755349086156771803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18cf9f966d9061b419dd1f33a7492964, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 0
-  targetHandedness: 7
-  minMaxThrottleOffset: 0.05
-  pivot: {fileID: 0}
