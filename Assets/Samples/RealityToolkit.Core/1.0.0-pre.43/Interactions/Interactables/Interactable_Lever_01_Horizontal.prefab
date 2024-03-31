@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4233852841532660825
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 311802995137669001, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalPositionOffset.x
+      value: -0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 311802995137669001, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalPositionOffset.y
+      value: 0.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 311802995137669001, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalPositionOffset.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 311802995137669001, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalRotationOffset.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 311802995137669001, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalRotationOffset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 311802995137669001, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalRotationOffset.z
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178801196077611190, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178801196077611190, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178801196077611190, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178801196077611190, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178801196077611190, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178801196077611190, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178801196077611190, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178801196077611190, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178801196077611190, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178801196077611190, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5518348337375519244, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_Name
+      value: Interactable_Lever_01_Horizontal
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340795405554567615, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalPositionOffset.x
+      value: -0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340795405554567615, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalPositionOffset.y
+      value: 0.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340795405554567615, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalPositionOffset.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340795405554567615, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalRotationOffset.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340795405554567615, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: poseLocalRotationOffset.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
