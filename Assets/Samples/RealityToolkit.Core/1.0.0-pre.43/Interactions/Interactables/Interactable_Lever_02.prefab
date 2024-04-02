@@ -8,6 +8,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7666059524017776300, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666059524017776300, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666059524017776300, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666059524017776300, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9238795
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666059524017776300, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.38268346
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666059524017776300, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666059524017776300, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8385166597181182317, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -77,6 +105,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6176456503166183563, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8209542706265813156}
+    - targetCorrespondingSourceObject: {fileID: 6176456503166183563, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3734035550859603889}
   m_SourcePrefab: {fileID: 100100000, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
 --- !u!1 &8755349086156771803 stripped
 GameObject:
@@ -226,3 +257,28 @@ MonoBehaviour:
   snapToInteractable: 0
   syncPositionSpeed: 2
   syncRotationSpeed: 360
+--- !u!114 &3734035550859603889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8755349086156771803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18cf9f966d9061b419dd1f33a7492964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
+  targetHandedness: 7
+  axes: 1
+  leverType: 1
+  minimumValues: {x: -45, y: 0, z: 0}
+  maximumValues: {x: 0, y: 0, z: 0}
+  valueMapping: 0
+  valueX: 0
+  valueY: 0
+  valueZ: 0
+  valueChanged:
+    m_PersistentCalls:
+      m_Calls: []
