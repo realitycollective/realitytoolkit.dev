@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2552531917751878768, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
       propertyPath: m_Name
-      value: Interactable_Lever_01
+      value: Interactable_Lever_01_Forward
       objectReference: {fileID: 0}
     - target: {fileID: 2893486815929622218, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
       propertyPath: m_LocalPosition.x
@@ -52,6 +52,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3898695606396397835, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898695606396397835, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898695606396397835, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -81,11 +93,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3819490454644681967}
   m_SourcePrefab: {fileID: 100100000, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
---- !u!4 &5178801196077611190 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2893486815929622218, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
-  m_PrefabInstance: {fileID: 8068610852117292668}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7365631551276138832 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 706656179398993708, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
@@ -110,8 +117,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.16, y: 0.2504758, z: 0.04}
-  m_Center: {x: 0, y: 0.12744595, z: 0.000000017695129}
+  m_Size: {x: 0.16, y: 0.3004758, z: 0.04}
+  m_Center: {x: 0, y: 0.15244608, z: 0.00000002142042}
 --- !u!54 &4233311362628564955
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -249,5 +256,11 @@ MonoBehaviour:
   sortingOrder: 0
   targetHandedness: 7
   axes: 4
-  translateThresholds: {x: 0, y: 0, z: 0.1}
-  pivot: {fileID: 5178801196077611190}
+  minimumValues: {x: 0, y: 0, z: -0.1}
+  maximumValues: {x: 0, y: 0, z: 0.1}
+  valueX: 0
+  valueY: 0
+  valueZ: 0
+  ValueChanged:
+    m_PersistentCalls:
+      m_Calls: []

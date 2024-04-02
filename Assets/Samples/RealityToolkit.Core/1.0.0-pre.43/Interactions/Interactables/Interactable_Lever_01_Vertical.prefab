@@ -100,6 +100,34 @@ PrefabInstance:
       propertyPath: poseLocalRotationOffset.z
       value: 84.2
       objectReference: {fileID: 0}
+    - target: {fileID: 6477166019607662455, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6477166019607662455, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6477166019607662455, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384056285857509019, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_Size.y
+      value: 0.30047587
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384056285857509019, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_Size.z
+      value: 0.04000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384056285857509019, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_Center.y
+      value: 0.1524461
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384056285857509019, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
+      propertyPath: m_Center.z
+      value: 0.000000021420425
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
