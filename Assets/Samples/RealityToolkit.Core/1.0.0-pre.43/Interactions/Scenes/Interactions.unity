@@ -1096,10 +1096,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2076927709}
     m_Modifications:
-    - target: {fileID: 5129843834164715495, guid: 5a2b20d41c6c5b745bcf317c84644ba5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 5928502340797411996, guid: 5a2b20d41c6c5b745bcf317c84644ba5, type: 3}
       propertyPath: m_Name
       value: Interactable_Lever_01_Vertical
@@ -1200,18 +1196,6 @@ PrefabInstance:
     - target: {fileID: 5518348337375519244, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
       propertyPath: m_Name
       value: Interactable_Lever_01_Forward
-      objectReference: {fileID: 0}
-    - target: {fileID: 6477166019607662455, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6477166019607662455, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6477166019607662455, guid: 1a4000202f74a8b41b006d5e357c030f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1355,10 +1339,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2076927709}
     m_Modifications:
-    - target: {fileID: 7143323186634363694, guid: 704c678451b24534ea9df37fe556ff43, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 8526640283725053525, guid: 704c678451b24534ea9df37fe556ff43, type: 3}
       propertyPath: m_Name
       value: Interactable_Lever_01_Horizontal

@@ -54,15 +54,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3898695606396397835, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3898695606396397835, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3898695606396397835, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.1
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898695606396397835, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898695606396397835, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -256,11 +264,13 @@ MonoBehaviour:
   sortingOrder: 0
   targetHandedness: 7
   axes: 4
+  leverType: 0
   minimumValues: {x: 0, y: 0, z: -0.1}
   maximumValues: {x: 0, y: 0, z: 0.1}
+  valueMapping: 0
   valueX: 0
   valueY: 0
   valueZ: 0
-  ValueChanged:
+  valueChanged:
     m_PersistentCalls:
       m_Calls: []
