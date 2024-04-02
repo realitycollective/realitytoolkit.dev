@@ -233,9 +233,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sortingOrder: 0
   targetHandedness: 1
-  poseLocalPositionOffset: {x: 0.03, y: 0.22, z: -0.02}
-  poseLocalRotationOffset: {x: -29.02, y: 16.55, z: -90}
-  snapToInteractable: 0
+  localOffsetPose:
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+  snapToLockPose: 0
   syncPositionSpeed: 2
   syncRotationSpeed: 360
 --- !u!114 &8209542706265813156
@@ -252,9 +253,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sortingOrder: 0
   targetHandedness: 2
-  poseLocalPositionOffset: {x: 0.03, y: 0.22, z: -0.02}
-  poseLocalRotationOffset: {x: -29.02, y: -16.55, z: 90}
-  snapToInteractable: 0
+  localOffsetPose:
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+  snapToLockPose: 0
   syncPositionSpeed: 2
   syncRotationSpeed: 360
 --- !u!114 &3734035550859603889
@@ -274,7 +276,7 @@ MonoBehaviour:
   axes: 1
   leverType: 1
   minimumValues: {x: -45, y: 0, z: 0}
-  maximumValues: {x: 0, y: 0, z: 0}
+  maximumValues: {x: 45, y: 0, z: 0}
   valueMapping: 0
   valueX: 0
   valueY: 0
