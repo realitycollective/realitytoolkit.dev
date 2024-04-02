@@ -227,7 +227,10 @@ MonoBehaviour:
   targetHandedness: 1
   poseLocalPositionOffset: {x: 0.03, y: 0.22, z: -0.02}
   poseLocalRotationOffset: {x: -29.02, y: 16.55, z: -90}
-  snapToInteractable: 0
+  localOffsetPose:
+    position: {x: 0.03, y: 0.22, z: -0.02}
+    rotation: {x: -0.27384415, y: -0.07679641, z: -0.6519274, w: 0.7029241}
+  snapToLockPose: 0
   syncPositionSpeed: 2
   syncRotationSpeed: 360
 --- !u!114 &6340795405554567615
@@ -246,7 +249,10 @@ MonoBehaviour:
   targetHandedness: 2
   poseLocalPositionOffset: {x: 0.03, y: 0.22, z: -0.02}
   poseLocalRotationOffset: {x: -29.02, y: -16.55, z: 90}
-  snapToInteractable: 0
+  localOffsetPose:
+    position: {x: 0.03, y: 0.22, z: -0.02}
+    rotation: {x: 0.27384424, y: -0.076796465, z: -0.6519274, w: -0.7029241}
+  snapToLockPose: 0
   syncPositionSpeed: 2
   syncRotationSpeed: 360
 --- !u!114 &3819490454644681967
