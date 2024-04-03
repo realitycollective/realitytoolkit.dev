@@ -23,4 +23,4 @@ MonoBehaviour:
       - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
   isRigPersistent: 1
   resetPlayerToOrigin: 0
-  rigPrefab: {fileID: 6074567058768481976, guid: 3d755ceced433da43a06ddaabfe73b3c, type: 3}
+  rigPrefab: {fileID: 1634786522418503189, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
