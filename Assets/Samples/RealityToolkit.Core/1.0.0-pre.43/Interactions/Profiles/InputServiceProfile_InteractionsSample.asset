@@ -30,12 +30,12 @@ MonoBehaviour:
       runtimePlatforms:
       - reference: 5a504905-0968-4b2f-a537-7fe804f1bd8e
       - reference: db1acc26-ec8d-4bc6-afca-c51351b2da2e
-  directInteraction: 1
-  farInteraction: 1
   gazeProviderBehaviour: 1
   gazeProviderType:
     reference: bed2c9a4-48c5-49d2-bca4-3d351153ba75
   gazeCursorPrefab: {fileID: 1000012072213228, guid: 79f96834fcc44889b558cc13518979a0, type: 3}
+  <DirectInteraction>k__BackingField: 1
+  <FarInteraction>k__BackingField: 1
   <InteractorsProfile>k__BackingField: {fileID: 11400000, guid: 3c5db97663ea9314f96d7a0e1f92ec22, type: 2}
   handControllerSettings: {fileID: 11400000, guid: 588bb26eea0aa5544bf9370abb522339, type: 2}
   inputActionsProfile: {fileID: 11400000, guid: 399335ccc89c4d12b79f3539ca7771db, type: 2}
