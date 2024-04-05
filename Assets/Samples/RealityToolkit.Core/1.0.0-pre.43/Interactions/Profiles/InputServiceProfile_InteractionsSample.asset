@@ -36,7 +36,7 @@ MonoBehaviour:
   gazeProviderType:
     reference: bed2c9a4-48c5-49d2-bca4-3d351153ba75
   gazeCursorPrefab: {fileID: 1000012072213228, guid: 79f96834fcc44889b558cc13518979a0, type: 3}
-  pointersProfile: {fileID: 11400000, guid: 3c5db97663ea9314f96d7a0e1f92ec22, type: 2}
+  <InteractorsProfile>k__BackingField: {fileID: 11400000, guid: 3c5db97663ea9314f96d7a0e1f92ec22, type: 2}
   handControllerSettings: {fileID: 11400000, guid: 588bb26eea0aa5544bf9370abb522339, type: 2}
   inputActionsProfile: {fileID: 11400000, guid: 399335ccc89c4d12b79f3539ca7771db, type: 2}
   speechCommandsProfile: {fileID: 11400000, guid: 89759c8b9c98420794a5d650ce3b2f90, type: 2}
