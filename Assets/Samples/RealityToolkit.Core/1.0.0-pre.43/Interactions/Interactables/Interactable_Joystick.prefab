@@ -269,7 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sortingOrder: 0
   targetHandedness: -1
-  axes: 5
+  axes: 1
   leverType: 1
   minimumValues: {x: -20, y: 0, z: -20}
   maximumValues: {x: 20, y: 0, z: 20}
