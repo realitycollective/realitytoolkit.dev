@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: 
   directInteraction: 1
-  farInteraction: 1
+  farInteraction: 0
   selectAction:
     profileGuid: 00000000000000000000000000000000
     id: 0
@@ -234,8 +234,8 @@ MonoBehaviour:
   sortingOrder: 0
   targetHandedness: 1
   localOffsetPose:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
+    position: {x: 0.03, y: 0.22, z: -0.03}
+    rotation: {x: 0, y: 0, z: -0.70710677, w: 0.70710677}
   snapToLockPose: 0
   syncPositionSpeed: 2
   syncRotationSpeed: 360
@@ -254,8 +254,8 @@ MonoBehaviour:
   sortingOrder: 0
   targetHandedness: 2
   localOffsetPose:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
+    position: {x: -0.03, y: 0.22, z: -0.03}
+    rotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
   snapToLockPose: 0
   syncPositionSpeed: 2
   syncRotationSpeed: 360
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
-  targetHandedness: 7
+  targetHandedness: -1
   axes: 1
   leverType: 1
   minimumValues: {x: -45, y: 0, z: 0}
