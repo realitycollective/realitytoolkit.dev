@@ -125,8 +125,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.16, y: 0.3004758, z: 0.04}
-  m_Center: {x: 0, y: 0.15244608, z: 0.00000002142042}
+  m_Size: {x: 0.16, y: 0.20047581, z: 0.04}
+  m_Center: {x: 0, y: 0.10244608, z: 0.000000013969839}
 --- !u!54 &4233311362628564955
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -271,7 +271,8 @@ MonoBehaviour:
   maximumValues: {x: 0, y: 0, z: 0.1}
   valueMapping: 0
   snapsIntoPlace: 1
-  snapIntoPlaceSpeed: 5
+  smoothSnap: 1
+  smoothSnapSpeed: 5
   valueX: 0
   valueY: 0
   valueZ: 0
