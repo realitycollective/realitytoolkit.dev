@@ -22,11 +22,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7666059524017776300, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9238795
+      value: -0.9238795
       objectReference: {fileID: 0}
     - target: {fileID: 7666059524017776300, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.38268346
+      value: 0.3826835
       objectReference: {fileID: 0}
     - target: {fileID: 7666059524017776300, guid: c5c669ff3e682c547983c9d26d7b7cac, type: 3}
       propertyPath: m_LocalRotation.y
@@ -278,6 +278,8 @@ MonoBehaviour:
   minimumValues: {x: -45, y: 0, z: 0}
   maximumValues: {x: 45, y: 0, z: 0}
   valueMapping: 0
+  snapsIntoPlace: 1
+  snapIntoPlaceSpeed: 5
   valueX: 0
   valueY: 0
   valueZ: 0
