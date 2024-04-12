@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Samples/RealityToolkit.Core/1.0.0-pre.43/Interactions/Scenes/Interactions.unity
+    guid: 27c4b45f365952d4a9ae1fca81009f75
+  - enabled: 0
     path: Assets/Base.unity
     guid: 2fb263f0a8486fe43ac3f10d46538356
   m_configObjects:
