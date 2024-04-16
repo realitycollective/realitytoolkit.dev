@@ -274,8 +274,9 @@ MonoBehaviour:
   minimumValues: {x: -20, y: 0, z: -20}
   maximumValues: {x: 20, y: 0, z: 20}
   valueMapping: 1
-  snapsIntoPlace: 1
-  snapIntoPlaceSpeed: 5
+  snapsIntoPlace: 0
+  smoothSnap: 1
+  smoothSnapSpeed: 5
   valueX: 0
   valueY: 0
   valueZ: 0

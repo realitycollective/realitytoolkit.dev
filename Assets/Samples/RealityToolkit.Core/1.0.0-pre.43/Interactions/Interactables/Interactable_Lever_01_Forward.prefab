@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3898695606396397835, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.1
+      value: -0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3898695606396397835, guid: 28dc6b58483f71a4fb47eb1549e5f628, type: 3}
       propertyPath: m_LocalRotation.y
@@ -226,7 +226,7 @@ MonoBehaviour:
   sortingOrder: 0
   targetHandedness: 1
   localOffsetPose:
-    position: {x: 0.03, y: 0.26, z: -0.02}
+    position: {x: 0.03, y: 0.16, z: -0.02}
     rotation: {x: -0.27384415, y: -0.07679641, z: -0.6519274, w: 0.7029241}
   snapToLockPose: 0
   syncPositionSpeed: 2
@@ -246,7 +246,7 @@ MonoBehaviour:
   sortingOrder: 0
   targetHandedness: 2
   localOffsetPose:
-    position: {x: -0.03, y: 0.26, z: -0.02}
+    position: {x: -0.03, y: 0.16, z: -0.02}
     rotation: {x: 0.27384424, y: -0.076796465, z: -0.6519274, w: -0.7029241}
   snapToLockPose: 0
   syncPositionSpeed: 2
@@ -267,8 +267,8 @@ MonoBehaviour:
   targetHandedness: -1
   axes: 4
   leverType: 0
-  minimumValues: {x: 0, y: 0, z: -0.1}
-  maximumValues: {x: 0, y: 0, z: 0.1}
+  minimumValues: {x: 0, y: 0, z: -0.15}
+  maximumValues: {x: 0, y: 0, z: 0.15}
   valueMapping: 0
   snapsIntoPlace: 1
   smoothSnap: 1

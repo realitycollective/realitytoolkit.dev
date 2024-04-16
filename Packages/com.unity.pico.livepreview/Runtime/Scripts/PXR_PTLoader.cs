@@ -13,6 +13,7 @@ PICO Technology Co., Ltd.
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 using UnityEngine.XR.Management;
 using UnityEngine.XR;
 
@@ -80,9 +81,10 @@ namespace Unity.XR.PICO.LivePreview
 #endif
 
 #if UNITY_2020_1_OR_NEWER
-            PXR_Plugin.System.UPxr_PTSetSRPState(GraphicsSettings.currentRenderPipeline != null);
+
+            PXR_PTApi.UPxr_PTSetSRPState(GraphicsSettings.currentRenderPipeline != null);
 #else
-            PXR_Plugin.System.UPxr_PTSetSRPState(false);
+            PXR_PTApi.System.UPxr_PTSetSRPState(false);
 #endif
 
             CreateSubsystem<XRDisplaySubsystemDescriptor, XRDisplaySubsystem>(displaySubsystemDescriptors, "PICO LP Display");
