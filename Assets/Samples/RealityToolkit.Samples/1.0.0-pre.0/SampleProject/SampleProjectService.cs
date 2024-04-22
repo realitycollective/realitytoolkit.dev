@@ -1,6 +1,7 @@
 ﻿using RealityCollective.ServiceFramework.Definitions;
 using RealityCollective.ServiceFramework.Services;
 using RealityToolkit.Locomotion;
+using System;
 using UnityEngine;
 
 namespace RealityToolkit.Samples.SampleProject
@@ -15,6 +16,9 @@ namespace RealityToolkit.Samples.SampleProject
         }
 
         private ILocomotionService locomotionService;
+
+        /// <inheritdoc/>
+        public event Action LocomotionRoomCompleted;
 
         /// <inheritdoc/>
         public override void Initialize()
@@ -35,8 +39,13 @@ namespace RealityToolkit.Samples.SampleProject
             // initially disabled. Another way of doing this would to configure
             // the auto start behaviour on the locomotion service profile itself.
             locomotionService.LocomotionEnabled = false;
-            locomotionService.MovementEnabled = false;
-            locomotionService.TeleportationEnabled = false;
+        }
+
+        /// <inheritdoc/>
+        public void CompleteLocomotionRoom()
+        {
+            locomotionService.LocomotionEnabled = true;
+            LocomotionRoomCompleted?.Invoke();
         }
     }
 }
