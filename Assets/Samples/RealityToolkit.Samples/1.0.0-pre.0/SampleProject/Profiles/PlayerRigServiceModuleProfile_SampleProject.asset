@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00d813fd5a164e19a160f322b2926006, type: 3}
-  m_Name: PlayerRigServiceModuleProfile_InteractionsSample
+  m_Name: PlayerRigServiceModuleProfile_SampleProject
   m_EditorClassIdentifier: 
   trackingType: 0
   eyeTextureResolution: 1

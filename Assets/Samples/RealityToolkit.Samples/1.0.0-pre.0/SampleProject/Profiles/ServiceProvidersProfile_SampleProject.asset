@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e313293fba4e5a946adc1cc90678c91c, type: 3}
-  m_Name: ServiceProvidersProfile_InteractionsSample
+  m_Name: ServiceProvidersProfile_SampleProject
   m_EditorClassIdentifier: 
   configurations:
   - instancedType:
@@ -33,7 +33,15 @@ MonoBehaviour:
       reference: 9453c088-285e-47aa-bfbb-dafd9109fdd5
     name: Locomotion Service
     priority: 1
-    profile: {fileID: 11400000, guid: 6c712a7ae61c3a94c97a821ae431e3d9, type: 2}
+    profile: {fileID: 11400000, guid: 0ace3b2d2f17d784b861c90682d35895, type: 2}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
+  - instancedType:
+      reference: a7e7f7a9-fd59-4589-a501-080dd2d97afd
+    name: Sample Project Service
+    priority: 2
+    profile: {fileID: 0}
     platformEntries:
       runtimePlatforms:
       - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
