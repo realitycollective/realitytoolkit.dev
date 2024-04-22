@@ -30,12 +30,13 @@ namespace RealityToolkit.Samples.SampleProject
         /// <inheritdoc/>
         public override void Start()
         {
-            InitialzeSampleProjectStartState();
-        }
-
-        private void InitialzeSampleProjectStartState()
-        {
-
+            // The sample project starts out with introducing
+            // the user to locmotion. Thus we want to make sure it is
+            // initially disabled. Another way of doing this would to configure
+            // the auto start behaviour on the locomotion service profile itself.
+            locomotionService.LocomotionEnabled = false;
+            locomotionService.MovementEnabled = false;
+            locomotionService.TeleportationEnabled = false;
         }
     }
 }
