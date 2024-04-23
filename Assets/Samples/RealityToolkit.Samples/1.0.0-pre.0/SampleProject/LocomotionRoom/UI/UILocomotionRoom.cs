@@ -2,7 +2,7 @@
 using RealityCollective.ServiceFramework.Services;
 using UnityEngine;
 
-namespace RealityToolkit.Samples.SampleProject.UI
+namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
 {
     public class UILocomotionRoom : MonoBehaviour
     {
