@@ -1,5 +1,4 @@
-﻿using RealityCollective.ServiceFramework.Definitions;
-using RealityCollective.ServiceFramework.Services;
+﻿using RealityCollective.ServiceFramework.Services;
 using RealityToolkit.Locomotion;
 using System;
 using UnityEngine;
@@ -9,7 +8,7 @@ namespace RealityToolkit.Samples.SampleProject
     [System.Runtime.InteropServices.Guid("a7e7f7a9-fd59-4589-a501-080dd2d97afd")]
     public class SampleProjectService : BaseServiceWithConstructor, ISampleProjectService
     {
-        public SampleProjectService(string name, uint priority, BaseProfile profile)
+        public SampleProjectService(string name, uint priority, SampleProjectServiceProfile profile)
             : base(name, priority)
         {
 

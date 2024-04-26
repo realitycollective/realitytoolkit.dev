@@ -41,7 +41,7 @@ MonoBehaviour:
       reference: a7e7f7a9-fd59-4589-a501-080dd2d97afd
     name: Sample Project Service
     priority: 2
-    profile: {fileID: 0}
+    profile: {fileID: 11400000, guid: 0e7275c2fd38b77468058ac4ce65a10d, type: 2}
     platformEntries:
       runtimePlatforms:
       - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
