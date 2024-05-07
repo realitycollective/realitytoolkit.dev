@@ -274,12 +274,14 @@ MonoBehaviour:
   sortingOrder: 0
   targetHandedness: -1
   axes: 1
+  trackingMode: 0
   leverType: 1
   minimumValues: {x: -45, y: 0, z: 0}
   maximumValues: {x: 45, y: 0, z: 0}
   valueMapping: 0
-  snapsIntoPlace: 1
-  snapIntoPlaceSpeed: 5
+  snapsIntoPlace: 0
+  smoothSnap: 1
+  smoothSnapSpeed: 5
   valueX: 0
   valueY: 0
   valueZ: 0

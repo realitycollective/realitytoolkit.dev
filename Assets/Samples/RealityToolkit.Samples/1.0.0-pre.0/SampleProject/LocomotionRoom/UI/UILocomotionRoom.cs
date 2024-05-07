@@ -1,5 +1,5 @@
-﻿using RealityCollective.Extensions;
-using RealityCollective.ServiceFramework.Services;
+﻿using RealityCollective.ServiceFramework.Services;
+using RealityCollective.Utilities.Extensions;
 using UnityEngine;
 
 namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
