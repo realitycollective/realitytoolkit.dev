@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: SampleProjectServiceProfile
   m_EditorClassIdentifier: 
   configurations: []
+  <ScenesToLoad>k__BackingField:
+  - SampleProject_01_Locomotion_Free
+  - SampleProject_02_Locomotion_Teleport
+  - SampleProject_03_Player_Rig
+  - SampleProject_04_Interactions

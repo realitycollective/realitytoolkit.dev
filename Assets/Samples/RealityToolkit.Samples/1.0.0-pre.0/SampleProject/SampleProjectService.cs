@@ -4,7 +4,9 @@
 using RealityCollective.ServiceFramework.Services;
 using RealityToolkit.Locomotion;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RealityToolkit.Samples.SampleProject
 {
@@ -17,8 +19,12 @@ namespace RealityToolkit.Samples.SampleProject
     {
         /// <inheritdoc/>
         public SampleProjectService(string name, uint priority, SampleProjectServiceProfile profile)
-            : base(name, priority) { }
+            : base(name, priority)
+        {
+            scenesToLoad = profile.ScenesToLoad;
+        }
 
+        private readonly List<string> scenesToLoad;
         private ILocomotionService locomotionService;
 
         /// <inheritdoc/>
@@ -57,18 +63,27 @@ namespace RealityToolkit.Samples.SampleProject
             locomotionService.LocomotionEnabled = true;
             locomotionService.MovementEnabled = false;
             locomotionService.TeleportationEnabled = false;
+
+            LoadScenes();
         }
 
         /// <inheritdoc/>
         public void EnterRoom(SampleRoom room)
         {
             CurrentRoom = room;
+            IsCleared = false;
             RoomEntered?.Invoke(room);
         }
 
         /// <inheritdoc/>
         public void ClearRoom(SampleRoom room)
         {
+            if (room != CurrentRoom || IsCleared)
+            {
+                return;
+            }
+
+            IsCleared = true;
             RoomCleared?.Invoke(room);
 
             var nextRoomIndex = ((int)room) + 1;
@@ -77,5 +92,34 @@ namespace RealityToolkit.Samples.SampleProject
                 RoomUnlocked?.Invoke((SampleRoom)nextRoomIndex);
             }
         }
+
+        #region Scene Management
+
+        public void LoadScenes()
+        {
+            foreach (var scene in scenesToLoad)
+            {
+                if (!IsSceneLoaded(scene))
+                {
+                    SceneManager.LoadScene(scene, LoadSceneMode.Additive);
+                }
+            }
+        }
+
+        private bool IsSceneLoaded(string sceneName)
+        {
+            for (var i = 0; i < SceneManager.loadedSceneCount; i++)
+            {
+                var loadedScene = SceneManager.GetSceneAt(i);
+                if (string.Equals(loadedScene.name, sceneName))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        #endregion Scene Management
     }
 }
