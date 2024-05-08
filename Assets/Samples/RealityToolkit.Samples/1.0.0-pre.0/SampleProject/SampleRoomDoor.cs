@@ -19,7 +19,7 @@ namespace RealityToolkit.Samples.SampleProject
         private bool isOpening;
         private bool isClosing;
         private float animationStartTime;
-        private const float animationDuration = 7.683f;
+        private float animationDuration;
 
         /// <summary>
         /// This tells whether the door is open. Amazing right?!
@@ -32,6 +32,7 @@ namespace RealityToolkit.Samples.SampleProject
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
+            animationDuration = audioSource.clip.length;
             closedPosition = transform.localPosition;
             openPosition = new Vector3(closedPosition.x, closedPosition.y + openVerticalOffset, closedPosition.z);
         }
@@ -44,7 +45,8 @@ namespace RealityToolkit.Samples.SampleProject
             if (isOpening)
             {
                 var t = (Time.time - animationStartTime) / animationDuration;
-                transform.localPosition = Vector3.Slerp(closedPosition, openPosition, t);
+                var target = Vector3.Slerp(closedPosition, openPosition, t);
+                transform.localPosition = new Vector3(closedPosition.x, target.y, closedPosition.z);
 
                 if (t >= 1f)
                 {
@@ -54,7 +56,8 @@ namespace RealityToolkit.Samples.SampleProject
             else if (isClosing)
             {
                 var t = (Time.time - animationStartTime) / animationDuration;
-                transform.localPosition = Vector3.Slerp(openPosition, closedPosition, t);
+                var target = Vector3.Slerp(openPosition, closedPosition, t);
+                transform.localPosition = new Vector3(closedPosition.x, target.y, closedPosition.z);
 
                 if (t >= 1f)
                 {
