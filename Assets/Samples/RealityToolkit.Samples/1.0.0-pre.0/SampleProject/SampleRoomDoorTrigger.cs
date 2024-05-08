@@ -9,17 +9,25 @@ namespace RealityToolkit.Samples.SampleProject
     /// <summary>
     /// Simple utility that will open a <see cref="SampleRoomDoor"/> when the player triggers it.
     /// </summary>
-    public class SampleRoomDoorOpenTrigger : MonoBehaviour
+    public class SampleRoomDoorTrigger : MonoBehaviour
     {
         [SerializeField]
         private SampleRoomDoor door = null;
+
+        [SerializeField]
+        private bool opensDoor = true;
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent<IPlayerRig>(out _))
             {
-                door.Open();
-                Destroy(gameObject);
+                if (opensDoor)
+                {
+                    door.Open();
+                    return;
+                }
+
+                door.Close();
             }
         }
     }
