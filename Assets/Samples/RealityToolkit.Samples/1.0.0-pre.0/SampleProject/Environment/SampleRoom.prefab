@@ -212,6 +212,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.3, y: 10, z: 1}
   m_Center: {x: 0, y: 5, z: 0}
+--- !u!1 &1016441524996330768
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8429658450326626025}
+  - component: {fileID: 1358904175966650171}
+  m_Layer: 0
+  m_Name: WayBackBlocker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8429658450326626025
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016441524996330768}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.00000011920929, y: -0.0000004808443, z: 4.79}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1014801052979646972}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1358904175966650171
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016441524996330768}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.533333, y: 4, z: 0.2000001}
+  m_Center: {x: 0, y: 2, z: 0.0000001527369}
 --- !u!1 &2118224194405865568
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,9 +275,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4164423861924035003}
   - component: {fileID: 1079341155684220599}
-  - component: {fileID: 7000070769905986424}
+  - component: {fileID: 7066116829334136088}
   m_Layer: 0
-  m_Name: SampleRoomDoorTrigger_OpenEntrance
+  m_Name: PlayerTrigger_OpenEntrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -266,7 +319,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 5}
   m_Center: {x: 0, y: 2, z: 2.5}
---- !u!114 &7000070769905986424
+--- !u!114 &7066116829334136088
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -275,11 +328,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 2118224194405865568}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afd5dc226552acb4a8c8d97c8b0fe84a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e37f611479aea84eb78691a447708db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door: {fileID: 180779528140520492}
-  opensDoor: 1
+  onPlayerEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 180779528140520492}
+        m_TargetAssemblyTypeName: RealityToolkit.Samples.SampleProject.SampleRoomDoor,
+          Assembly-CSharp
+        m_MethodName: Open
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1016441524996330768}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerStay:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2157447060405485165
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,9 +734,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2551472400216617347}
   - component: {fileID: 9129440445541007846}
-  - component: {fileID: 4951064269151847492}
+  - component: {fileID: 5157037016641950917}
   m_Layer: 0
-  m_Name: SampleRoomDoorTrigger_CloseEntrance
+  m_Name: PlayerTrigger_CloseEntrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -693,7 +778,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 2}
   m_Center: {x: 0, y: 2, z: -1}
---- !u!114 &4951064269151847492
+--- !u!114 &5157037016641950917
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -702,11 +787,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 5395348429828220896}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afd5dc226552acb4a8c8d97c8b0fe84a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e37f611479aea84eb78691a447708db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door: {fileID: 180779528140520492}
-  opensDoor: 0
+  onPlayerEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 180779528140520492}
+        m_TargetAssemblyTypeName: RealityToolkit.Samples.SampleProject.SampleRoomDoor,
+          Assembly-CSharp
+        m_MethodName: Close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1016441524996330768}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onPlayerStay:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6623681827252833617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1758,6 +1875,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9b68edd21cc449641ae0ab41608d14ea, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7845566307523172490}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9b68edd21cc449641ae0ab41608d14ea, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8429658450326626025}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9b68edd21cc449641ae0ab41608d14ea, type: 3}
       insertIndex: -1

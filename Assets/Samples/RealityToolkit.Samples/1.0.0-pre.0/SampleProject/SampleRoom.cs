@@ -14,9 +14,17 @@ namespace RealityToolkit.Samples.SampleProject
         /// </summary>
         Undefined = 0,
         /// <summary>
-        /// The locomotion sample room introduces movement and teleportation.
+        /// The free movment sample showcases smooth free movement.
         /// </summary>
-        Locomotion,
+        LocomotionFree,
+        /// <summary>
+        /// The teleport sample showcases teleport locomotion.
+        /// </summary>
+        LocomotionTeleport,
+        /// <summary>
+        /// The player rig samples teaches about collision and player bounds.
+        /// </summary>
+        PlayerRig,
         /// <summary>
         /// The interaction sample room showcases input and interactions with virtual objects.
         /// </summary>
