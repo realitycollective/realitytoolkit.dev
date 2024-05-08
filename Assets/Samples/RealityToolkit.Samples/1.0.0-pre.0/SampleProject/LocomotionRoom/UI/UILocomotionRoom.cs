@@ -1,5 +1,6 @@
 ﻿using RealityCollective.ServiceFramework.Services;
 using RealityCollective.Utilities.Extensions;
+using RealityToolkit.Locomotion;
 using UnityEngine;
 
 namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
@@ -26,6 +27,7 @@ namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
 
         public void EnableLocomotion()
         {
+            ServiceManager.Instance.GetService<ILocomotionService>().LocomotionEnabled = true;
             ServiceManager.Instance.GetService<ISampleProjectService>().ClearRoom(SampleRoom.Locomotion);
             gameObject.Destroy();
         }

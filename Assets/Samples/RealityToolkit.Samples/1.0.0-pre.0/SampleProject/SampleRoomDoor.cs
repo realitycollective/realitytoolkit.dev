@@ -12,7 +12,7 @@ namespace RealityToolkit.Samples.SampleProject
     {
         private Vector3 closedPosition;
         private Vector3 openPosition;
-        private const float openVerticalOffset = .4f;
+        private const float openVerticalOffset = 3.8f;
 
         private bool isOpening;
         private bool isClosing;
