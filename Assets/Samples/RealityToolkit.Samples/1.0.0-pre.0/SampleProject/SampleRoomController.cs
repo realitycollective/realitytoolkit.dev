@@ -3,6 +3,7 @@
 
 using RealityCollective.ServiceFramework.Services;
 using RealityCollective.Utilities.Extensions;
+using System.Collections;
 using UnityEngine;
 
 namespace RealityToolkit.Samples.SampleProject
@@ -15,6 +16,9 @@ namespace RealityToolkit.Samples.SampleProject
     {
         [SerializeField]
         private SampleRoom room = SampleRoom.Undefined;
+
+        [SerializeField]
+        private AudioSource successAudioSource = null;
 
         [SerializeField, Tooltip("The door used to exit the room.")]
         private SampleRoomDoor exitDoor = null;
@@ -54,6 +58,13 @@ namespace RealityToolkit.Samples.SampleProject
                 return;
             }
 
+            StartCoroutine(OpenExitDelayed());
+        }
+
+        private IEnumerator OpenExitDelayed()
+        {
+            successAudioSource.Play();
+            yield return new WaitForSeconds(2f);
             exitDoor.Open();
         }
     }
