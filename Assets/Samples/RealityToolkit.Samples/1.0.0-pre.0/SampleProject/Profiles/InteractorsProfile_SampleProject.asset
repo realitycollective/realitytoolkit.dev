@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f1708952b3739a47908a0fb9a103a7e, type: 3}
+  m_Name: InteractorsProfile_SampleProject
+  m_EditorClassIdentifier: 
+  pointerRaycastLayerMasks:
+  - serializedVersion: 2
+    m_Bits: 4294967291
+  drawDebugPointingRays: 1
+  debugPointingRayColors:
+  - {r: 0, g: 1, b: 0, a: 1}
+  <DefaultControllerInteractors>k__BackingField:
+  - {fileID: 8432135464014371632, guid: c61f3eb595c636c438edf4452a4ef65e, type: 3}
+  - {fileID: 3487613484555030544, guid: eb885e83bbe8cc24a87d61670583a82d, type: 3}
+  - {fileID: 2507312044101632756, guid: 54d78dc3333741c5b7f30fe3506096ba, type: 3}
+  - {fileID: 114917070612713698, guid: 0c1e5f0d54ce46319152ece13a4b1eeb, type: 3}

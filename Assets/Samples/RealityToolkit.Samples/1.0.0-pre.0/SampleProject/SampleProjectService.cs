@@ -45,7 +45,9 @@ namespace RealityToolkit.Samples.SampleProject
             // the user to locmotion. Thus we want to make sure it is
             // initially disabled. Another way of doing this would to configure
             // the auto start behaviour on the locomotion service profile itself.
-            locomotionService.LocomotionEnabled = false;
+            locomotionService.LocomotionEnabled = true;
+            locomotionService.MovementEnabled = false;
+            locomotionService.TeleportationEnabled = false;
         }
 
         /// <inheritdoc/>
