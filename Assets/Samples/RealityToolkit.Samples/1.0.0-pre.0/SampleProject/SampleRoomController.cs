@@ -16,9 +16,6 @@ namespace RealityToolkit.Samples.SampleProject
         [SerializeField]
         private SampleRoom room = SampleRoom.Undefined;
 
-        [SerializeField, Tooltip("The door used to enter the room.")]
-        private SampleRoomDoor enterDoor = null;
-
         [SerializeField, Tooltip("The door used to exit the room.")]
         private SampleRoomDoor exitDoor = null;
 
@@ -48,15 +45,7 @@ namespace RealityToolkit.Samples.SampleProject
             }
         }
 
-        private void SampleProjectService_RoomUnlocked(SampleRoom room)
-        {
-            if (this.room != room || enterDoor.IsNull())
-            {
-                return;
-            }
-
-            enterDoor.Open();
-        }
+        private void SampleProjectService_RoomUnlocked(SampleRoom room) { }
 
         private void SampleProjectService_RoomCleared(SampleRoom room)
         {
