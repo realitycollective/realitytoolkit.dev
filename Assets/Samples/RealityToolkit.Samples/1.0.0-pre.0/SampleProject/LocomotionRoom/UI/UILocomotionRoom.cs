@@ -26,7 +26,7 @@ namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
 
         public void EnableLocomotion()
         {
-            ServiceManager.Instance.GetService<ISampleProjectService>().CompleteLocomotionRoom();
+            ServiceManager.Instance.GetService<ISampleProjectService>().ClearRoom(SampleRoom.Locomotion);
             gameObject.Destroy();
         }
     }

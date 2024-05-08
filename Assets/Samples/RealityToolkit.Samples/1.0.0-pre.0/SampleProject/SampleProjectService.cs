@@ -1,23 +1,31 @@
-﻿using RealityCollective.ServiceFramework.Services;
+﻿// Copyright (c) Reality Collective. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using RealityCollective.ServiceFramework.Services;
 using RealityToolkit.Locomotion;
 using System;
 using UnityEngine;
 
 namespace RealityToolkit.Samples.SampleProject
 {
+    /// <summary>
+    /// This sample service is reponsible for managing the sample experience. It is not directly
+    /// related to any toolkit features.
+    /// </summary>
     [System.Runtime.InteropServices.Guid("a7e7f7a9-fd59-4589-a501-080dd2d97afd")]
     public class SampleProjectService : BaseServiceWithConstructor, ISampleProjectService
     {
+        /// <inheritdoc/>
         public SampleProjectService(string name, uint priority, SampleProjectServiceProfile profile)
-            : base(name, priority)
-        {
-
-        }
+            : base(name, priority) { }
 
         private ILocomotionService locomotionService;
 
         /// <inheritdoc/>
-        public event Action LocomotionRoomCompleted;
+        public event OnRoomClearedDelegate RoomCleared;
+
+        /// <inheritdoc/>
+        public event OnRoomUnlockedDelegate RoomUnlocked;
 
         /// <inheritdoc/>
         public override void Initialize()
@@ -41,10 +49,15 @@ namespace RealityToolkit.Samples.SampleProject
         }
 
         /// <inheritdoc/>
-        public void CompleteLocomotionRoom()
+        public void ClearRoom(SampleRoom room)
         {
-            locomotionService.LocomotionEnabled = true;
-            LocomotionRoomCompleted?.Invoke();
+            RoomCleared?.Invoke(room);
+
+            var nextRoomIndex = ((int)room) + 1;
+            if (Enum.IsDefined(typeof(SampleRoom), nextRoomIndex))
+            {
+                RoomUnlocked?.Invoke((SampleRoom)nextRoomIndex);
+            }
         }
     }
 }

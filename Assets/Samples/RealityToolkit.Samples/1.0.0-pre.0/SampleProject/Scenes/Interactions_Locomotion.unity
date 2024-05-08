@@ -694,23 +694,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 969510978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1399074142 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5706934262632377749, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
-  m_PrefabInstance: {fileID: 459468531012971114}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1399074147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1399074142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8d827fad09480449f81e9047b47cdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1416538538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,7 +1428,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 386918703418772294, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
       propertyPath: m_Name
-      value: Samples_Environment_00
+      value: SampleRoom
       objectReference: {fileID: 0}
     - target: {fileID: 1014801052979646972, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1459,13 +1442,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2075609913744685303, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
+      propertyPath: room
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5706934262632377749, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1399074147}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
 --- !u!1001 &1516416542792528613
 PrefabInstance:

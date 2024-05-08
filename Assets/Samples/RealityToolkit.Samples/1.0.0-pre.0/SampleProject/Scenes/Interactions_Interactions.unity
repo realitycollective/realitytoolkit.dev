@@ -621,7 +621,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 386918703418772294, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
       propertyPath: m_Name
-      value: Samples_Environment_00
+      value: SampleRoom
       objectReference: {fileID: 0}
     - target: {fileID: 1014801052979646972, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -646,6 +646,10 @@ PrefabInstance:
     - target: {fileID: 1014801052979646972, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075609913744685303, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
+      propertyPath: room
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
