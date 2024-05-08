@@ -1,11 +1,10 @@
 ﻿using RealityCollective.ServiceFramework.Services;
-using RealityCollective.Utilities.Extensions;
 using RealityToolkit.Locomotion;
 using UnityEngine;
 
 namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
 {
-    public class UILocomotionRoom : MonoBehaviour
+    public class UISampleRoom : MonoBehaviour
     {
         [SerializeField]
         private GameObject page1 = null;
@@ -25,11 +24,10 @@ namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
             page2.SetActive(true);
         }
 
-        public void EnableLocomotion()
+        public void EnableFreeMovement()
         {
             ServiceManager.Instance.GetService<ILocomotionService>().MovementEnabled = true;
             ServiceManager.Instance.GetService<ISampleProjectService>().ClearRoom(SampleRoom.LocomotionFree);
-            gameObject.Destroy();
         }
     }
 }
