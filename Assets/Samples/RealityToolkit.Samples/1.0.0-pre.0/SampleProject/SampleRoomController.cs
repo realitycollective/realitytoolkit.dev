@@ -15,6 +15,9 @@ namespace RealityToolkit.Samples.SampleProject
     public class SampleRoomController : MonoBehaviour
     {
         [SerializeField]
+        private bool startRoom = false;
+
+        [SerializeField]
         private SampleRoom room = SampleRoom.Undefined;
 
         [SerializeField]
@@ -35,6 +38,11 @@ namespace RealityToolkit.Samples.SampleProject
             sampleProjectService = ServiceManager.Instance.GetService<ISampleProjectService>();
             sampleProjectService.RoomCleared += SampleProjectService_RoomCleared;
             sampleProjectService.RoomUnlocked += SampleProjectService_RoomUnlocked;
+
+            if (startRoom)
+            {
+                sampleProjectService.EnterRoom(room);
+            }
         }
 
         /// <summary>
@@ -48,6 +56,11 @@ namespace RealityToolkit.Samples.SampleProject
                 sampleProjectService.RoomUnlocked -= SampleProjectService_RoomUnlocked;
             }
         }
+
+        /// <summary>
+        /// The player has entered the room.
+        /// </summary>
+        public void OnRoomEntered() => sampleProjectService.EnterRoom(room);
 
         private void SampleProjectService_RoomUnlocked(SampleRoom room) { }
 

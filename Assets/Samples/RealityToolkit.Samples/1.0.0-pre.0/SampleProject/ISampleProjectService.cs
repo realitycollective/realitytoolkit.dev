@@ -5,20 +5,40 @@ using RealityCollective.ServiceFramework.Interfaces;
 
 namespace RealityToolkit.Samples.SampleProject
 {
-    public delegate void OnRoomClearedDelegate(SampleRoom room);
-    public delegate void OnRoomUnlockedDelegate(SampleRoom room);
+    public delegate void OnRoomDelegate(SampleRoom room);
 
     public interface ISampleProjectService : IService
     {
         /// <summary>
+        /// The most recent <see cref="SampleRoom"/> the player has progressed to.
+        /// </summary>
+        SampleRoom CurrentRoom { get; }
+
+        /// <summary>
+        /// Has <see cref="CurrentRoom"/> been cleared?
+        /// </summary>
+        bool IsCleared { get; }
+
+        /// <summary>
+        /// A <see cref="SampleRoom"/> has been entered.
+        /// </summary>
+        event OnRoomDelegate RoomEntered;
+
+        /// <summary>
         /// A <see cref="SampleRoom"/> has been cleared.
         /// </summary>
-        event OnRoomClearedDelegate RoomCleared;
+        event OnRoomDelegate RoomCleared;
 
         /// <summary>
         /// A <see cref="SampleRoom"/> has been unlocked.
         /// </summary>
-        event OnRoomUnlockedDelegate RoomUnlocked;
+        event OnRoomDelegate RoomUnlocked;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="room"></param>
+        void EnterRoom(SampleRoom room);
 
         /// <summary>
         /// Clears the <paramref name="room"/> and unlocks the next <see cref="SampleRoom"/>.

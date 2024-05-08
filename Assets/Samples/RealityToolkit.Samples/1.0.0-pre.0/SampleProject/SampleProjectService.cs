@@ -22,10 +22,19 @@ namespace RealityToolkit.Samples.SampleProject
         private ILocomotionService locomotionService;
 
         /// <inheritdoc/>
-        public event OnRoomClearedDelegate RoomCleared;
+        public SampleRoom CurrentRoom { get; private set; }
 
         /// <inheritdoc/>
-        public event OnRoomUnlockedDelegate RoomUnlocked;
+        public bool IsCleared { get; private set; }
+
+        /// <inheritdoc/>
+        public event OnRoomDelegate RoomEntered;
+
+        /// <inheritdoc/>
+        public event OnRoomDelegate RoomCleared;
+
+        /// <inheritdoc/>
+        public event OnRoomDelegate RoomUnlocked;
 
         /// <inheritdoc/>
         public override void Initialize()
@@ -48,6 +57,13 @@ namespace RealityToolkit.Samples.SampleProject
             locomotionService.LocomotionEnabled = true;
             locomotionService.MovementEnabled = false;
             locomotionService.TeleportationEnabled = false;
+        }
+
+        /// <inheritdoc/>
+        public void EnterRoom(SampleRoom room)
+        {
+            CurrentRoom = room;
+            RoomEntered?.Invoke(room);
         }
 
         /// <inheritdoc/>
