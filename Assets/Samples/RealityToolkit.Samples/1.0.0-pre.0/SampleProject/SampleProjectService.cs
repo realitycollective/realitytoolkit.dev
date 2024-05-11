@@ -4,7 +4,6 @@
 using RealityCollective.ServiceFramework.Services;
 using RealityToolkit.Samples.SampleProject.SampleRooms;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace RealityToolkit.Samples.SampleProject
@@ -38,15 +37,7 @@ namespace RealityToolkit.Samples.SampleProject
         public event OnRoomDelegate RoomCleared;
 
         /// <inheritdoc/>
-        public override void Initialize()
-        {
-            if (!Application.isPlaying)
-            {
-                return;
-            }
-
-            LoadScenes();
-        }
+        public override void Start() => LoadScenes();
 
         /// <inheritdoc/>
         public void EnterRoom(SampleRoomController room)

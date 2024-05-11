@@ -8,6 +8,11 @@ namespace RealityToolkit.Samples.SampleProject.Quests
     /// </summary>
     public abstract class SampleQuest : MonoBehaviour
     {
+        /// <summary>
+        /// Is this quest currently active and being tracked?
+        /// </summary>
+        public bool IsActive { get; set; }
+
         private bool isComplete;
         /// <summary>
         /// Is this quest complete / finished?
@@ -17,7 +22,7 @@ namespace RealityToolkit.Samples.SampleProject.Quests
             get => isComplete;
             protected set
             {
-                if (isComplete == value)
+                if (isComplete == value || !IsActive)
                 {
                     return;
                 }

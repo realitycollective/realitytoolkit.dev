@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48e5536a371f0af479a2bec26d7e6375, type: 3}
-  m_Name: SampleRoom_Locomotion_Teleport
+  m_Name: SampleRoom_Interactions
   m_EditorClassIdentifier: 
-  title: 'Locomotion: Teleportation'
+  title: 'Input: Interactions'
   description: 'Welcome back, courageous adventurer, to the second chamber of our
     enchanted labyrinth. Here, amidst the shifting shadows and whispered secrets,
     you shall unlock a new power that transcends the confines of mere mortal movement.

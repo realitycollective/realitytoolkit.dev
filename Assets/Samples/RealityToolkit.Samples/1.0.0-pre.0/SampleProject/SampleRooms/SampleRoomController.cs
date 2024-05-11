@@ -56,12 +56,14 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
             await ServiceManager.WaitUntilInitializedAsync();
 
             sampleProjectService = ServiceManager.Instance.GetService<ISampleProjectService>();
+            sampleProjectService.RoomEntered += SampleProjectService_RoomEntered;
             sampleProjectService.RoomCleared += SampleProjectService_RoomCleared;
 
             if (quests != null)
             {
                 foreach (var quest in quests)
                 {
+                    quest.IsActive = false;
                     quest.Completed += Quest_Completed;
                 }
             }
@@ -85,6 +87,7 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
 
             if (sampleProjectService != null)
             {
+                sampleProjectService.RoomEntered -= SampleProjectService_RoomEntered;
                 sampleProjectService.RoomCleared -= SampleProjectService_RoomCleared;
             }
         }
@@ -107,9 +110,25 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
             sampleProjectService.ClearRoom(this);
         }
 
+        private void SampleProjectService_RoomEntered(SampleRoomController room)
+        {
+            if (this != room)
+            {
+                return;
+            }
+
+            if (quests != null)
+            {
+                foreach (var quest in quests)
+                {
+                    quest.IsActive = true;
+                }
+            }
+        }
+
         private void SampleProjectService_RoomCleared(SampleRoomController room)
         {
-            if (this.room != room || exitDoor.IsNull())
+            if (this != room || exitDoor.IsNull())
             {
                 return;
             }
