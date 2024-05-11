@@ -55,5 +55,5 @@ MonoBehaviour:
       - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
   locomotionStartupBehaviour: 0
   movementStartupBehaviour: 0
-  teleportationStartupBehaviour: 1
+  teleportationStartupBehaviour: 0
   teleportCooldown: 0
