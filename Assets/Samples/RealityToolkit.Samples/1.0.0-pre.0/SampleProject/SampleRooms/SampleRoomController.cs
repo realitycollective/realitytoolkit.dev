@@ -17,7 +17,10 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
     public class SampleRoomController : MonoBehaviour
     {
         [SerializeField]
-        private bool startRoom = false;
+        private string title = null;
+
+        [SerializeField, Multiline]
+        private string description = null;
 
         [SerializeField]
         private SampleRoom room = SampleRoom.Undefined;
@@ -32,6 +35,16 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
         private SampleRoomDoor exitDoor = null;
 
         private ISampleProjectService sampleProjectService;
+
+        /// <summary>
+        /// THe room intro title.
+        /// </summary>
+        public string Title => title;
+
+        /// <summary>
+        /// The room intro description.
+        /// </summary>
+        public string Description => description;
 
         /// <summary>
         /// See <see cref="MonoBehaviour"/>.
@@ -50,11 +63,6 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
                 {
                     quest.Completed += Quest_Completed;
                 }
-            }
-
-            if (startRoom)
-            {
-                sampleProjectService.EnterRoom(room);
             }
         }
 

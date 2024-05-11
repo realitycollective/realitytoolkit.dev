@@ -148,7 +148,7 @@ Transform:
   m_GameObject: {fileID: 820958047}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -179,7 +179,7 @@ Transform:
   m_GameObject: {fileID: 1233527369}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -286,6 +286,10 @@ PrefabInstance:
     - target: {fileID: 6016513989057967709, guid: aa3aa61b6beb5c74d83c13a811a295d8, type: 3}
       propertyPath: m_Name
       value: SampleRoom_First
+      objectReference: {fileID: 0}
+    - target: {fileID: 6356025155437178087, guid: aa3aa61b6beb5c74d83c13a811a295d8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6356025155437178087, guid: aa3aa61b6beb5c74d83c13a811a295d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -430,7 +434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6164590130599821265, guid: 08b14c624faadda4ebfcc74457a4e52d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6164590130599821265, guid: 08b14c624faadda4ebfcc74457a4e52d, type: 3}
       propertyPath: m_LocalRotation.w
