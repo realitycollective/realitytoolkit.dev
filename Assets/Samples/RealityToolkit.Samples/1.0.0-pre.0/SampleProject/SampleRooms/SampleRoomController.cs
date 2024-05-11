@@ -22,6 +22,9 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
         [SerializeField]
         private List<SampleQuest> quests = null;
 
+        [SerializeField, Tooltip("This transform defines the pose of the room intro board.")]
+        private Transform introBoardAnchor = null;
+
         [SerializeField]
         private AudioSource successAudioSource = null;
 
@@ -39,6 +42,11 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
         /// The room intro description.
         /// </summary>
         public string Description => room.Description;
+
+        /// <summary>
+        /// This transform defines the pose of the room intro board.
+        /// </summary>
+        public Transform IntroBoardAnchor => introBoardAnchor;
 
         /// <summary>
         /// See <see cref="MonoBehaviour"/>.

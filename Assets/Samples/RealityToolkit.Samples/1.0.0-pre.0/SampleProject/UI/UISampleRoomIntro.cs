@@ -1,4 +1,5 @@
 ﻿using RealityCollective.ServiceFramework.Services;
+using RealityToolkit.Samples.SampleProject.SampleRooms;
 using UnityEngine;
 
 namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
@@ -22,11 +23,25 @@ namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
 
             await ServiceManager.WaitUntilInitializedAsync();
             sampleProjectService = ServiceManager.Instance.GetService<ISampleProjectService>();
+            sampleProjectService.RoomEntered += SampleProjectService_RoomEntered;
         }
 
-        public void Close()
+        private void OnDestroy()
         {
-
+            if (sampleProjectService != null)
+            {
+                sampleProjectService.RoomEntered -= SampleProjectService_RoomEntered;
+            }
         }
+
+        private void SampleProjectService_RoomEntered(SampleRoomController room)
+        {
+            titleText.text = room.Title;
+            descriptionText.text = room.Description;
+            transform.SetPositionAndRotation(room.IntroBoardAnchor.position, room.IntroBoardAnchor.rotation);
+            root.SetActive(true);
+        }
+
+        public void Close() => root.SetActive(false);
     }
 }

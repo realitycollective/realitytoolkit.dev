@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5430497856949816, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 386918703418772294, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
       propertyPath: m_Name
       value: SampleRoom_First
@@ -59,6 +63,10 @@ PrefabInstance:
     - target: {fileID: 2118224194405865568, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694148280692932031, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4723783272184521928, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
       propertyPath: m_IsActive
@@ -113,6 +121,10 @@ PrefabInstance:
       value: 12.79
       objectReference: {fileID: 0}
     - target: {fileID: 8514000070157573149, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8535470924423126794, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}

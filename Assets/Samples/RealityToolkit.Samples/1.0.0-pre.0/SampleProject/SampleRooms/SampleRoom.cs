@@ -9,6 +9,7 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
     /// The sample experience consists of multiple rooms. Each room is dedicated
     /// to a specific feature or feature group of the toolkit.
     /// </summary>
+    [CreateAssetMenu(fileName = "SampleRoom", menuName = "Sample Project/Sample Room", order = 0)]
     public class SampleRoom : ScriptableObject
     {
         [SerializeField, Tooltip("The room intro title.")]

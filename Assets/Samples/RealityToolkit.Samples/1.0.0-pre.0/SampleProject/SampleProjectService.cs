@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using RealityCollective.ServiceFramework.Services;
-using RealityToolkit.Locomotion;
 using RealityToolkit.Samples.SampleProject.SampleRooms;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +24,6 @@ namespace RealityToolkit.Samples.SampleProject
         }
 
         private readonly List<string> scenesToLoad;
-        private ILocomotionService locomotionService;
 
         /// <inheritdoc/>
         public SampleRoomController CurrentRoom { get; private set; }
@@ -46,20 +44,6 @@ namespace RealityToolkit.Samples.SampleProject
             {
                 return;
             }
-
-            locomotionService = ServiceManager.Instance.GetService<ILocomotionService>();
-        }
-
-        /// <inheritdoc/>
-        public override void Start()
-        {
-            // The sample project starts out with introducing
-            // the user to locmotion. Thus we want to make sure it is
-            // initially disabled. Another way of doing this would to configure
-            // the auto start behaviour on the locomotion service profile itself.
-            locomotionService.LocomotionEnabled = true;
-            locomotionService.MovementEnabled = false;
-            locomotionService.TeleportationEnabled = false;
 
             LoadScenes();
         }

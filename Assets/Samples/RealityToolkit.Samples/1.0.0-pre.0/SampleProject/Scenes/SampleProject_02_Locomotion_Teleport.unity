@@ -422,6 +422,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3865058910576951087, guid: 10c301cea4d381145a6ccc7f595a6dd3, type: 3}
   m_PrefabInstance: {fileID: 1564278606}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &774862386
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 774862387}
+  m_Layer: 0
+  m_Name: Quests
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &774862387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774862386}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 39}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1227768827}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &820958047
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,6 +621,79 @@ Transform:
   - {fileID: 876344585}
   m_Father: {fileID: 820958048}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1227768826
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 774862387}
+    m_Modifications:
+    - target: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488669327366276753, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+      propertyPath: m_Name
+      value: TeleportQuest
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+--- !u!4 &1227768827 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3902166523341184949, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+  m_PrefabInstance: {fileID: 1227768826}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1227768828 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5741749545209881764, guid: 8c8854d024bcf9e4a94759a1ee4b8650, type: 3}
+  m_PrefabInstance: {fileID: 1227768826}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb8ee1192c5863049aba7709195a48d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1316385823
 GameObject:
   m_ObjectHideFlags: 0
@@ -1446,6 +1551,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2075609913744685303, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
+      propertyPath: room
+      value: 
+      objectReference: {fileID: 11400000, guid: ccc034d29d41d6341818823f9cedc281, type: 2}
+    - target: {fileID: 2075609913744685303, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
+      propertyPath: quests.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075609913744685303, guid: 862e9f37f39effb409ffebbcf35df90b, type: 3}
+      propertyPath: quests.Array.data[0]
+      value: 
+      objectReference: {fileID: 1227768828}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1581,3 +1698,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 459468531012971114}
   - {fileID: 820958048}
+  - {fileID: 774862387}
