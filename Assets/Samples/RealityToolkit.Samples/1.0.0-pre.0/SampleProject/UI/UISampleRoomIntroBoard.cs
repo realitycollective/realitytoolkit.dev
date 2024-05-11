@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
 {
-    public class UISampleRoomIntro : MonoBehaviour
+    public class UISampleRoomIntroBoard : MonoBehaviour
     {
         [SerializeField]
         private GameObject root = null;
