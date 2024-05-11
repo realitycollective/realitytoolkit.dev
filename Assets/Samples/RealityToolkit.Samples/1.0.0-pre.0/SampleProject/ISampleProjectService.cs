@@ -6,14 +6,14 @@ using RealityToolkit.Samples.SampleProject.SampleRooms;
 
 namespace RealityToolkit.Samples.SampleProject
 {
-    public delegate void OnRoomDelegate(SampleRoom room);
+    public delegate void OnRoomDelegate(SampleRoomController room);
 
     public interface ISampleProjectService : IService
     {
         /// <summary>
         /// The most recent <see cref="SampleRoom"/> the player has progressed to.
         /// </summary>
-        SampleRoom CurrentRoom { get; }
+        SampleRoomController CurrentRoom { get; }
 
         /// <summary>
         /// Has <see cref="CurrentRoom"/> been cleared?
@@ -31,15 +31,15 @@ namespace RealityToolkit.Samples.SampleProject
         event OnRoomDelegate RoomCleared;
 
         /// <summary>
-        /// 
+        /// Makes the <paramref name="room"/> the <see cref="CurrentRoom"/>.
         /// </summary>
         /// <param name="room"></param>
-        void EnterRoom(SampleRoom room);
+        void EnterRoom(SampleRoomController room);
 
         /// <summary>
         /// Clears the <paramref name="room"/> and unlocks the next <see cref="SampleRoom"/>.
         /// </summary>
         /// <param name="room">The <see cref="SampleRoom"/> cleared.</param>
-        void ClearRoom(SampleRoom room);
+        void ClearRoom(SampleRoomController room);
     }
 }

@@ -84,7 +84,7 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
         /// <summary>
         /// The player has entered the room.
         /// </summary>
-        public void OnRoomEntered() => sampleProjectService.EnterRoom(room);
+        public void OnRoomEntered() => sampleProjectService.EnterRoom(this);
 
         private void Quest_Completed()
         {
@@ -96,10 +96,10 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
                 }
             }
 
-            sampleProjectService.ClearRoom(room);
+            sampleProjectService.ClearRoom(this);
         }
 
-        private void SampleProjectService_RoomCleared(SampleRoom room)
+        private void SampleProjectService_RoomCleared(SampleRoomController room)
         {
             if (this.room != room || exitDoor.IsNull())
             {

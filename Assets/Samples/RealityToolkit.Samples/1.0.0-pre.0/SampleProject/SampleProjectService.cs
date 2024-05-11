@@ -28,7 +28,7 @@ namespace RealityToolkit.Samples.SampleProject
         private ILocomotionService locomotionService;
 
         /// <inheritdoc/>
-        public SampleRoom CurrentRoom { get; private set; }
+        public SampleRoomController CurrentRoom { get; private set; }
 
         /// <inheritdoc/>
         public bool IsCleared { get; private set; }
@@ -65,7 +65,7 @@ namespace RealityToolkit.Samples.SampleProject
         }
 
         /// <inheritdoc/>
-        public void EnterRoom(SampleRoom room)
+        public void EnterRoom(SampleRoomController room)
         {
             CurrentRoom = room;
             IsCleared = false;
@@ -73,7 +73,7 @@ namespace RealityToolkit.Samples.SampleProject
         }
 
         /// <inheritdoc/>
-        public void ClearRoom(SampleRoom room)
+        public void ClearRoom(SampleRoomController room)
         {
             if (room != CurrentRoom || IsCleared)
             {
