@@ -31,11 +31,6 @@ namespace RealityToolkit.Samples.SampleProject
         event OnRoomDelegate RoomCleared;
 
         /// <summary>
-        /// A <see cref="SampleRoom"/> has been unlocked.
-        /// </summary>
-        event OnRoomDelegate RoomUnlocked;
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="room"></param>

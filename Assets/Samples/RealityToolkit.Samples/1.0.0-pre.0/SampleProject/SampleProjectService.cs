@@ -4,7 +4,6 @@
 using RealityCollective.ServiceFramework.Services;
 using RealityToolkit.Locomotion;
 using RealityToolkit.Samples.SampleProject.SampleRooms;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -39,9 +38,6 @@ namespace RealityToolkit.Samples.SampleProject
 
         /// <inheritdoc/>
         public event OnRoomDelegate RoomCleared;
-
-        /// <inheritdoc/>
-        public event OnRoomDelegate RoomUnlocked;
 
         /// <inheritdoc/>
         public override void Initialize()
@@ -86,12 +82,6 @@ namespace RealityToolkit.Samples.SampleProject
 
             IsCleared = true;
             RoomCleared?.Invoke(room);
-
-            var nextRoomIndex = ((int)room) + 1;
-            if (Enum.IsDefined(typeof(SampleRoom), nextRoomIndex))
-            {
-                RoomUnlocked?.Invoke((SampleRoom)nextRoomIndex);
-            }
         }
 
         #region Scene Management

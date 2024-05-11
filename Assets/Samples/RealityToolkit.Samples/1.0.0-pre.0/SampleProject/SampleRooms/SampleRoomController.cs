@@ -17,13 +17,7 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
     public class SampleRoomController : MonoBehaviour
     {
         [SerializeField]
-        private string title = null;
-
-        [SerializeField, Multiline]
-        private string description = null;
-
-        [SerializeField]
-        private SampleRoom room = SampleRoom.Undefined;
+        private SampleRoom room = null;
 
         [SerializeField]
         private List<SampleQuest> quests = null;
@@ -39,12 +33,12 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
         /// <summary>
         /// THe room intro title.
         /// </summary>
-        public string Title => title;
+        public string Title => room.Title;
 
         /// <summary>
         /// The room intro description.
         /// </summary>
-        public string Description => description;
+        public string Description => room.Description;
 
         /// <summary>
         /// See <see cref="MonoBehaviour"/>.
@@ -55,7 +49,6 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
 
             sampleProjectService = ServiceManager.Instance.GetService<ISampleProjectService>();
             sampleProjectService.RoomCleared += SampleProjectService_RoomCleared;
-            sampleProjectService.RoomUnlocked += SampleProjectService_RoomUnlocked;
 
             if (quests != null)
             {
@@ -85,7 +78,6 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
             if (sampleProjectService != null)
             {
                 sampleProjectService.RoomCleared -= SampleProjectService_RoomCleared;
-                sampleProjectService.RoomUnlocked -= SampleProjectService_RoomUnlocked;
             }
         }
 
@@ -106,8 +98,6 @@ namespace RealityToolkit.Samples.SampleProject.SampleRooms
 
             sampleProjectService.ClearRoom(room);
         }
-
-        private void SampleProjectService_RoomUnlocked(SampleRoom room) { }
 
         private void SampleProjectService_RoomCleared(SampleRoom room)
         {

@@ -588,10 +588,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5451686739543081791, guid: c0fc675f0aa151b48963b6ff0da79300, type: 3}
-      propertyPath: room
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 5924723415848104078, guid: c0fc675f0aa151b48963b6ff0da79300, type: 3}
       propertyPath: m_Name
       value: SampleRoom_Last
