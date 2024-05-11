@@ -24,6 +24,7 @@ namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
             await ServiceManager.WaitUntilInitializedAsync();
             sampleProjectService = ServiceManager.Instance.GetService<ISampleProjectService>();
             sampleProjectService.RoomEntered += SampleProjectService_RoomEntered;
+            sampleProjectService.RoomCleared += SampleProjectService_RoomCleared;
         }
 
         private void OnDestroy()
@@ -31,6 +32,7 @@ namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
             if (sampleProjectService != null)
             {
                 sampleProjectService.RoomEntered -= SampleProjectService_RoomEntered;
+                sampleProjectService.RoomCleared -= SampleProjectService_RoomCleared;
             }
         }
 
@@ -42,6 +44,8 @@ namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
             root.SetActive(true);
         }
 
-        public void Close() => root.SetActive(false);
+        private void SampleProjectService_RoomCleared(SampleRoomController room) => Close();
+
+        private void Close() => root.SetActive(false);
     }
 }
