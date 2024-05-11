@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace RealityToolkit.Samples.SampleProject
+namespace RealityToolkit.Samples.SampleProject.SampleRooms
 {
     /// <summary>
     /// Just a simple door controller for <see cref="SampleRoom"/> enter and exit doors.

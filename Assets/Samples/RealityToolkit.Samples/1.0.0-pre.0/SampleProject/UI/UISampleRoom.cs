@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
 {
-    public class UISampleRoom : MonoBehaviour, ILocomotionServiceHandler
+    public class UISampleRoom : MonoBehaviour
     {
         [SerializeField]
         private GameObject page1 = null;
@@ -13,7 +13,6 @@ namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
         private GameObject page2 = null;
 
         private ILocomotionService locomotionService;
-        private ISampleProjectService sampleProjectService;
 
         private async void Awake()
         {
@@ -22,18 +21,7 @@ namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
 
             await ServiceManager.WaitUntilInitializedAsync();
 
-            sampleProjectService = ServiceManager.Instance.GetService<ISampleProjectService>();
-
             locomotionService = ServiceManager.Instance.GetService<ILocomotionService>();
-            locomotionService.Register(gameObject);
-        }
-
-        private void OnDestroy()
-        {
-            if (locomotionService != null)
-            {
-                locomotionService.Unregister(gameObject);
-            }
         }
 
         public void GetStarted()
@@ -46,24 +34,5 @@ namespace RealityToolkit.Samples.SampleProject.LocomotionRoom.UI
         {
             locomotionService.MovementEnabled = true;
         }
-
-        public void OnMoving(LocomotionEventData eventData)
-        {
-            if (sampleProjectService.CurrentRoom != SampleRoom.LocomotionFree ||
-                sampleProjectService.IsCleared)
-            {
-                return;
-            }
-
-            sampleProjectService.ClearRoom(SampleRoom.LocomotionFree);
-        }
-
-        public void OnTeleportTargetRequested(LocomotionEventData eventData) { }
-
-        public void OnTeleportStarted(LocomotionEventData eventData) { }
-
-        public void OnTeleportCompleted(LocomotionEventData eventData) { }
-
-        public void OnTeleportCanceled(LocomotionEventData eventData) { }
     }
 }

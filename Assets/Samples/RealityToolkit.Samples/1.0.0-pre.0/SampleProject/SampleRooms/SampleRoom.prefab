@@ -1854,9 +1854,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: SampleRoom
       objectReference: {fileID: 0}
+    - target: {fileID: 2196276862586469061, guid: 9b68edd21cc449641ae0ab41608d14ea, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c373acc31b1a85f40871bfeaf2a67866, type: 2}
+    - target: {fileID: 2775507371467569504, guid: 9b68edd21cc449641ae0ab41608d14ea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7278452120235464927, guid: 9b68edd21cc449641ae0ab41608d14ea, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c373acc31b1a85f40871bfeaf2a67866, type: 2}
     - target: {fileID: 8416272007918961125, guid: 9b68edd21cc449641ae0ab41608d14ea, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203168129538238986, guid: 9b68edd21cc449641ae0ab41608d14ea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

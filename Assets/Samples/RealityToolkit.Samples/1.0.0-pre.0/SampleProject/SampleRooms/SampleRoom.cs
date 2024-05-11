@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Reality Collective. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace RealityToolkit.Samples.SampleProject
+namespace RealityToolkit.Samples.SampleProject.SampleRooms
 {
     /// <summary>
     /// The sample experience consists of multiple rooms. Each room is dedicated
@@ -22,9 +22,13 @@ namespace RealityToolkit.Samples.SampleProject
         /// </summary>
         LocomotionTeleport,
         /// <summary>
-        /// The player rig samples teaches about collision and player bounds.
+        /// The player rig samples teaches about collision between the player and the environment.
         /// </summary>
-        PlayerRig,
+        PlayerRigPhysics,
+        /// <summary>
+        /// The player rig bounds samples teaches about the player / camera bounds feature.
+        /// </summary>
+        PlayerRigBounds,
         /// <summary>
         /// The interaction sample room showcases input and interactions with virtual objects.
         /// </summary>

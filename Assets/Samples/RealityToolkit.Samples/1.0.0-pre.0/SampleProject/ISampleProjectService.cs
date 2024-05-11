@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using RealityCollective.ServiceFramework.Interfaces;
+using RealityToolkit.Samples.SampleProject.SampleRooms;
 
 namespace RealityToolkit.Samples.SampleProject
 {

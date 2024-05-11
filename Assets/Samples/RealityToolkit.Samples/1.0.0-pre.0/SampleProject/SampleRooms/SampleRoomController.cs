@@ -3,10 +3,12 @@
 
 using RealityCollective.ServiceFramework.Services;
 using RealityCollective.Utilities.Extensions;
+using RealityToolkit.Samples.SampleProject.Quests;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace RealityToolkit.Samples.SampleProject
+namespace RealityToolkit.Samples.SampleProject.SampleRooms
 {
     /// <summary>
     /// This controller worksw with the <see cref="ISampleProjectService"/> and manages
@@ -19,6 +21,9 @@ namespace RealityToolkit.Samples.SampleProject
 
         [SerializeField]
         private SampleRoom room = SampleRoom.Undefined;
+
+        [SerializeField]
+        private List<SampleQuest> quests = null;
 
         [SerializeField]
         private AudioSource successAudioSource = null;
@@ -39,6 +44,14 @@ namespace RealityToolkit.Samples.SampleProject
             sampleProjectService.RoomCleared += SampleProjectService_RoomCleared;
             sampleProjectService.RoomUnlocked += SampleProjectService_RoomUnlocked;
 
+            if (quests != null)
+            {
+                foreach (var quest in quests)
+                {
+                    quest.Completed += Quest_Completed;
+                }
+            }
+
             if (startRoom)
             {
                 sampleProjectService.EnterRoom(room);
@@ -50,6 +63,17 @@ namespace RealityToolkit.Samples.SampleProject
         /// </summary>
         private void OnDestroy()
         {
+            if (quests != null)
+            {
+                foreach (var quest in quests)
+                {
+                    if (quest.IsNotNull())
+                    {
+                        quest.Completed -= Quest_Completed;
+                    }
+                }
+            }
+
             if (sampleProjectService != null)
             {
                 sampleProjectService.RoomCleared -= SampleProjectService_RoomCleared;
@@ -61,6 +85,19 @@ namespace RealityToolkit.Samples.SampleProject
         /// The player has entered the room.
         /// </summary>
         public void OnRoomEntered() => sampleProjectService.EnterRoom(room);
+
+        private void Quest_Completed()
+        {
+            foreach (var quest in quests)
+            {
+                if (!quest.IsComplete)
+                {
+                    return;
+                }
+            }
+
+            sampleProjectService.ClearRoom(room);
+        }
 
         private void SampleProjectService_RoomUnlocked(SampleRoom room) { }
 

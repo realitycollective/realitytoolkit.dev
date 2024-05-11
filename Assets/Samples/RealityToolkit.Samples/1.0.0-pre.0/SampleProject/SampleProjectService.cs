@@ -3,6 +3,7 @@
 
 using RealityCollective.ServiceFramework.Services;
 using RealityToolkit.Locomotion;
+using RealityToolkit.Samples.SampleProject.SampleRooms;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

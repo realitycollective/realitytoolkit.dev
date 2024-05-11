@@ -15,10 +15,10 @@ EditorBuildSettings:
     path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_02_Locomotion_Teleport.unity
     guid: 9b97c9e1c6c03fb409a791b356852a3e
   - enabled: 1
-    path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_03_Player_Rig.unity
+    path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_03_Player_Rig_Physics.unity
     guid: 94818149588812f4ea22ca9f2a8fe6af
   - enabled: 1
-    path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_04_Interactions.unity
+    path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_05_Interactions.unity
     guid: 12180db169b9a7d41b2a90cddf6fe4fd
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 796d9ae629cb472428c47cb63f6bfd6c, type: 2}
