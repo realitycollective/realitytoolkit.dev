@@ -8,6 +8,14 @@ namespace RealityToolkit.Samples.SampleProject.Quests
     /// </summary>
     public abstract class SampleQuest : MonoBehaviour
     {
+        [SerializeField, Tooltip("The instruction text to complete the quest.")]
+        private string instruction = null;
+
+        /// <summary>
+        /// The instruction text to complete the quest.
+        /// </summary>
+        public string Instruction => instruction;
+
         /// <summary>
         /// Is this quest currently active and being tracked?
         /// </summary>
