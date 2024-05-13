@@ -6,7 +6,7 @@ namespace RealityToolkit.Samples.SampleProject.Quests
     /// <summary>
     /// This quest requires the user to purposefully go out of level bounds.
     /// </summary>
-    public class PlayerBoundsQuest : SampleQuest
+    public class PlayerWentOutOfBoundsQuest : SampleQuest
     {
         private IPlayerBoundsModule playerBoundsModule;
 
