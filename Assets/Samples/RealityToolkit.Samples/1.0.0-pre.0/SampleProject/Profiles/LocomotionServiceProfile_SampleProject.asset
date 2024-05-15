@@ -47,7 +47,7 @@ MonoBehaviour:
       - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
   - instancedType:
       reference: 790cdfd8-89c7-41c9-8dab-6b32e1e9d0a9
-    name: Instant Teleport Locomotion Data Provider
+    name: Instant Teleport Locomotion Provider
     priority: 3
     profile: {fileID: 11400000, guid: 5d2262be3279f8a4d9e12658f61a3225, type: 2}
     platformEntries:
