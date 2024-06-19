@@ -14,56 +14,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   symbolicLinks:
   - sourceRelativePath: /Packages/com.realitytoolkit.core/Assets~/StandardAssets
-    targetRelativePath: /Assets/RealityToolkit.Generated/Core/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit/Core/StandardAssets
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.core/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/Core/Profiles
+    targetRelativePath: /Assets/RealityToolkit/Core/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.pico/Assets~/StandardAssets
-    targetRelativePath: /Assets/RealityToolkit.Generated/Pico/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit/Pico/StandardAssets
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.pico/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/Pico/Profiles
+    targetRelativePath: /Assets/RealityToolkit/Pico/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.metaplatform/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/Meta/Profiles
+    targetRelativePath: /Assets/RealityToolkit/Meta/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.devicesimulation/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/DeviceSimulation/Profiles
+    targetRelativePath: /Assets/RealityToolkit/DeviceSimulation/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.player/Assets~/StandardAssets
-    targetRelativePath: /Assets/RealityToolkit.Generated/Player/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit/Player/StandardAssets
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.player/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/Player/Profiles
+    targetRelativePath: /Assets/RealityToolkit/Player/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.locomotion/Assets~/StandardAssets
-    targetRelativePath: /Assets/RealityToolkit.Generated/Locomotion/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit/Locomotion/StandardAssets
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.locomotion/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/Locomotion/Profiles
+    targetRelativePath: /Assets/RealityToolkit/Locomotion/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.devtools/Assets~/StandardAssets
-    targetRelativePath: /Assets/RealityToolkit.Generated/DeveloperTools/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit/DeveloperTools/StandardAssets
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.devtools/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/DeveloperTools/Profiles
+    targetRelativePath: /Assets/RealityToolkit/DeveloperTools/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.spatial-persistence/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/SpatialPersistence/Profiles
+    targetRelativePath: /Assets/RealityToolkit/SpatialPersistence/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.boundary/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/Boundary/Profiles
+    targetRelativePath: /Assets/RealityToolkit/Boundary/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.visionos/Assets~/StandardAssets
-    targetRelativePath: /Assets/RealityToolkit.Generated/VisionOS/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit/VisionOS/StandardAssets
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.visionos/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/VisionOS/Profiles
+    targetRelativePath: /Assets/RealityToolkit/VisionOS/Profiles
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.spatial-awareness/Assets~/StandardAssets
-    targetRelativePath: /Assets/RealityToolkit.Generated/SpatialAwareness/StandardAssets
+    targetRelativePath: /Assets/RealityToolkit/SpatialAwareness/StandardAssets
     isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.spatial-awareness/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit.Generated/SpatialAwareness/Profiles
+    targetRelativePath: /Assets/RealityToolkit/SpatialAwareness/Profiles
     isActive: 1
