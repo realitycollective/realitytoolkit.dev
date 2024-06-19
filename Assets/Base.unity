@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1077661976}
-  m_IndirectSpecularColor: {r: 0.1841853, g: 0.25757277, b: 0.29055738, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -231,31 +230,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1634786522418503191, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.29
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1634786522418503191, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1634786522418503191, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -23.04
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1634786522418503191, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.96446216
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1634786522418503191, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.1755333
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1634786522418503191, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.19429448
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1634786522418503191, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.035361834
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1634786522418503191, guid: aae20b1f893489b4797fc46eacbb4101, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -303,7 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d4490c9d63e26f42a5ef632438faae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serviceProvidersProfile: {fileID: 11400000, guid: ddd7d9350c39a3c44a2e3cb3b50e1567, type: 2}
+  serviceProvidersProfile: {fileID: 11400000, guid: 70dd5744c57ed224b9054df6eacd4b67, type: 2}
 --- !u!4 &1834235263
 Transform:
   m_ObjectHideFlags: 0
