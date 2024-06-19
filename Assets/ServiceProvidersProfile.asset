@@ -14,6 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   configurations:
   - instancedType:
+      reference: 5c656ee3-fe7c-4fb3-b3ee-df3fc0d0973d
+    name: Player Service
+    priority: 0
+    profile: {fileID: 11400000, guid: 2b0ab6f5348646cebf8585d46c3a3edc, type: 2}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
+  - instancedType:
       reference: 18c9caf0-8d36-4add-bb49-cdf7561cf793
     name: Input Service
     priority: 0
