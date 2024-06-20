@@ -29,6 +29,14 @@ MonoBehaviour:
     platformEntries:
       runtimePlatforms:
       - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
+  - instancedType:
+      reference: 9453c088-285e-47aa-bfbb-dafd9109fdd5
+    name: Locomotion Service
+    priority: 1
+    profile: {fileID: 11400000, guid: 6c712a7ae61c3a94c97a821ae431e3d9, type: 2}
+    platformEntries:
+      runtimePlatforms:
+      - reference: 9869b29e-43bb-44cc-ae49-eb5c913263f9
   initializeOnPlay: 0
   doNotDestroyServiceManagerOnLoad: 1
   sceneServiceConfiguration: []
