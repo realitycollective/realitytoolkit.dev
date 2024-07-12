@@ -5,22 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_00_Base.unity
     guid: 27c4b45f365952d4a9ae1fca81009f75
-  - enabled: 1
+  - enabled: 0
     path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_01_Locomotion_Free.unity
     guid: 5b03dd195dad56d41807e9fcb7da9ca3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_02_Locomotion_Teleport.unity
     guid: 9b97c9e1c6c03fb409a791b356852a3e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_03_Player_Rig_Physics.unity
     guid: 94818149588812f4ea22ca9f2a8fe6af
-  - enabled: 1
+  - enabled: 0
     path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_04_Player_Rig_Bounds.unity
     guid: ab6ce7b247211a849a5f3f9e5b938975
-  - enabled: 1
+  - enabled: 0
     path: Assets/Samples/RealityToolkit.Samples/1.0.0-pre.0/SampleProject/Scenes/SampleProject_05_Interactions.unity
     guid: 12180db169b9a7d41b2a90cddf6fe4fd
   m_configObjects:
