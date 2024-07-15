@@ -422,7 +422,7 @@ MonoBehaviour:
     position: {x: 0.3, y: 0, z: -0.45}
     rotation: {x: 0, y: 0, z: 0, w: 1}
   smoothSyncPose: 1
-  syncDuration: 0.5
+  syncDuration: 0.3
 --- !u!114 &1325695058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,7 +559,7 @@ Transform:
   m_GameObject: {fileID: 1325695056}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0.2}
+  m_LocalPosition: {x: 0, y: 1, z: 0.5}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -613,7 +613,7 @@ MonoBehaviour:
     position: {x: -0.3, y: 0, z: -0.45}
     rotation: {x: 0, y: 0, z: 0, w: 1}
   smoothSyncPose: 1
-  syncDuration: 0.5
+  syncDuration: 0.3
 --- !u!1 &1834235261
 GameObject:
   m_ObjectHideFlags: 0
