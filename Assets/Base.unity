@@ -393,10 +393,11 @@ GameObject:
   - component: {fileID: 1325695060}
   - component: {fileID: 1325695059}
   - component: {fileID: 1325695058}
-  - component: {fileID: 1325695057}
-  - component: {fileID: 1325695066}
   - component: {fileID: 1325695065}
   - component: {fileID: 1325695064}
+  - component: {fileID: 1325695067}
+  - component: {fileID: 1325695066}
+  - component: {fileID: 1325695068}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -404,25 +405,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1325695057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1325695056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef2a4f1896625b644b94936ced130a5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 0
-  targetHandedness: 1
-  localOffsetPose:
-    position: {x: 0.3, y: 0.6, z: -0.45}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  smoothSyncPose: 1
-  syncDuration: 0.3
 --- !u!114 &1325695058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,16 +585,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 1325695056}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef2a4f1896625b644b94936ced130a5b, type: 3}
+  m_Script: {fileID: 11500000, guid: 322229c5e231a41408a4dced09a7c618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sortingOrder: 0
   targetHandedness: 2
-  localOffsetPose:
-    position: {x: -0.3, y: 0.6, z: -0.45}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  smoothSyncPose: 1
-  syncDuration: 0.3
+  grabPoseLocalOffset: {x: -0.01, y: 0, z: -0.01}
+  grabPoseLocalRotationOffset: {x: -6.99, y: 0, z: -28.95}
+--- !u!114 &1325695067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325695056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322229c5e231a41408a4dced09a7c618, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
+  targetHandedness: 1
+  grabPoseLocalOffset: {x: 0.01, y: 0, z: -0.01}
+  grabPoseLocalRotationOffset: {x: -6.99, y: 0, z: 28.95}
+--- !u!114 &1325695068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325695056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72ba4b1dceffd04a9ae01f18b791453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 0
+  targetHandedness: -1
+  resetDelay: 5
+  resetPose: 1
 --- !u!1 &1834235261
 GameObject:
   m_ObjectHideFlags: 0
