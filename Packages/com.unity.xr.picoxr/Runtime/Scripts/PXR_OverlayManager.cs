@@ -22,7 +22,7 @@ namespace Unity.XR.PXR
         private void OnEnable()
         {
 #if UNITY_2019_1_OR_NEWER
-            if (GraphicsSettings.renderPipelineAsset != null)
+            if (GraphicsSettings.defaultRenderPipeline != null)
             {
                 RenderPipelineManager.beginFrameRendering += BeginRendering;
                 RenderPipelineManager.endFrameRendering += EndRendering;
@@ -38,7 +38,7 @@ namespace Unity.XR.PXR
         private void OnDisable()
         {
 #if UNITY_2019_1_OR_NEWER
-            if (GraphicsSettings.renderPipelineAsset != null)
+            if (GraphicsSettings.defaultRenderPipeline != null)
             {
                 RenderPipelineManager.beginFrameRendering -= BeginRendering;
                 RenderPipelineManager.endFrameRendering -= EndRendering;

@@ -27,7 +27,7 @@ namespace Unity.XR.PXR
         {
 
             List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
-            SubsystemManager.GetInstances(displaySubsystems);
+            SubsystemManager.GetSubsystems(displaySubsystems);
             Debug.Log("PXR_U OnEnable() displaySubsystems.Count = " + displaySubsystems.Count);
             for (int i = 0; i < displaySubsystems.Count; i++)
             {
@@ -46,7 +46,7 @@ namespace Unity.XR.PXR
             if (s_DisplaySubsystem == null)
             {
                 List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
-                SubsystemManager.GetInstances(displaySubsystems);
+                SubsystemManager.GetSubsystems(displaySubsystems);
 
                 if (displaySubsystems.Count > 0)
                 {

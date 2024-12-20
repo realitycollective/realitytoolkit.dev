@@ -203,14 +203,14 @@ namespace Unity.XR.PXR
 
             StartCoroutine("SetFoveationLevel");
 
-            if (GraphicsSettings.renderPipelineAsset == null || QualitySettings.renderPipeline == null)
+            if (GraphicsSettings.defaultRenderPipeline == null || QualitySettings.renderPipeline == null)
             {
                 int recommendedAntiAliasingLevel = PXR_Plugin.System.UPxr_GetConfigInt(ConfigType.AntiAliasingLevelRecommended);
                 if (useRecommendedAntiAliasingLevel && QualitySettings.antiAliasing != recommendedAntiAliasingLevel)
                 {
                     QualitySettings.antiAliasing = recommendedAntiAliasingLevel;
                     List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
-                    SubsystemManager.GetInstances(displaySubsystems);
+                    SubsystemManager.GetSubsystems(displaySubsystems);
 
                     if (displaySubsystems.Count > 0)
                     {
@@ -1044,7 +1044,7 @@ namespace Unity.XR.PXR
                     mrcCube.transform.localEulerAngles = Vector3.zero;
                     PLog.d(TAG_MRC, "create background camera object cube.");
 
-                    if (GraphicsSettings.renderPipelineAsset != null)
+                    if (GraphicsSettings.defaultRenderPipeline != null)
                     {
                         Material material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
                         Renderer renderer = mrcCube.GetComponent<Renderer>();
