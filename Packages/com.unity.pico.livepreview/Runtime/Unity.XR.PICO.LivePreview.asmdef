@@ -6,7 +6,9 @@
         "Unity.InputSystem",
         "Unity.Subsystem.Registration"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
@@ -21,8 +23,8 @@
         },
         {
             "name": "com.unity.xr.management",
-            "expression": "3.2.0",
-            "define": "XR_MGMT_GTE_320"
+            "expression": "4.0.0",
+            "define": "XR_MGMT_GTE_400"
         }
     ],
     "noEngineReferences": false

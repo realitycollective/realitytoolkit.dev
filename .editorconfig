@@ -47,7 +47,7 @@ dotnet_style_prefer_conditional_expression_over_return = true:silent
 # Naming Conventions          #
 ###############################
 # Style Definitions
-dotnet_naming_style.camel_case_style.capitalization               = camel_case
+dotnet_naming_style.camel_case_style.capitalization               = pascal_case
 # Use CamelCase for constant fields 
 dotnet_naming_rule.constant_fields_should_be_camel_case.severity  = suggestion
 dotnet_naming_rule.constant_fields_should_be_camel_case.symbols   = constant_fields
@@ -79,7 +79,7 @@ csharp_style_conditional_delegate_call = true:suggestion
 # Modifier preferences
 csharp_preferred_modifier_order = private,protected,internal,public,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:suggestion
 # Expression-level preferences
-csharp_prefer_braces = true:silent
+csharp_prefer_braces = true:suggestion
 csharp_style_deconstructed_variable_declaration = true:suggestion
 csharp_prefer_simple_default_expression = true:suggestion
 csharp_style_pattern_local_over_anonymous_function = true:silent

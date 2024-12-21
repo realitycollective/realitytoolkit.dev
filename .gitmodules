@@ -34,9 +34,12 @@
 [submodule "Packages/com.realitytoolkit.player"]
 	path = Packages/com.realitytoolkit.player
 	url = https://github.com/realitycollective/com.realitytoolkit.player.git
-[submodule "Packages/com.realitytoolkit.visionos"]
-	path = Packages/com.realitytoolkit.visionos
-	url = https://github.com/realitycollective/com.realitytoolkit.visionos.git
 [submodule "Packages/com.realitytoolkit.openxr"]
 	path = Packages/com.realitytoolkit.openxr
 	url = https://github.com/realitycollective/com.realitytoolkit.openxr.git
+[submodule "Packages/com.realitytoolkit.samples"]
+	path = Packages/com.realitytoolkit.samples
+	url = https://github.com/realitycollective/com.realitytoolkit.samples.git
+[submodule "Packages/com.realitytoolkit.spatial-awareness"]
+	path = Packages/com.realitytoolkit.spatial-awareness
+	url = https://github.com/realitycollective/com.realitytoolkit.spatial-awareness.git
