@@ -28,9 +28,6 @@ MonoBehaviour:
   - sourceRelativePath: /Packages/com.realitytoolkit.metaplatform/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit/Meta/Profiles
     isActive: 1
-  - sourceRelativePath: /Packages/com.realitytoolkit.devicesimulation/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit/DeviceSimulation/Profiles
-    isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.player/Assets~/StandardAssets
     targetRelativePath: /Assets/RealityToolkit/Player/StandardAssets
     isActive: 1
@@ -49,15 +46,6 @@ MonoBehaviour:
   - sourceRelativePath: /Packages/com.realitytoolkit.devtools/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit/DeveloperTools/Profiles
     isActive: 1
-  - sourceRelativePath: /Packages/com.realitytoolkit.spatial-persistence/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit/SpatialPersistence/Profiles
-    isActive: 1
   - sourceRelativePath: /Packages/com.realitytoolkit.boundary/Assets~/Profiles
     targetRelativePath: /Assets/RealityToolkit/Boundary/Profiles
-    isActive: 1
-  - sourceRelativePath: /Packages/com.realitytoolkit.spatial-awareness/Assets~/StandardAssets
-    targetRelativePath: /Assets/RealityToolkit/SpatialAwareness/StandardAssets
-    isActive: 1
-  - sourceRelativePath: /Packages/com.realitytoolkit.spatial-awareness/Assets~/Profiles
-    targetRelativePath: /Assets/RealityToolkit/SpatialAwareness/Profiles
     isActive: 1
