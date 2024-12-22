@@ -18,6 +18,7 @@ UnityGenerated/
 UnityPackageManager/
 .out/
 .gradle/
+.utmp
 project.json
 project.lock.json
 *.package
